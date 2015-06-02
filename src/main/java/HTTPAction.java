@@ -1,3 +1,3 @@
 public enum HTTPAction {
-    GET
+    POST, GET
 }

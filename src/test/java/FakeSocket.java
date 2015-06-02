@@ -18,11 +18,11 @@ public class FakeSocket extends Socket {
         this(new ByteArrayInputStream("".getBytes()), outputStream);
     }
 
-    public FakeSocket(InputStream inputStream){
+    public FakeSocket(InputStream inputStream) {
         this(inputStream, new ByteArrayOutputStream());
     }
 
-    public FakeSocket(){
+    public FakeSocket() {
         this(new ByteArrayOutputStream());
     }
 
@@ -30,8 +30,12 @@ public class FakeSocket extends Socket {
         closed = true;
     }
 
-    public OutputStream getOutputStream(){
-   return outputStream;
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public InputStream getInputStream(){
+        return inputStream;
     }
 
     public boolean hasBeenClosed() {
