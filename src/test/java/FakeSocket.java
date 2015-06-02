@@ -1,13 +1,25 @@
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
 public class FakeSocket extends Socket {
     private boolean closed = false;
-    private OutputStream outputStreamWritten;
+    private final OutputStream outputStream;
+    private final InputStream inputStream;
 
-    public FakeSocket(OutputStream outputStreamWritten) {
-        this.outputStreamWritten = outputStreamWritten;
+    public FakeSocket(InputStream inputStream, OutputStream outputStream) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
+    }
+
+    public FakeSocket(OutputStream outputStream) {
+        this(new ByteArrayInputStream("".getBytes()), outputStream);
+    }
+
+    public FakeSocket(InputStream inputStream){
+        this(inputStream, new ByteArrayOutputStream());
     }
 
     public FakeSocket(){
@@ -19,14 +31,10 @@ public class FakeSocket extends Socket {
     }
 
     public OutputStream getOutputStream(){
-   return outputStreamWritten;
+   return outputStream;
     }
 
     public boolean hasBeenClosed() {
         return closed;
-    }
-
-    public OutputStream getOutputStreamWritten() {
-        return outputStreamWritten;
     }
 }
