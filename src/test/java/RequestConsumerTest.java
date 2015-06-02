@@ -48,18 +48,6 @@ public class RequestConsumerTest {
         assertThat(socketWriter.calledWithSecondParameter()).isEqualTo(response);
     }
 
-    private class FakeSocket extends Socket {
-        private boolean closed = false;
-
-        public void close() {
-            closed = true;
-        }
-
-        public boolean hasBeenClosed() {
-            return closed;
-        }
-    }
-
     private class TestFunction<T, R> implements Function<T, R> {
 
         private T calledWith;

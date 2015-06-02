@@ -13,7 +13,6 @@ public class RequestConsumer implements Consumer<Socket> {
     private BiConsumer<Socket, Response> socketWriter;
 
     public RequestConsumer(Function<Socket, Request> requestCreator, Function<Request, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter) {
-
         this.requestCreator = requestCreator;
         this.responseGenerator = responseGenerator;
         this.socketWriter = socketWriter;
