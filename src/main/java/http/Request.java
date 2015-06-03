@@ -1,3 +1,5 @@
+package http;
+
 public class Request {
     private final HTTPAction httpAction;
     private final String path;
