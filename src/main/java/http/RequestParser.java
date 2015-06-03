@@ -1,9 +1,11 @@
 package http;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.net.Socket;
 import java.util.function.Function;
 
@@ -11,9 +13,7 @@ public class RequestParser implements Function<Socket, Request> {
 
     @Override
     public Request apply(Socket socket) {
-        System.out.println("GOT PAYLOAD");
         String requestPayload = getRequestPayload(socket);
-        System.out.println("PAYLOAD RECEIVED");
         return new Request(getAction(requestPayload), getPath(requestPayload));
     }
 
@@ -23,12 +23,8 @@ public class RequestParser implements Function<Socket, Request> {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             String nextLine;
-            while((nextLine = bufferedReader.readLine()) != null){
-                if(nextLine.equals("")){
-                   break;
-                }
-                System.out.println("Line => " + nextLine);
-               stringBuilder.append(nextLine).append("\n");
+            while (StringUtils.isNotEmpty(nextLine = bufferedReader.readLine())) {
+                stringBuilder.append(nextLine).append("\n");
             }
             return stringBuilder.toString();
         } catch (IOException e) {
@@ -41,7 +37,6 @@ public class RequestParser implements Function<Socket, Request> {
     }
 
     private HTTPAction getAction(String requestPayload) {
-        System.out.println(requestPayload);
         return HTTPAction.valueOf(requestPayload.split(" ")[0]);
     }
 }

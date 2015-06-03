@@ -1,5 +1,7 @@
 package http;
 
+import java.io.File;
+
 public class Request {
     private final HTTPAction httpAction;
     private final String path;
@@ -9,15 +11,15 @@ public class Request {
         this.path = path;
     }
 
-    public Request() {
-        this(HTTPAction.GET, "/");
-    }
-
     public HTTPAction getAction() {
         return httpAction;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public Response getResponse(File baseFolder, Request request) {
+        return httpAction.getResponseHandler().getResponse(baseFolder, request);
     }
 }
