@@ -14,7 +14,11 @@ public class RequestParser implements Function<Socket, Request> {
             requestPayload = IOUtils.toString(socket.getInputStream());
         } catch (IOException ignored) {
         }
-        return new Request(HTTPAction.valueOf(getAction(requestPayload)));
+        return new Request(HTTPAction.valueOf(getAction(requestPayload)), getPath(requestPayload));
+    }
+
+    private String getPath(String requestPayload) {
+        return requestPayload.split(" ")[1];
     }
 
     private String getAction(String requestPayload) {
