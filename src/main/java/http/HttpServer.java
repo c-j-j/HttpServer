@@ -22,7 +22,7 @@ public class HttpServer {
                 try {
                     socket = serverSocket.accept();
                     System.out.println("Connection received");
-                    new RequestConsumer(new RequestParser(), new ResponseGenerator(baseDirectory), new SocketWriter()).accept(socket);
+                    new RequestConsumer(new ResponseGenerator(new RequestParser(), baseDirectory), new SocketWriter()).accept(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

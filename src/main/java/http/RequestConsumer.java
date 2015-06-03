@@ -8,12 +8,10 @@ import java.util.function.Function;
 
 public class RequestConsumer implements Consumer<Socket> {
 
-    private final Function<Socket, Request> requestParser;
-    private Function<Request, Response> responseGenerator;
+    private Function<Socket, Response> responseGenerator;
     private BiConsumer<Socket, Response> socketWriter;
 
-    public RequestConsumer(Function<Socket, Request> requestParser, Function<Request, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter) {
-        this.requestParser = requestParser;
+    public RequestConsumer(Function<Socket, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter) {
         this.responseGenerator = responseGenerator;
         this.socketWriter = socketWriter;
     }
@@ -21,9 +19,7 @@ public class RequestConsumer implements Consumer<Socket> {
     @Override
     public void accept(Socket socket) {
         try {
-            Request request = requestParser.apply(socket);
-            Response response = responseGenerator.apply(request);
-            socketWriter.accept(socket, response);
+            socketWriter.accept(socket, responseGenerator.apply(socket));
             socket.close();
         } catch (IOException ignored) {
         }
