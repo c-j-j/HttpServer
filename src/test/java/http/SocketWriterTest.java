@@ -1,5 +1,6 @@
 package http;
 
+import builders.ResponseBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,9 +21,10 @@ public class SocketWriterTest {
 
     @Test
     public void WritesResponseToOutput() {
-        Response response = new Response();
-        new SocketWriter().accept(socket, response);
-       assertThat(outputStreamWritten.toString()).contains("HTTP/1.1 200 OK\n\nHello");
+        Response response = new ResponseBuilder().build();
+        Serializer serializer = response1 -> "response text";
+        new SocketWriter(serializer).accept(socket, response);
+        assertThat(outputStreamWritten.toString()).isEqualTo("response text");
 
     }
 }

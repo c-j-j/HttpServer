@@ -1,5 +1,6 @@
 package http;
 
+import builders.ResponseBuilder;
 import http.fakes.TestFunction;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class RequestConsumerTest {
 
     @Before
     public void setUp() throws Exception {
-        response = new Response();
+        response = new ResponseBuilder().build();
         responseGenerator = new TestFunction<>(response);
         fakeSocket = new FakeSocket();
         socketWriter = new TestBiConsumer<>();

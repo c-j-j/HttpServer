@@ -28,11 +28,12 @@ public class ResponseGeneratorTest {
     @Test
     public void fileContents() throws IOException {
         File requestedFile = new File(baseFolder, "tempFile");
-        FileUtils.writeStringToFile(requestedFile, "Hello, World");
+        String fileContent = "Hello, World";
+        FileUtils.writeStringToFile(requestedFile, fileContent);
         Request request = new RequestBuilder().withPath("/tempFile").build();
-        TestFunction<Socket, Request> requestParser = new TestFunction<>(request);
-        Response response = new ResponseGenerator(requestParser, baseFolder).apply(new FakeSocket());
-        assertThat(response.getContents()).isEqualTo("Hello, World");
+        Response response = new ResponseGenerator(s -> request, baseFolder).apply(new FakeSocket());
+        assertThat(response.getContents()).isEqualTo(fileContent);
+        assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
 }

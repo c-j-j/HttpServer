@@ -14,8 +14,11 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class HttpServerTest {
 
+    private static final int PORT = 5001;
     private ExecutorService threadPool;
 
     @Rule
@@ -29,25 +32,40 @@ public class HttpServerTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         threadPool.shutdown();
     }
 
     @Test
-    public void getsFile() throws IOException {
-        threadPool.submit(() -> new HttpServer(baseDirectory, 5001).start());
+    public void getsContentFromRequestedFile() throws IOException {
+        startHTTPServer();
+        Socket socket = new Socket("localhost", PORT);
+        createFile("some_file", "Hello World!");
+        writeToSocket(socket, new HTTPRequestBuilder()
+                .withAction(HTTPAction.GET)
+                .withPath("/some_file")
+                .build());
+        assertThat(readHTTPResponse(socket)).contains("Hello World!");
+    }
 
-        File requestedResource = new File(baseDirectory, "some_file");
-        FileUtils.writeStringToFile(requestedResource, "Hello World!");
-        Socket socket = new Socket("localhost", 5001);
+    private void startHTTPServer() {
+        threadPool.submit(() -> new HttpServer(baseDirectory, PORT).start());
+    }
 
-        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-        printWriter.write(new HTTPRequestBuilder().withAction(HTTPAction.GET).withPath("/some_file").build());
-        printWriter.flush();
-
+    private String readHTTPResponse(Socket socket) throws IOException {
         StringWriter stringWriter = new StringWriter();
         IOUtils.copy(socket.getInputStream(), stringWriter);
-        socket.close();
-        System.out.println(stringWriter.toString());
+        return stringWriter.toString();
+    }
+
+    private void createFile(String filename, String content) throws IOException {
+        File requestedResource = new File(baseDirectory, filename);
+        FileUtils.writeStringToFile(requestedResource, content);
+    }
+
+    private void writeToSocket(Socket socket, String httpRequest) throws IOException {
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+        printWriter.write(httpRequest);
+        printWriter.flush();
     }
 }
