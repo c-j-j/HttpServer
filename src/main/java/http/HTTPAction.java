@@ -1,10 +1,11 @@
 package http;
 
 import http.response.GETResponseResolver;
+import http.response.POSTResponseResolver;
 import http.response.ResponseResolver;
 
 public enum HTTPAction {
-    POST(new GETResponseResolver()),
+    POST(new POSTResponseResolver()),
     PUT(new GETResponseResolver()), 
     HEAD(new GETResponseResolver()), 
     PATCH(new GETResponseResolver()), 
