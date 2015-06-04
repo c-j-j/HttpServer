@@ -1,6 +1,7 @@
 package http;
 
 import builders.RequestBuilder;
+import builders.ResponseBuilder;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,41 +10,79 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResponseGeneratorTest {
 
+    private static final String FILE_NAME = "tempFile";
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
     private File baseFolder;
+    private ResponseGenerator responseGenerator;
+    private StubResourceRepository resourceRepository;
+    private Request request;
 
     @Before
     public void setUp() throws Exception {
+        resourceRepository = new StubResourceRepository();
         baseFolder = temporaryFolder.newFolder();
+        request = new RequestBuilder().withPath("/tempFile").build();
+        responseGenerator = new ResponseGenerator(resourceRepository, s -> request, baseFolder);
     }
 
     @Test
     public void fileContents() throws IOException {
         String fileContent = "Hello, World";
-        writeToFile("tempFile", fileContent);
-        Response response = new ResponseGenerator(s -> new RequestBuilder()
-                .withPath("/tempFile")
-                .build(), baseFolder).apply(new FakeSocket());
+        writeToFile(FILE_NAME, fileContent);
+        Response response = responseGenerator.apply(new FakeSocket());
         assertThat(response.getContents()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     @Test
     public void yields404ResponseWhenFileDoesNotExist() {
-        Request request = new RequestBuilder().withPath("/nonExistentFile").build();
-        Response response = new ResponseGenerator(s -> request, baseFolder).apply(new FakeSocket());
+        Response response = responseGenerator.apply(new FakeSocket());
         assertThat(response.getContents()).isNull();
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);
+    }
+
+    @Test
+    public void usesResourcesWhenAvailable() {
+        Response response = new ResponseBuilder().build();
+        resourceRepository.stubResponse(request, response);
+        assertThat(responseGenerator.apply(new FakeSocket())).isEqualTo(response);
     }
 
     private void writeToFile(String fileName, String fileContents) throws IOException {
         File requestedFile = new File(baseFolder, fileName);
         FileUtils.writeStringToFile(requestedFile, fileContents);
+    }
+
+    private class StubResourceRepository extends ResourceRepository {
+
+        private Request request;
+        private Response response;
+
+        public StubResourceRepository() {
+            super(Collections.emptySet());
+        }
+
+        public void stubResponse(Request request, Response response) {
+            this.request = request;
+            this.response = response;
+        }
+
+        @Override
+        public boolean canRespond(Request request) {
+            return this.request == request;
+        }
+
+        @Override
+        public Response getResponse(Request request) {
+            return response;
+        }
     }
 }

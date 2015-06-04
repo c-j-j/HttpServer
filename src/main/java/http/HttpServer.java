@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collections;
 
 public class HttpServer {
     private final File baseDirectory;
@@ -22,7 +23,7 @@ public class HttpServer {
                 try {
                     socket = serverSocket.accept();
                     System.out.println("Connection received");
-                    new RequestConsumer(new ResponseGenerator(new RequestParser(), baseDirectory), new SocketWriter(new ResponseSerializer())).accept(socket);
+                    new RequestConsumer(new ResponseGenerator(new ResourceRepository(Collections.emptySet()), new RequestParser(), baseDirectory), new SocketWriter(new ResponseSerializer())).accept(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -8,10 +8,12 @@ import java.util.function.Function;
 
 public class ResponseGenerator implements Function<Socket, Response> {
 
+    private final ResourceRepository resourceRepository;
     private final Function<Socket, Request> requestParser;
     private final File baseFolder;
 
-    public ResponseGenerator(Function<Socket, Request> requestParser, File baseFolder) {
+    public ResponseGenerator(ResourceRepository resourceRepository, Function<Socket, Request> requestParser, File baseFolder) {
+        this.resourceRepository = resourceRepository;
         this.requestParser = requestParser;
         this.baseFolder = baseFolder;
     }
@@ -20,9 +22,17 @@ public class ResponseGenerator implements Function<Socket, Response> {
     public Response apply(Socket socket) {
         try {
             Request request = requestParser.apply(socket);
-            return request.getResponse(baseFolder, request);
+            return generateResponse(request);
         } catch (RuntimeException e) {
             return new ResponseBuilder().build();
+        }
+    }
+
+    private Response generateResponse(Request request) {
+        if (resourceRepository.canRespond(request)){
+            return resourceRepository.getResponse(request);
+        }else{
+            return request.getResponse(baseFolder, request);
         }
     }
 
