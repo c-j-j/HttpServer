@@ -1,12 +1,9 @@
 package http;
 
 import builders.ResponseBuilder;
-import com.google.common.io.CharSource;
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,11 +45,9 @@ public class ResponseSerializerTest {
     }
 
     @Test
-    public void charsource() throws IOException {
-        CharSource charSource = CharSource.concat(CharSource.wrap("hello"), CharSource.wrap("Hello World\nGoodbye World"));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IOUtils.copy(charSource.openBufferedStream(), byteArrayOutputStream);
-        byteArrayOutputStream.close();
-        System.out.println(byteArrayOutputStream.toString());
+    public void containsAllowedOptions() throws IOException {
+        Response response = new ResponseBuilder().withAllowedOptions(HTTPAction.GET, HTTPAction.OPTIONS).build();
+        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("Allow: %s,%s", HTTPAction.GET, HTTPAction.OPTIONS));
     }
+
 }

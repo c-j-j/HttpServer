@@ -10,12 +10,14 @@ public class Response {
     private final CharSource contents;
     private final HTTPStatusCode statusCode;
     private final ContentType contentType;
+    private final HTTPAction[] allowedActions;
 
-    public Response(HTTPStatusCode statusCode, String location, CharSource contents, ContentType contentType) {
+    public Response(HTTPStatusCode statusCode, String location, CharSource contents, ContentType contentType, HTTPAction[] allowedActions) {
         this.location = location;
         this.contents = contents;
         this.statusCode = statusCode;
         this.contentType = contentType;
+        this.allowedActions = allowedActions;
     }
 
     public String getContentsAsString() {
@@ -36,5 +38,9 @@ public class Response {
 
     public ContentType getContentType() {
         return contentType;
+    }
+
+    public HTTPAction[] getAllowedOptions() {
+        return allowedActions;
     }
 }

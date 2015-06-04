@@ -2,6 +2,7 @@ package builders;
 
 import com.google.common.io.CharSource;
 import http.ContentType;
+import http.HTTPAction;
 import http.HTTPStatusCode;
 import http.Response;
 
@@ -10,6 +11,7 @@ public class ResponseBuilder {
     private CharSource content;
     private String location;
     private ContentType contentType;
+    private HTTPAction[] allowedActions;
 
     public ResponseBuilder withStatusCode(HTTPStatusCode statusCode) {
         this.statusCode = statusCode;
@@ -35,8 +37,13 @@ public class ResponseBuilder {
         return this;
     }
 
+    public ResponseBuilder withAllowedOptions(HTTPAction... actions) {
+        this.allowedActions = actions;
+        return this;
+    }
+
     public Response build() {
-        return new Response(statusCode, location, content, contentType);
+        return new Response(statusCode, location, content, contentType, allowedActions);
     }
 
 }

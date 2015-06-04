@@ -1,5 +1,6 @@
 package http;
 
+import com.google.common.base.Joiner;
 import com.google.common.io.CharSource;
 import org.apache.commons.lang.StringUtils;
 
@@ -24,7 +25,16 @@ public class ResponseSerializer implements Serializer {
         headerBuilder.append(statusLine(statusCode));
         headerBuilder.append(location(response));
         headerBuilder.append(contentType(response));
+        headerBuilder.append(allowedActions(response));
         return headerBuilder.toString();
+    }
+
+    private String allowedActions(Response response) {
+        if(response.getAllowedOptions() != null){
+            return String.format("Allow: %s\n", Joiner.on(",").join(response.getAllowedOptions()));
+        }else{
+            return "";
+        }
     }
 
     private String contentType(Response response) {
