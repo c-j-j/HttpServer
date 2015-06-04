@@ -1,18 +1,22 @@
 package http;
 
+import http.resource.Resource;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
+import java.util.Set;
 
 public class HttpServer {
     private final File baseDirectory;
     private final int portNumber;
+    private Set<Resource> resources;
 
-    public HttpServer(File baseDirectory, int portNumber) {
+    public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber) {
         this.baseDirectory = baseDirectory;
         this.portNumber = portNumber;
+        this.resources = resources;
     }
 
     public void start() {
@@ -23,7 +27,7 @@ public class HttpServer {
                 try {
                     socket = serverSocket.accept();
                     System.out.println("Connection received");
-                    new RequestConsumer(new ResponseGenerator(new ResourceRepository(Collections.emptySet()), new RequestParser(), baseDirectory), new SocketWriter(new ResponseSerializer())).accept(socket);
+                    new RequestConsumer(new ResponseGenerator(new ResourceRepository(resources), new RequestParser(), baseDirectory), new SocketWriter(new ResponseSerializer())).accept(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,7 +38,7 @@ public class IntegrationTestBase {
     }
 
     protected void startHTTPServer() {
-        threadPool.submit(() -> new HttpServer(baseDirectory, PORT).start());
+        threadPool.submit(() -> new HttpServer(Collections.emptySet(), baseDirectory, PORT).start());
     }
 
 
