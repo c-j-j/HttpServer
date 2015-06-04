@@ -16,7 +16,7 @@ public class ResponseSerializerTest {
     }
 
     @Test
-    public void responseContainsHeaderLine(){
+    public void containsHeaderLineWithStatusCode(){
         Response response = new ResponseBuilder().withStatusCode(HTTPStatusCode.OK).build();
         String payload = responseSerializer.toPayload(response);
         HTTPStatusCode statusCode = response.getStatusCode();
@@ -24,9 +24,15 @@ public class ResponseSerializerTest {
     }
 
     @Test
-    public void responseContainsContent(){
+    public void containsContent(){
         Response response = new ResponseBuilder().withContent("Hello World").build();
-        String payload = responseSerializer.toPayload(response);
-        assertThat(payload).contains(String.format("\n\n%s", "Hello World"));
+        assertThat(responseSerializer.toPayload(response)).contains(String.format("\n\n%s", "Hello World"));
+    }
+
+    @Test
+    public void containsLocation(){
+        String location = "SomeLocation";
+        Response response = new ResponseBuilder().withLocation(location).build();
+        assertThat(responseSerializer.toPayload(response)).contains(String.format("Location: %s", location));
     }
 }

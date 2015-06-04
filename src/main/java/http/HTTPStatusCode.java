@@ -1,7 +1,9 @@
 package http;
 
 public enum HTTPStatusCode {
-    OK(200, "OK"), NOT_FOUND(404, "Not Found");
+    OK(200, "OK"),
+    FOUND(302, "Found"),
+    NOT_FOUND(404, "Not Found");
 
     private int code;
     private String status;
