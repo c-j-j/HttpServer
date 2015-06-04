@@ -2,11 +2,12 @@ package http;
 
 import http.response.GETResponseResolver;
 import http.response.POSTResponseResolver;
+import http.response.PUTResponseResolver;
 import http.response.ResponseResolver;
 
 public enum HTTPAction {
     POST(new POSTResponseResolver()),
-    PUT(new GETResponseResolver()), 
+    PUT(new PUTResponseResolver()),
     HEAD(new GETResponseResolver()), 
     PATCH(new GETResponseResolver()), 
     DELETE(new GETResponseResolver()), 

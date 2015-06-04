@@ -5,4 +5,4 @@ build
 gradle/
 gradlew
 gradlew.bat
-
+test_output.txt

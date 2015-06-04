@@ -14,6 +14,7 @@ public class RequestParser implements Function<Socket, Request> {
     @Override
     public Request apply(Socket socket) {
         String requestPayload = getRequestPayload(socket);
+        System.out.println(requestPayload);
         return new Request(getAction(requestPayload), getPath(requestPayload));
     }
 
