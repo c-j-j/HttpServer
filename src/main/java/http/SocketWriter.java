@@ -1,8 +1,8 @@
 package http;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.function.BiConsumer;
 
@@ -17,12 +17,8 @@ public class SocketWriter implements BiConsumer<Socket, Response>{
     @Override
     public void accept(Socket socket, Response response) {
         try {
-            OutputStream outputStream = socket.getOutputStream();
             System.out.println("Writing to socket");
-            PrintWriter printWriter = new PrintWriter(outputStream);
-            printWriter.write(serializer.toPayload(response));
-            printWriter.flush();
-            printWriter.close();
+            IOUtils.copy(serializer.toPayload(response).openBufferedStream(), socket.getOutputStream());
         } catch (IOException ignored) {
         }
     }

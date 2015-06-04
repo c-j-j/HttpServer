@@ -1,16 +1,17 @@
 package http;
 
+import com.google.common.io.CharSource;
 import org.apache.commons.lang.StringUtils;
 
 public class ResponseSerializer implements Serializer {
 
     @Override
-    public String toPayload(Response response) {
+    public CharSource toPayload(Response response) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(header(response));
         stringBuilder.append(location(response));
         stringBuilder.append(content(response));
-        return stringBuilder.toString();
+        return CharSource.wrap(stringBuilder.toString());
     }
 
     private String content(Response response) {
@@ -22,7 +23,12 @@ public class ResponseSerializer implements Serializer {
         StringBuilder headerBuilder = new StringBuilder();
         headerBuilder.append(statusLine(statusCode));
         headerBuilder.append(location(response));
+        headerBuilder.append(contentType(response));
         return headerBuilder.toString();
+    }
+
+    private String contentType(Response response) {
+        return response.getContentType() != null ? String.format("Content-Type: %s\n", response.getContentType().getDescription()) : "";
     }
 
     private String statusLine(HTTPStatusCode statusCode) {

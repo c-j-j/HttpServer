@@ -1,36 +1,30 @@
 package http.response;
 
-import builders.ResponseBuilder;
-import com.google.common.io.CharSource;
-import com.google.common.io.Files;
-import http.HTTPStatusCode;
 import http.Request;
 import http.Response;
 
 import java.io.File;
-import java.nio.charset.Charset;
 
 public class GETResponseResolver implements ResponseResolver {
 
+    private final NotFoundResponseResolver notFoundResponseResolver = new NotFoundResponseResolver();
+    private final GetDirectoryResponseResolver getDirectoryResponseResolver = new GetDirectoryResponseResolver();
+    private final GetFileContentResponseResolver getFileContentResponseResolver = new GetFileContentResponseResolver();
+
     @Override
     public Response getResponse(File baseFolder, Request request) {
-        if (!getRequestedFile(baseFolder, request).exists()) {
-            return new ResponseBuilder()
-                    .withStatusCode(HTTPStatusCode.NOT_FOUND)
-                    .build();
+        File requestedFile = getRequestedFile(baseFolder, request);
+
+        if (!requestedFile.exists()) {
+            return notFoundResponseResolver.getResponse(baseFolder, request);
+        } else if (requestedFile.isDirectory()) {
+            return getDirectoryResponseResolver.getResponse(baseFolder, request);
         } else {
-            return new ResponseBuilder()
-                    .withStatusCode(HTTPStatusCode.OK)
-                    .withContent(readFile(getRequestedFile(baseFolder, request)))
-                    .build();
+            return getFileContentResponseResolver.getResponse(baseFolder, request);
         }
     }
 
     private File getRequestedFile(File baseFolder, Request request) {
         return new File(baseFolder, request.getPath());
-    }
-
-    private CharSource readFile(File requestedFile) {
-        return Files.asCharSource(requestedFile, Charset.defaultCharset());
     }
 }

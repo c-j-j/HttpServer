@@ -1,6 +1,7 @@
 package builders;
 
 import com.google.common.io.CharSource;
+import http.ContentType;
 import http.HTTPStatusCode;
 import http.Response;
 
@@ -8,6 +9,7 @@ public class ResponseBuilder {
     private HTTPStatusCode statusCode = HTTPStatusCode.OK;
     private CharSource content;
     private String location;
+    private ContentType contentType;
 
     public ResponseBuilder withStatusCode(HTTPStatusCode statusCode) {
         this.statusCode = statusCode;
@@ -28,8 +30,13 @@ public class ResponseBuilder {
         return this;
     }
 
+    public ResponseBuilder withContentType(ContentType contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
     public Response build() {
-        return new Response(statusCode, location, content);
+        return new Response(statusCode, location, content, contentType);
     }
 
 }

@@ -36,7 +36,7 @@ public class GETResponseResolverTest {
     }
 
     @Test
-    public void yields404ResponseWhenFileDoesNotExist() {
+    public void fileNotFound() {
         Response response = new GETResponseResolver().getResponse(baseFolder, request);
         assertThat(response.getContentsAsString()).isEmpty();
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);

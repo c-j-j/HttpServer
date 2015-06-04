@@ -21,24 +21,30 @@ public class ResponseSerializerTest {
     }
 
     @Test
-    public void containsHeaderLineWithStatusCode(){
+    public void containsHeaderLineWithStatusCode() throws IOException {
         Response response = new ResponseBuilder().withStatusCode(HTTPStatusCode.OK).build();
-        String payload = responseSerializer.toPayload(response);
+        String payload = responseSerializer.toPayload(response).read();
         HTTPStatusCode statusCode = response.getStatusCode();
         assertThat(payload).contains(String.format("HTTP/1.1 %d %s", statusCode.getCode(), statusCode.getStatus()));
     }
 
     @Test
-    public void containsContent(){
+    public void containsContent() throws IOException {
         Response response = new ResponseBuilder().withContent("Hello World").build();
-        assertThat(responseSerializer.toPayload(response)).contains(String.format("\n\n%s", "Hello World"));
+        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("\n\n%s", "Hello World"));
     }
 
     @Test
-    public void containsLocation(){
+    public void containsLocation() throws IOException {
         String location = "SomeLocation";
         Response response = new ResponseBuilder().withLocation(location).build();
-        assertThat(responseSerializer.toPayload(response)).contains(String.format("Location: %s", location));
+        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("Location: %s", location));
+    }
+
+    @Test
+    public void containsContentType() throws IOException {
+        Response response = new ResponseBuilder().withContentType(ContentType.PLAIN).build();
+        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("Content-Type: %s", ContentType.PLAIN.getDescription()));
     }
 
     @Test

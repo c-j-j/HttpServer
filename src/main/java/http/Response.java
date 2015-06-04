@@ -9,11 +9,13 @@ public class Response {
     private final String location;
     private final CharSource contents;
     private final HTTPStatusCode statusCode;
+    private final ContentType contentType;
 
-    public Response(HTTPStatusCode statusCode, String location, CharSource contents) {
+    public Response(HTTPStatusCode statusCode, String location, CharSource contents, ContentType contentType) {
         this.location = location;
         this.contents = contents;
         this.statusCode = statusCode;
+        this.contentType = contentType;
     }
 
     public String getContentsAsString() {
@@ -30,5 +32,9 @@ public class Response {
 
     public String getLocation() {
         return location;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
     }
 }
