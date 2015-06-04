@@ -14,7 +14,7 @@ public class ResponseSerializer implements Serializer {
     }
 
     private String content(Response response) {
-        return String.format("\n%s", response.getContents());
+        return String.format("\n%s", response.getContentsAsString());
     }
 
     private String header(Response response) {

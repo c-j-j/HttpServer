@@ -1,13 +1,14 @@
 package http.response;
 
 import builders.ResponseBuilder;
+import com.google.common.io.CharSource;
+import com.google.common.io.Files;
 import http.HTTPStatusCode;
 import http.Request;
 import http.Response;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class GETResponseResolver implements ResponseResolver {
 
@@ -29,17 +30,7 @@ public class GETResponseResolver implements ResponseResolver {
         return new File(baseFolder, request.getPath());
     }
 
-    private String readFile(File requestedFile) {
-        String responseContents;
-        try {
-            responseContents = getResponseFromFile(requestedFile);
-        } catch (IOException e) {
-            responseContents = "";
-        }
-        return responseContents;
-    }
-
-    private String getResponseFromFile(File requestedFile) throws IOException {
-        return FileUtils.readFileToString(requestedFile);
+    private CharSource readFile(File requestedFile) {
+        return Files.asCharSource(requestedFile, Charset.defaultCharset());
     }
 }

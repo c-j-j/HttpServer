@@ -34,19 +34,12 @@ public class ResponseGeneratorTest {
     }
 
     @Test
-    public void fileContents() throws IOException {
+    public void usesFileSystemWhenResourcesNotAvailable() throws IOException {
         String fileContent = "Hello, World";
         writeToFile(FILE_NAME, fileContent);
         Response response = responseGenerator.apply(new FakeSocket());
-        assertThat(response.getContents()).isEqualTo(fileContent);
+        assertThat(response.getContentsAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
-    }
-
-    @Test
-    public void yields404ResponseWhenFileDoesNotExist() {
-        Response response = responseGenerator.apply(new FakeSocket());
-        assertThat(response.getContents()).isNull();
-        assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);
     }
 
     @Test

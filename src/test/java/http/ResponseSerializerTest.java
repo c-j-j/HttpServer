@@ -1,8 +1,13 @@
 package http;
 
 import builders.ResponseBuilder;
+import com.google.common.io.CharSource;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,5 +39,14 @@ public class ResponseSerializerTest {
         String location = "SomeLocation";
         Response response = new ResponseBuilder().withLocation(location).build();
         assertThat(responseSerializer.toPayload(response)).contains(String.format("Location: %s", location));
+    }
+
+    @Test
+    public void charsource() throws IOException {
+        CharSource charSource = CharSource.concat(CharSource.wrap("hello"), CharSource.wrap("Hello World\nGoodbye World"));
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        IOUtils.copy(charSource.openBufferedStream(), byteArrayOutputStream);
+        byteArrayOutputStream.close();
+        System.out.println(byteArrayOutputStream.toString());
     }
 }

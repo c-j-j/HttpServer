@@ -45,7 +45,7 @@ public class ResourceRepositoryTest {
     @Test
     public void respondsToRequest(){
         Response response = resourceRepository.getResponse(validRequest);
-        assertThat(response.getContents()).isEqualTo("Some Content");
+        assertThat(response.getContentsAsString()).isEqualTo("Some Content");
     }
 
     private class FakeResourse implements Resource {
