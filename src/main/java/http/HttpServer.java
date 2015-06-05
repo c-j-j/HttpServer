@@ -27,7 +27,7 @@ public class HttpServer {
                 try {
                     socket = serverSocket.accept();
                     System.out.println("Connection received");
-                    new RequestConsumer(new ResponseGenerator(new ResourceRepository(resources), new RequestParser(), baseDirectory), new SocketWriter(new ResponseSerializer())).accept(socket);
+                    new RequestConsumer(new ResponseGenerator(new ResourceRepository(resources), baseDirectory), new SocketWriter(new ResponseSerializer()), new RequestParser()).accept(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -30,14 +30,14 @@ public class ResponseGeneratorTest {
         resourceRepository = new StubResourceRepository();
         baseFolder = temporaryFolder.newFolder();
         request = new RequestBuilder().withPath("/tempFile").build();
-        responseGenerator = new ResponseGenerator(resourceRepository, s -> request, baseFolder);
+        responseGenerator = new ResponseGenerator(resourceRepository, baseFolder);
     }
 
     @Test
     public void usesFileSystemWhenResourcesNotAvailable() throws IOException {
         String fileContent = "Hello, World";
         writeToFile(FILE_NAME, fileContent);
-        Response response = responseGenerator.apply(new FakeSocket());
+        Response response = responseGenerator.apply(request);
         assertThat(response.getContentsAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
@@ -46,7 +46,7 @@ public class ResponseGeneratorTest {
     public void usesResourcesWhenAvailable() {
         Response response = new ResponseBuilder().build();
         resourceRepository.stubResponse(request, response);
-        assertThat(responseGenerator.apply(new FakeSocket())).isEqualTo(response);
+        assertThat(responseGenerator.apply(request)).isEqualTo(response);
     }
 
     private void writeToFile(String fileName, String fileContents) throws IOException {

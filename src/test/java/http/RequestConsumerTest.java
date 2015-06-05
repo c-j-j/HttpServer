@@ -1,5 +1,6 @@
 package http;
 
+import builders.RequestBuilder;
 import builders.ResponseBuilder;
 import http.fakes.TestFunction;
 import org.junit.Before;
@@ -7,6 +8,7 @@ import org.junit.Test;
 
 import java.net.Socket;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,9 +17,13 @@ public class RequestConsumerTest {
 
     private FakeSocket fakeSocket;
     private RequestConsumer requestConsumer;
-    private TestFunction<Socket, Response> responseGenerator;
+    private TestFunction<Request, Response> responseGenerator;
     private TestBiConsumer<Socket, Response> socketWriter;
     private Response response;
+    private Function<Socket, String> socketReader;
+    private Function<String, Request> requestDeserializer;
+    private Function<Socket, Request> requestParser;
+    private Request request;
 
     @Before
     public void setUp() throws Exception {
@@ -25,7 +31,9 @@ public class RequestConsumerTest {
         responseGenerator = new TestFunction<>(response);
         fakeSocket = new FakeSocket();
         socketWriter = new TestBiConsumer<>();
-        requestConsumer = new RequestConsumer(responseGenerator, socketWriter);
+        request = new RequestBuilder().build();
+        requestParser = new TestFunction<>(request);
+        requestConsumer = new RequestConsumer(responseGenerator, socketWriter, requestParser);
     }
 
     @Test
@@ -35,9 +43,10 @@ public class RequestConsumerTest {
     }
 
     @Test
+    @Deprecated//TODO remove
     public void CreatesResponseFromSocket() {
         requestConsumer.accept(fakeSocket);
-        assertThat(responseGenerator.wasCalledWith()).isEqualTo(fakeSocket);
+        assertThat(responseGenerator.wasCalledWith()).isEqualTo(request);
     }
 
     @Test

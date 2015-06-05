@@ -3,25 +3,21 @@ package http;
 import builders.ResponseBuilder;
 
 import java.io.File;
-import java.net.Socket;
 import java.util.function.Function;
 
-public class ResponseGenerator implements Function<Socket, Response> {
+public class ResponseGenerator implements Function<Request, Response> {
 
     private final ResourceRepository resourceRepository;
-    private final Function<Socket, Request> requestParser;
     private final File baseFolder;
 
-    public ResponseGenerator(ResourceRepository resourceRepository, Function<Socket, Request> requestParser, File baseFolder) {
+    public ResponseGenerator(ResourceRepository resourceRepository, File baseFolder) {
         this.resourceRepository = resourceRepository;
-        this.requestParser = requestParser;
         this.baseFolder = baseFolder;
     }
 
     @Override
-    public Response apply(Socket socket) {
+    public Response apply(Request request) {
         try {
-            Request request = requestParser.apply(socket);
             return generateResponse(request);
         } catch (RuntimeException e) {
             return new ResponseBuilder().build();
@@ -29,9 +25,9 @@ public class ResponseGenerator implements Function<Socket, Response> {
     }
 
     private Response generateResponse(Request request) {
-        if (resourceRepository.canRespond(request)){
+        if (resourceRepository.canRespond(request)) {
             return resourceRepository.getResponse(request);
-        }else{
+        } else {
             return request.getResponse(baseFolder, request);
         }
     }
