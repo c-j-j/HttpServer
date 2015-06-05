@@ -1,5 +1,7 @@
 package http;
 
+import http.auth.AuthenticationHeader;
+import http.auth.AuthenticationType;
 import http.builders.HTTPRequestBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +53,14 @@ public class RequestDeserialiserTest {
     public void parsesDELETEAction() {
         Request request = requestDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.DELETE).build());
         assertThat(request.getAction()).isEqualTo(HTTPAction.DELETE);
+    }
+
+    @Test
+    public void parsesAuthentication(){
+        AuthenticationHeader authenticationHeader = new AuthenticationHeader(AuthenticationType.BASIC, "someAuthValue");
+        Request request = requestDeserialiser.apply(new HTTPRequestBuilder().withAuthentication(authenticationHeader).build());
+        assertThat(request.getAuthenticationHeader().get().getAuthValue()).isEqualTo(authenticationHeader.getAuthValue());
+        assertThat(request.getAuthenticationHeader().get().getType()).isEqualTo(authenticationHeader.getType());
     }
 
     @Test
