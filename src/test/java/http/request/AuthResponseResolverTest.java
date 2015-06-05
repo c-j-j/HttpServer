@@ -6,7 +6,7 @@ import http.HTTPStatusCode;
 import http.Request;
 import http.Response;
 import http.auth.AuthenticationHeader;
-import http.fakes.TestFunction;
+import http.fakes.SpyFunction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,13 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthResponseResolverTest {
 
-    private TestFunction<Request, Response> wrappedResponseResolver;
+    private SpyFunction<Request, Response> wrappedResponseResolver;
     private Response wrappedResponse;
 
     @Before
     public void setUp() throws Exception {
         wrappedResponse = new ResponseBuilder().build();
-        wrappedResponseResolver = new TestFunction<>(wrappedResponse);
+        wrappedResponseResolver = new SpyFunction<>(wrappedResponse);
     }
 
     @Test

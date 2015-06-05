@@ -2,7 +2,7 @@ package http;
 
 import builders.RequestBuilder;
 import builders.ResponseBuilder;
-import http.fakes.TestFunction;
+import http.fakes.SpyFunction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class RequestConsumerTest {
 
     private FakeSocket fakeSocket;
     private RequestConsumer requestConsumer;
-    private TestFunction<Request, Response> responseGenerator;
+    private SpyFunction<Request, Response> responseGenerator;
     private TestBiConsumer<Socket, Response> socketWriter;
     private Response response;
     private Function<Socket, String> socketReader;
@@ -28,11 +28,11 @@ public class RequestConsumerTest {
     @Before
     public void setUp() throws Exception {
         response = new ResponseBuilder().build();
-        responseGenerator = new TestFunction<>(response);
+        responseGenerator = new SpyFunction<>(response);
         fakeSocket = new FakeSocket();
         socketWriter = new TestBiConsumer<>();
         request = new RequestBuilder().build();
-        requestParser = new TestFunction<>(request);
+        requestParser = new SpyFunction<>(request);
         requestConsumer = new RequestConsumer(responseGenerator, socketWriter, requestParser);
     }
 

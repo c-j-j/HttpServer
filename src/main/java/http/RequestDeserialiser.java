@@ -17,6 +17,7 @@ public class RequestDeserialiser implements Function<String, Request> {
                 .withHTTPAction(getAction(requestPayload))
                 .withPath(getPath(requestPayload))
                 .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))
+                .withRequestPayload(requestPayload)
                 .build();
     }
 

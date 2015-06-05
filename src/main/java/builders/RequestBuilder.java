@@ -10,6 +10,7 @@ public class RequestBuilder {
     private String path;
     private HTTPAction httpAction = HTTPAction.GET;
     private Optional<AuthenticationHeader> authenticationHeader = Optional.<AuthenticationHeader>empty();
+    private String requestPayload;
 
     public RequestBuilder withPath(String path) {
         this.path = path;
@@ -30,8 +31,13 @@ public class RequestBuilder {
         return withAuthenticationHeader(Optional.of(authenticationHeader));
     }
 
+    public RequestBuilder withRequestPayload(String requestPayload) {
+        this.requestPayload = requestPayload;
+        return this;
+    }
+
     public Request build() {
-        return new Request(httpAction, path, authenticationHeader);
+        return new Request(httpAction, path, authenticationHeader, requestPayload);
     }
 
 }

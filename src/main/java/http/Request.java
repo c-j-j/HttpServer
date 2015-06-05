@@ -8,12 +8,14 @@ import java.util.Optional;
 public class Request {
     private final HTTPAction httpAction;
     private final String path;
-    private Optional<AuthenticationHeader> authenticationHeader;
+    private final Optional<AuthenticationHeader> authenticationHeader;
+    private final String requestPayload;
 
-    public Request(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader) {
+    public Request(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader, String requestPayload) {
         this.httpAction = httpAction;
         this.path = path;
         this.authenticationHeader = authenticationHeader;
+        this.requestPayload = requestPayload;
     }
 
     public HTTPAction getAction() {
@@ -30,5 +32,9 @@ public class Request {
 
     public Optional<AuthenticationHeader> getAuthenticationHeader() {
         return authenticationHeader;
+    }
+
+    public String getPayload() {
+        return requestPayload;
     }
 }

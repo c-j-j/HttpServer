@@ -1,6 +1,8 @@
 package http;
 
+import http.logging.Logger;
 import http.request.AuthResponseResolver;
+import http.request.LogRequestResolver;
 import http.resource.Resource;
 
 import java.io.File;
@@ -21,6 +23,7 @@ public class HttpServer {
     }
 
     public void start() {
+        Logger logger = new Logger(new File(baseDirectory, "logs"));
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
                 System.out.println("Waiting for connections on port 5000");
@@ -28,7 +31,8 @@ public class HttpServer {
                 try {
                     socket = serverSocket.accept();
                     System.out.println("Connection received");
-                    new RequestConsumer(new AuthResponseResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory)), new SocketWriter(new ResponseSerializer()), new RequestParser()).accept(socket);
+                    new RequestConsumer(new LogRequestResolver(logger, new AuthResponseResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory))),
+                            new SocketWriter(new ResponseSerializer()), new RequestParser()).accept(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

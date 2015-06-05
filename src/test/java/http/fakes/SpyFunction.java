@@ -2,12 +2,12 @@ package http.fakes;
 
 import java.util.function.Function;
 
-public class TestFunction<T, R> implements Function<T, R> {
+public class SpyFunction<T, R> implements Function<T, R> {
 
     private T calledWith;
     private R stubResponse;
 
-    public TestFunction(R stubResponse) {
+    public SpyFunction(R stubResponse) {
 
         this.stubResponse = stubResponse;
     }

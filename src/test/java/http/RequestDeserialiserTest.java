@@ -66,4 +66,11 @@ public class RequestDeserialiserTest {
         Request request = requestDeserialiser.apply(new HTTPRequestBuilder().withPath("/SomePath").build());
         assertThat(request.getPath()).isEqualTo("/SomePath");
     }
+
+    @Test
+    public void addsPayloadToRequest(){
+        String payload = new HTTPRequestBuilder().withPath("/").build();
+        Request request = requestDeserialiser.apply(payload);
+        assertThat(request.getPayload()).isEqualTo(payload);
+    }
 }
