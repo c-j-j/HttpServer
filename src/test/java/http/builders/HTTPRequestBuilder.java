@@ -1,7 +1,6 @@
 package http.builders;
 
 import http.HTTPAction;
-import http.RequestParserTest;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
