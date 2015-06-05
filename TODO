@@ -1,0 +1,5 @@
+If there's time...
+
+never return nullable object, only optional
+clean up packaging
+use separate validator for authentication/configurable protected routes/passwords
