@@ -1,7 +1,7 @@
 package http;
 
 import builders.ResponseBuilder;
-import com.google.common.io.CharSource;
+import com.google.common.io.ByteSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class SocketWriterTest {
     @Test
     public void WritesResponseToOutput() {
         Response response = new ResponseBuilder().build();
-        Serializer serializer = response1 -> CharSource.wrap("response text");
+        Serializer serializer = response1 -> ByteSource.wrap("response text".getBytes());
         new SocketWriter(serializer).accept(socket, response);
         assertThat(outputStreamWritten.toString()).isEqualTo("response text");
 

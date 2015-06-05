@@ -1,22 +1,16 @@
 package http;
 
 import com.google.common.base.Joiner;
-import com.google.common.io.CharSource;
+import com.google.common.io.ByteSource;
 import org.apache.commons.lang.StringUtils;
 
 public class ResponseSerializer implements Serializer {
 
     @Override
-    public CharSource toPayload(Response response) {
+    public ByteSource toPayload(Response response) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(header(response));
-        stringBuilder.append(location(response));
-        stringBuilder.append(content(response));
-        return CharSource.wrap(stringBuilder.toString());
-    }
-
-    private String content(Response response) {
-        return String.format("\n%s", response.getContentsAsString());
+        return ByteSource.concat(ByteSource.wrap(stringBuilder.toString().getBytes()), response.getContents());
     }
 
     private String header(Response response) {
@@ -25,7 +19,9 @@ public class ResponseSerializer implements Serializer {
         headerBuilder.append(statusLine(statusCode));
         headerBuilder.append(location(response));
         headerBuilder.append(contentType(response));
+        headerBuilder.append(contentLength(response));
         headerBuilder.append(allowedActions(response));
+        headerBuilder.append("\n");
         return headerBuilder.toString();
     }
 
@@ -35,6 +31,10 @@ public class ResponseSerializer implements Serializer {
         }else{
             return "";
         }
+    }
+
+    private String contentLength(Response response) {
+        return String.format("Content-Length: %d\n", response.getContentLength());
     }
 
     private String contentType(Response response) {

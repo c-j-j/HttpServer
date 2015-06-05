@@ -38,4 +38,12 @@ public class GetFileContentResponseResolverTest {
         Response response = new GetFileContentResponseResolver().getResponse(baseFolder, new RequestBuilder().withPath("/image.jpeg").build());
         assertThat(response.getContentType()).isEqualTo(ContentType.JPEG);
     }
+
+    @Test
+    public void containsContentLength() throws IOException {
+        File requestedFile = new File(baseFolder, "plainFile");
+        FileUtils.writeStringToFile(requestedFile, "Hello world");
+        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, new RequestBuilder().withPath("/plainFile").build());
+        assertThat(response.getContentLength()).isEqualTo(requestedFile.length());
+    }
 }

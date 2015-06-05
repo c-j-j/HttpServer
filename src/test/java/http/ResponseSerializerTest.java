@@ -20,7 +20,7 @@ public class ResponseSerializerTest {
     @Test
     public void containsHeaderLineWithStatusCode() throws IOException {
         Response response = new ResponseBuilder().withStatusCode(HTTPStatusCode.OK).build();
-        String payload = responseSerializer.toPayload(response).read();
+        String payload = responseToString(response);
         HTTPStatusCode statusCode = response.getStatusCode();
         assertThat(payload).contains(String.format("HTTP/1.1 %d %s", statusCode.getCode(), statusCode.getStatus()));
     }
@@ -28,26 +28,29 @@ public class ResponseSerializerTest {
     @Test
     public void containsContent() throws IOException {
         Response response = new ResponseBuilder().withContent("Hello World").build();
-        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("\n\n%s", "Hello World"));
+        assertThat(responseToString(response)).contains(String.format("\n\n%s", "Hello World"));
+    }
+
+    private String responseToString(Response response) throws IOException {
+        return new String(responseSerializer.toPayload(response).read());
     }
 
     @Test
     public void containsLocation() throws IOException {
         String location = "SomeLocation";
         Response response = new ResponseBuilder().withLocation(location).build();
-        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("Location: %s", location));
+        assertThat(responseToString(response)).contains(String.format("Location: %s", location));
     }
 
     @Test
     public void containsContentType() throws IOException {
         Response response = new ResponseBuilder().withContentType(ContentType.PLAIN).build();
-        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("Content-Type: %s", ContentType.PLAIN.getDescription()));
+        assertThat(responseToString(response)).contains(String.format("Content-Type: %s", ContentType.PLAIN.getDescription()));
     }
 
     @Test
     public void containsAllowedOptions() throws IOException {
         Response response = new ResponseBuilder().withAllowedOptions(HTTPAction.GET, HTTPAction.OPTIONS).build();
-        assertThat(responseSerializer.toPayload(response).read()).contains(String.format("Allow: %s,%s", HTTPAction.GET, HTTPAction.OPTIONS));
+        assertThat(responseToString(response)).contains(String.format("Allow: %s,%s", HTTPAction.GET, HTTPAction.OPTIONS));
     }
-
 }

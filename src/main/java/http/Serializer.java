@@ -1,7 +1,7 @@
 package http;
 
-import com.google.common.io.CharSource;
+import com.google.common.io.ByteSource;
 
 public interface Serializer {
-    CharSource toPayload(Response response);
+    ByteSource toPayload(Response response);
 }

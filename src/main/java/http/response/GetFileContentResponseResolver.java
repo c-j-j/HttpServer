@@ -1,7 +1,7 @@
 package http.response;
 
 import builders.ResponseBuilder;
-import com.google.common.io.CharSource;
+import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import http.ContentType;
 import http.HTTPStatusCode;
@@ -10,7 +10,6 @@ import http.Response;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 
 public class GetFileContentResponseResolver implements ResponseResolver {
 
@@ -20,6 +19,7 @@ public class GetFileContentResponseResolver implements ResponseResolver {
         return new ResponseBuilder()
                 .withStatusCode(HTTPStatusCode.OK)
                 .withContentType(determineContentType(requestedFile))
+                .withContentLength(requestedFile.length())
                 .withContent(readFile(requestedFile))
                 .build();
     }
@@ -33,8 +33,8 @@ public class GetFileContentResponseResolver implements ResponseResolver {
         }
     }
 
-    private CharSource readFile(File requestedFile) {
-        return Files.asCharSource(requestedFile, Charset.defaultCharset());
+    private ByteSource readFile(File requestedFile) {
+        return Files.asByteSource(requestedFile);
     }
 
     private File getRequestedFile(File baseFolder, Request request) {
