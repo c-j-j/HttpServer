@@ -1,5 +1,7 @@
 package http;
 
+import builders.ResponseBuilder;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.function.BiConsumer;
@@ -23,6 +25,8 @@ public class RequestConsumer implements Consumer<Socket> {
         try {
             Request request = requestParser.apply(socket);
             socketWriter.accept(socket, responseGenerator.apply(request));
+        } catch (RuntimeException e) {
+            socketWriter.accept(socket, new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build());
         } finally {
             try {
                 socket.close();

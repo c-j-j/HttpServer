@@ -35,8 +35,8 @@ public class HTTPRequestBuilder {
     }
 
     private String authenticationLine() {
-        return String.format("Authentication: %s %s\n",
-                authenticationHeader.getType(), authenticationHeader.getAuthValue());
+        return String.format("Authorization: %s %s\n",
+                "Basic", authenticationHeader.getAuthValue());
     }
 
     private String header() {

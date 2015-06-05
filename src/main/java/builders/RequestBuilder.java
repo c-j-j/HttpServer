@@ -9,7 +9,7 @@ import java.util.Optional;
 public class RequestBuilder {
     private String path;
     private HTTPAction httpAction = HTTPAction.GET;
-    private Optional<AuthenticationHeader> authenticationHeader;
+    private Optional<AuthenticationHeader> authenticationHeader = Optional.<AuthenticationHeader>empty();
 
     public RequestBuilder withPath(String path) {
         this.path = path;
@@ -24,6 +24,10 @@ public class RequestBuilder {
     public RequestBuilder withAuthenticationHeader(Optional<AuthenticationHeader> authenticationHeader) {
         this.authenticationHeader = authenticationHeader;
         return this;
+    }
+
+    public RequestBuilder withAuthenticationHeader(AuthenticationHeader authenticationHeader) {
+        return withAuthenticationHeader(Optional.of(authenticationHeader));
     }
 
     public Request build() {

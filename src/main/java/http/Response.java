@@ -1,9 +1,10 @@
 package http;
 
 import com.google.common.io.ByteSource;
-import com.google.common.io.CharSource;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Optional;
 
 public class Response {
     private final String location;
@@ -11,32 +12,25 @@ public class Response {
     private final HTTPStatusCode statusCode;
     private final ContentType contentType;
     private final HTTPAction[] allowedActions;
-    private final long contentLength;
 
-    public Response(HTTPStatusCode statusCode, String location, ByteSource contents, ContentType contentType, long contentLength, HTTPAction[] allowedActions) {
+    public Response(HTTPStatusCode statusCode, String location, ByteSource contents, ContentType contentType, HTTPAction[] allowedActions) {
         this.location = location;
-        this.contents = contents;
+        this.contents = Optional.ofNullable(contents).orElse(ByteSource.empty());
         this.statusCode = statusCode;
         this.contentType = contentType;
         this.allowedActions = allowedActions;
-        this.contentLength = contentLength;
     }
 
     public String getContentsAsString() {
         try {
-            return contents != null ? new String(contents.read()): "";
+            return new String(contents.read());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new UncheckedIOException(e);
         }
-        return "";
     }
 
     public ByteSource getContents(){
-        if(contents==null) {
-            return ByteSource.empty();
-        }else{
-            return contents;
-        }
+        return contents;
     }
 
     public HTTPStatusCode getStatusCode() {
@@ -56,6 +50,10 @@ public class Response {
     }
 
     public long getContentLength() {
-        return contentLength;
+        try {
+            return contents.size();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

@@ -2,7 +2,6 @@ package http;
 
 import builders.RequestBuilder;
 import http.auth.AuthenticationHeader;
-import http.auth.AuthenticationType;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;
@@ -17,7 +16,7 @@ public class RequestDeserialiser implements Function<String, Request> {
         return new RequestBuilder()
                 .withHTTPAction(getAction(requestPayload))
                 .withPath(getPath(requestPayload))
-                .withAuthenticationHeader(Optional.ofNullable(getAuthenticationHeader(findValue(requestPayload, "Authentication"))))
+                .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))
                 .build();
     }
 
@@ -32,12 +31,12 @@ public class RequestDeserialiser implements Function<String, Request> {
         return null;
     }
 
-    private AuthenticationHeader getAuthenticationHeader(String value) {
+    private Optional<AuthenticationHeader> getAuthenticationHeader(String value) {
         if (StringUtils.isNotEmpty(value)) {
             String[] tokens = value.split(" ");
-            return new AuthenticationHeader(AuthenticationType.valueOf(tokens[0]), tokens[1]);
+            return Optional.of(new AuthenticationHeader(tokens[1]));
         }
-        return null;
+        return Optional.empty();
     }
 
     private String getPath(String requestPayload) {

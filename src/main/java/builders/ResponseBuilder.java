@@ -49,6 +49,6 @@ public class ResponseBuilder {
     }
 
     public Response build() {
-        return new Response(statusCode, location, content, contentType, contentLength, allowedActions);
+        return new Response(statusCode, location, content, contentType, allowedActions);
     }
 }

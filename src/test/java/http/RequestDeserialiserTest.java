@@ -1,7 +1,6 @@
 package http;
 
 import http.auth.AuthenticationHeader;
-import http.auth.AuthenticationType;
 import http.builders.HTTPRequestBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,10 +56,9 @@ public class RequestDeserialiserTest {
 
     @Test
     public void parsesAuthentication(){
-        AuthenticationHeader authenticationHeader = new AuthenticationHeader(AuthenticationType.BASIC, "someAuthValue");
+        AuthenticationHeader authenticationHeader = new AuthenticationHeader("someAuthValue");
         Request request = requestDeserialiser.apply(new HTTPRequestBuilder().withAuthentication(authenticationHeader).build());
         assertThat(request.getAuthenticationHeader().get().getAuthValue()).isEqualTo(authenticationHeader.getAuthValue());
-        assertThat(request.getAuthenticationHeader().get().getType()).isEqualTo(authenticationHeader.getType());
     }
 
     @Test
