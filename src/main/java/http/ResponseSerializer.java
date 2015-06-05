@@ -8,9 +8,7 @@ public class ResponseSerializer implements Serializer {
 
     @Override
     public ByteSource toPayload(Response response) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(header(response));
-        return ByteSource.concat(ByteSource.wrap(stringBuilder.toString().getBytes()), response.getContents());
+        return ByteSource.concat(toByteSource(header(response)), response.getContents());
     }
 
     private String header(Response response) {
@@ -26,11 +24,8 @@ public class ResponseSerializer implements Serializer {
     }
 
     private String allowedActions(Response response) {
-        if(response.getAllowedOptions() != null){
-            return String.format("Allow: %s\n", Joiner.on(",").join(response.getAllowedOptions()));
-        }else{
-            return "";
-        }
+        return response.getAllowedOptions() != null ?
+                String.format("Allow: %s\n", Joiner.on(",").join(response.getAllowedOptions())) : "";
     }
 
     private String contentLength(Response response) {
@@ -48,5 +43,9 @@ public class ResponseSerializer implements Serializer {
     private String location(Response response) {
         return StringUtils.isNotEmpty(response.getLocation()) ?
                 String.format("Location: %s\n", response.getLocation()) : "";
+    }
+
+    private ByteSource toByteSource(String header) {
+        return ByteSource.wrap(header.getBytes());
     }
 }
