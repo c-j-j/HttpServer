@@ -3,6 +3,8 @@ package http.request;
 import http.HTTPAction;
 import http.RequestHeader;
 
+import java.util.Optional;
+
 public class Request {
     private final RequestHeader header;
     private final String body;
@@ -30,5 +32,9 @@ public class Request {
 
     public String getBody() {
         return body;
+    }
+
+    public Optional<String> getIfMatchValue() {
+        return header.getIfMatchValue();
     }
 }
