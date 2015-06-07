@@ -17,33 +17,42 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
                 .withHTTPAction(getAction(requestPayload))
                 .withPath(getPath(requestPayload))
                 .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))
+                .withIfMatchValue(getIfMatch(requestPayload))
                 .withContentLength(contentLength(requestPayload))
                 .withRequestPayload(requestPayload)
                 .build();
     }
 
-    private long contentLength(String requestPayload) {
-        String value = findValue(requestPayload, "Content-Length");
-        if(value == null){
-            return 0;
-        }
-        return Long.valueOf(value);
+    private Optional<String> getIfMatch(String requestPayload) {
+        return findValue(requestPayload, "If-Match");
     }
 
-    private String findValue(String requestPayload, String headerField) {
+    private long contentLength(String requestPayload) {
+        Optional<String> value = findValue(requestPayload, "Content-Length");
+        if (value.isPresent()) {
+            return Long.valueOf(value.get());
+        } else {
+            return 0;
+        }
+    }
+
+    private Optional<String> findValue(String requestPayload, String headerField) {
         String[] lines = requestPayload.split("\n");
         for (String line : lines) {
             if (line.startsWith(headerField)) {
-                int index = line.indexOf(' ') + 1;
-                return line.substring(index);
+                return Optional.of(extractValueInline(line));
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    private Optional<AuthenticationHeader> getAuthenticationHeader(String value) {
-        if (StringUtils.isNotEmpty(value)) {
-            String[] tokens = value.split(" ");
+    private String extractValueInline(String line) {
+        return line.substring(line.indexOf(' ') + 1);
+    }
+
+    private Optional<AuthenticationHeader> getAuthenticationHeader(Optional<String> headerLine) {
+        if (headerLine.isPresent() && StringUtils.isNotEmpty(headerLine.get())) {
+            String[] tokens = headerLine.get().split(" ");
             return Optional.of(new AuthenticationHeader(tokens[1]));
         }
         return Optional.empty();

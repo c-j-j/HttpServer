@@ -1,7 +1,7 @@
 package http;
 
 import http.auth.AuthenticationHeader;
-import http.builders.HTTPRequestBuilder;
+import http.builders.HTTPRequestMessageBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,69 +14,76 @@ public class RequestHeaderDeserialiserTest {
     private RequestHeaderDeserialiser requestHeaderDeserialiser;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         requestHeaderDeserialiser = new RequestHeaderDeserialiser();
     }
 
     @Test
     public void parsesGETAction() {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.GET).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAction(HTTPAction.GET).build());
         assertThat(requestHeader.getAction()).isEqualTo(HTTPAction.GET);
     }
 
     @Test
     public void parsesPOSTAction() throws IOException {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.POST).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAction(HTTPAction.POST).build());
         assertThat(requestHeader.getAction()).isEqualTo(HTTPAction.POST);
     }
 
     @Test
     public void parsesPUTAction() throws IOException {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.PUT).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAction(HTTPAction.PUT).build());
         assertThat(requestHeader.getAction()).isEqualTo(HTTPAction.PUT);
     }
 
     @Test
     public void parsesHEADAction() throws IOException {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.HEAD).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAction(HTTPAction.HEAD).build());
         assertThat(requestHeader.getAction()).isEqualTo(HTTPAction.HEAD);
     }
 
     @Test
     public void parsesPATCHAction() {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.PATCH).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAction(HTTPAction.PATCH).build());
         assertThat(requestHeader.getAction()).isEqualTo(HTTPAction.PATCH);
     }
 
     @Test
     public void parsesDELETEAction() {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAction(HTTPAction.DELETE).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAction(HTTPAction.DELETE).build());
         assertThat(requestHeader.getAction()).isEqualTo(HTTPAction.DELETE);
     }
 
     @Test
-    public void parsesAuthentication(){
+    public void parsesAuthentication() {
         AuthenticationHeader authenticationHeader = new AuthenticationHeader("someAuthValue");
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withAuthentication(authenticationHeader).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withAuthentication(authenticationHeader).build());
         assertThat(requestHeader.getAuthenticationHeader().get().getAuthValue()).isEqualTo(authenticationHeader.getAuthValue());
     }
 
     @Test
-    public void parsesContentLength(){
+    public void parsesContentLength() {
         String body = "someBody";
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withBody(body).build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withBody(body).build());
         assertThat(requestHeader.getContentLength()).isEqualTo(body.getBytes().length);
     }
 
     @Test
     public void parsesPath() {
-        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withPath("/SomePath").build());
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withPath("/SomePath").build());
         assertThat(requestHeader.getPath()).isEqualTo("/SomePath");
     }
 
     @Test
-    public void addsPayloadToRequest(){
-        String payload = new HTTPRequestBuilder().withPath("/").build();
+    public void parsesIfMatchField() {
+        String ifMatchValue = "ifMatchValue";
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withIfMatch(ifMatchValue).build());
+        assertThat(requestHeader.getIfMatchValue().get()).isEqualTo(ifMatchValue);
+    }
+
+    @Test
+    public void addsPayloadToRequest() {
+        String payload = new HTTPRequestMessageBuilder().withPath("/").build();
         RequestHeader requestHeader = requestHeaderDeserialiser.apply(payload);
         assertThat(requestHeader.getPayload()).isEqualTo(payload);
     }

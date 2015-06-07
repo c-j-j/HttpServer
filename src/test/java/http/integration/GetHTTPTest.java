@@ -1,7 +1,7 @@
 package http.integration;
 
 import http.HTTPAction;
-import http.builders.HTTPRequestBuilder;
+import http.builders.HTTPRequestMessageBuilder;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class GetHTTPTest extends IntegrationTestBase {
         createFile("some_file", "Hello World!");
         Socket socket = new Socket("localhost", PORT);
         System.out.println("SOCKET => " + socket.getPort());
-        sendHTTPRequest(socket, new HTTPRequestBuilder()
+        sendHTTPRequest(socket, new HTTPRequestMessageBuilder()
                 .withAction(HTTPAction.GET)
                 .withPath("/some_file")
                 .build());

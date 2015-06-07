@@ -1,6 +1,6 @@
 package http;
 
-import http.builders.HTTPRequestBuilder;
+import http.builders.HTTPRequestMessageBuilder;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,14 +22,14 @@ public class RequestParserTest {
 
     @Test
     public void readsHeader() {
-        Socket socket = new FakeSocket(inputStream(new HTTPRequestBuilder().withAction(HTTPAction.GET).build()));
+        Socket socket = new FakeSocket(inputStream(new HTTPRequestMessageBuilder().withAction(HTTPAction.GET).build()));
         assertThat(requestParser.apply(socket).getHeader().getAction()).isEqualTo(HTTPAction.GET);
     }
 
     @Test
     public void readsBody() throws IOException {
         String body = "requestBody";
-        Socket socket = new FakeSocket(inputStream(new HTTPRequestBuilder().withBody(body).build()));
+        Socket socket = new FakeSocket(inputStream(new HTTPRequestMessageBuilder().withBody(body).build()));
         assertThat(requestParser.apply(socket).getBody()).isEqualTo(body);
     }
 

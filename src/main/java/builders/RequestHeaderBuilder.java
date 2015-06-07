@@ -12,6 +12,7 @@ public class RequestHeaderBuilder {
     private Optional<AuthenticationHeader> authenticationHeader = Optional.<AuthenticationHeader>empty();
     private String requestPayload;
     private long contentLength;
+    private Optional<String> ifMatchValue;
 
     public RequestHeaderBuilder withPath(String path) {
         this.path = path;
@@ -42,7 +43,13 @@ public class RequestHeaderBuilder {
         return this;
     }
 
-    public RequestHeader build() {
-        return new RequestHeader(httpAction, path, authenticationHeader, requestPayload, contentLength);
+    public RequestHeaderBuilder withIfMatchValue(Optional<String> ifMatch) {
+        this.ifMatchValue = ifMatch;
+        return this;
     }
+
+    public RequestHeader build() {
+        return new RequestHeader(httpAction, path, authenticationHeader, requestPayload, contentLength, ifMatchValue);
+    }
+
 }

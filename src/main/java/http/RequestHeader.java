@@ -12,13 +12,15 @@ public class RequestHeader {
     private final Optional<AuthenticationHeader> authenticationHeader;
     private final String requestPayload;
     private final long contentLength;
+    private Optional<String> ifMatchValue;
 
-    public RequestHeader(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader, String requestPayload, long contentLength) {
+    public RequestHeader(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader, String requestPayload, long contentLength, Optional<String> ifMatchValue) {
         this.httpAction = httpAction;
         this.path = path;
         this.authenticationHeader = authenticationHeader;
         this.requestPayload = requestPayload;
         this.contentLength = contentLength;
+        this.ifMatchValue = ifMatchValue;
     }
 
     public HTTPAction getAction() {
@@ -37,6 +39,10 @@ public class RequestHeader {
         return authenticationHeader;
     }
 
+    public Optional<String> getIfMatchValue() {
+        return ifMatchValue;
+    }
+
     public String getPayload() {
         return requestPayload;
     }
@@ -44,4 +50,5 @@ public class RequestHeader {
     public long getContentLength() {
         return contentLength;
     }
+
 }
