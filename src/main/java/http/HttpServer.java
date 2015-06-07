@@ -10,35 +10,50 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpServer {
     private final File baseDirectory;
     private final int portNumber;
     private Set<Resource> resources;
+    private ExecutorService threadpool;
 
     public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber) {
         this.baseDirectory = baseDirectory;
         this.portNumber = portNumber;
         this.resources = resources;
+        threadpool = Executors.newFixedThreadPool(200);
     }
 
     public void start() {
         Logger logger = new Logger(new File(baseDirectory, "logs"));
+        RequestConsumer requestConsumer = buildRequestConsumer(logger);
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
                 System.out.println("Waiting for connections on port 5000");
-                Socket socket;
                 try {
-                    socket = serverSocket.accept();
+                    Socket socket = serverSocket.accept();
                     System.out.println("Connection received");
-                    new RequestConsumer(new LogRequestResolver(logger, new AuthResponseResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory))),
-                            new SocketWriter(new ResponseSerializer()), new RequestParser()).accept(socket);
+                    submitRequestToThreadpool(requestConsumer, socket);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.accept(e.getMessage());
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.accept(e.getMessage());
         }
+    }
+
+    private RequestConsumer buildRequestConsumer(Logger logger) {
+        return new RequestConsumer(buildResponseResolver(logger), new SocketWriter(new ResponseSerializer()), new RequestParser());
+    }
+
+    private LogRequestResolver buildResponseResolver(Logger logger) {
+        return new LogRequestResolver(logger, new AuthResponseResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory)));
+    }
+
+    private void submitRequestToThreadpool(RequestConsumer requestConsumer, Socket socket) {
+        threadpool.submit(() -> requestConsumer.accept(socket));
     }
 }
