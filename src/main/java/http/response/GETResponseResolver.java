@@ -1,6 +1,6 @@
 package http.response;
 
-import http.Request;
+import http.RequestHeader;
 import http.Response;
 
 import java.io.File;
@@ -12,19 +12,19 @@ public class GETResponseResolver implements ResponseResolver {
     private final GetFileContentResponseResolver getFileContentResponseResolver = new GetFileContentResponseResolver();
 
     @Override
-    public Response getResponse(File baseFolder, Request request) {
-        File requestedFile = getRequestedFile(baseFolder, request);
+    public Response getResponse(File baseFolder, RequestHeader requestHeader) {
+        File requestedFile = getRequestedFile(baseFolder, requestHeader);
 
         if (!requestedFile.exists()) {
-            return notFoundResponseResolver.getResponse(baseFolder, request);
+            return notFoundResponseResolver.getResponse(baseFolder, requestHeader);
         } else if (requestedFile.isDirectory()) {
-            return getDirectoryResponseResolver.getResponse(baseFolder, request);
+            return getDirectoryResponseResolver.getResponse(baseFolder, requestHeader);
         } else {
-            return getFileContentResponseResolver.getResponse(baseFolder, request);
+            return getFileContentResponseResolver.getResponse(baseFolder, requestHeader);
         }
     }
 
-    private File getRequestedFile(File baseFolder, Request request) {
-        return new File(baseFolder, request.getPath());
+    private File getRequestedFile(File baseFolder, RequestHeader requestHeader) {
+        return new File(baseFolder, requestHeader.getPath());
     }
 }

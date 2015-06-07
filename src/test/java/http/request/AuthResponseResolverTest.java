@@ -1,9 +1,9 @@
 package http.request;
 
-import builders.RequestBuilder;
+import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.HTTPStatusCode;
-import http.Request;
+import http.RequestHeader;
 import http.Response;
 import http.auth.AuthenticationHeader;
 import http.fakes.SpyFunction;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthResponseResolverTest {
 
-    private SpyFunction<Request, Response> wrappedResponseResolver;
+    private SpyFunction<RequestHeader, Response> wrappedResponseResolver;
     private Response wrappedResponse;
 
     @Before
@@ -27,25 +27,25 @@ public class AuthResponseResolverTest {
 
     @Test
     public void callsWrappedResponseResolver() {
-        Request request = new RequestBuilder().withPath("/").build();
-        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
-        assertThat(wrappedResponseResolver.wasCalledWith()).isEqualTo(request);
+        RequestHeader requestHeader = new RequestHeaderBuilder().withPath("/").build();
+        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(requestHeader);
+        assertThat(wrappedResponseResolver.wasCalledWith()).isEqualTo(requestHeader);
         assertThat(response).isEqualTo(wrappedResponse);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     @Test
     public void blocksAccessToProtectedPath(){
-        Request request = new RequestBuilder().withPath("/logs").build();
-        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
+        RequestHeader requestHeader = new RequestHeaderBuilder().withPath("/logs").build();
+        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(requestHeader);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.UNAUTHORIZED);
         assertThat(response.getContentsAsString()).isEqualTo("Authentication required");
     }
 
     @Test
     public void allowsAccessToProtectedPath(){
-        Request request = new RequestBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withPath("/logs").build();
-        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
+        RequestHeader requestHeader = new RequestHeaderBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withPath("/logs").build();
+        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(requestHeader);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 

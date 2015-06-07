@@ -1,19 +1,19 @@
 package http;
 
-import builders.RequestBuilder;
+import builders.RequestHeaderBuilder;
 import http.auth.AuthenticationHeader;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;
 import java.util.function.Function;
 
-public class RequestDeserialiser implements Function<String, Request> {
+public class RequestHeaderDeserialiser implements Function<String, RequestHeader> {
 
 
     @Override
-    public Request apply(String requestPayload) {
+    public RequestHeader apply(String requestPayload) {
 
-        return new RequestBuilder()
+        return new RequestHeaderBuilder()
                 .withHTTPAction(getAction(requestPayload))
                 .withPath(getPath(requestPayload))
                 .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))

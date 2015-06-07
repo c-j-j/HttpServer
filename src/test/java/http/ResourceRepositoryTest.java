@@ -1,6 +1,6 @@
 package http;
 
-import builders.RequestBuilder;
+import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.resource.Endpoint;
 import http.resource.Resource;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ResourceRepositoryTest {
 
     private ResourceRepository resourceRepository;
-    private Request validRequest;
+    private RequestHeader validRequestHeader;
 
     @Before
     public void setUp() throws Exception {
@@ -23,7 +23,7 @@ public class ResourceRepositoryTest {
                 add(new FakeResourse());
             }
         });
-        validRequest = new RequestBuilder()
+        validRequestHeader = new RequestHeaderBuilder()
                 .withHTTPAction(HTTPAction.GET)
                 .withPath("/path")
                 .build();
@@ -31,7 +31,7 @@ public class ResourceRepositoryTest {
 
     @Test
     public void cannotRespondToRequest() {
-        assertThat(resourceRepository.canRespond(new RequestBuilder()
+        assertThat(resourceRepository.canRespond(new RequestHeaderBuilder()
                 .withHTTPAction(HTTPAction.POST)
                 .withPath("/path")
                 .build())).isFalse();
@@ -39,12 +39,12 @@ public class ResourceRepositoryTest {
 
     @Test
     public void canResponseToRequest() {
-        assertThat(resourceRepository.canRespond(validRequest)).isTrue();
+        assertThat(resourceRepository.canRespond(validRequestHeader)).isTrue();
     }
 
     @Test
     public void respondsToRequest(){
-        Response response = resourceRepository.getResponse(validRequest);
+        Response response = resourceRepository.getResponse(validRequestHeader);
         assertThat(response.getContentsAsString()).isEqualTo("Some Content");
     }
 
@@ -52,7 +52,7 @@ public class ResourceRepositoryTest {
 
 
         @Endpoint(action = HTTPAction.GET, path = "/path")
-        public Response fakePath(Request request) {
+        public Response fakePath(RequestHeader requestHeader) {
             return new ResponseBuilder().withContent("Some Content").build();
         }
     }

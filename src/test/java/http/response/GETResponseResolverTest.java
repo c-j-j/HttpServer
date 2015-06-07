@@ -1,6 +1,6 @@
 package http.response;
 
-import builders.RequestBuilder;
+import builders.RequestHeaderBuilder;
 import http.*;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -18,26 +18,26 @@ public class GETResponseResolverTest {
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private File baseFolder;
-    private Request request;
+    private RequestHeader requestHeader;
 
     @Before
     public void setUp() throws Exception {
         baseFolder = temporaryFolder.newFolder();
-        request = new RequestBuilder().withPath("/filename").build();
+        requestHeader = new RequestHeaderBuilder().withPath("/filename").build();
     }
 
     @Test
     public void fileContents() throws IOException {
         String fileContent = "Hello, World";
         writeToFile("filename", fileContent);
-        Response response = new GETResponseResolver().getResponse(baseFolder, request);
+        Response response = new GETResponseResolver().getResponse(baseFolder, requestHeader);
         assertThat(response.getContentsAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     @Test
     public void fileNotFound() {
-        Response response = new GETResponseResolver().getResponse(baseFolder, request);
+        Response response = new GETResponseResolver().getResponse(baseFolder, requestHeader);
         assertThat(response.getContentsAsString()).isEmpty();
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);
     }

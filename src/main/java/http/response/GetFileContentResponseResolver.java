@@ -5,7 +5,7 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import http.ContentType;
 import http.HTTPStatusCode;
-import http.Request;
+import http.RequestHeader;
 import http.Response;
 import org.apache.commons.io.FilenameUtils;
 
@@ -14,8 +14,8 @@ import java.io.File;
 public class GetFileContentResponseResolver implements ResponseResolver {
 
     @Override
-    public Response getResponse(File baseFolder, Request request) {
-        File requestedFile = getRequestedFile(baseFolder, request);
+    public Response getResponse(File baseFolder, RequestHeader requestHeader) {
+        File requestedFile = getRequestedFile(baseFolder, requestHeader);
         return new ResponseBuilder()
                 .withStatusCode(HTTPStatusCode.OK)
                 .withContentType(determineContentType(requestedFile))
@@ -37,8 +37,8 @@ public class GetFileContentResponseResolver implements ResponseResolver {
         return Files.asByteSource(requestedFile);
     }
 
-    private File getRequestedFile(File baseFolder, Request request) {
-        return new File(baseFolder, request.getPath());
+    private File getRequestedFile(File baseFolder, RequestHeader requestHeader) {
+        return new File(baseFolder, requestHeader.getPath());
     }
 
 }

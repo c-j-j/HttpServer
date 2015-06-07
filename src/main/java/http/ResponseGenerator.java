@@ -5,7 +5,7 @@ import builders.ResponseBuilder;
 import java.io.File;
 import java.util.function.Function;
 
-public class ResponseGenerator implements Function<Request, Response> {
+public class ResponseGenerator implements Function<RequestHeader, Response> {
 
     private final ResourceRepository resourceRepository;
     private final File baseFolder;
@@ -16,19 +16,19 @@ public class ResponseGenerator implements Function<Request, Response> {
     }
 
     @Override
-    public Response apply(Request request) {
+    public Response apply(RequestHeader requestHeader) {
         try {
-            return generateResponse(request);
+            return generateResponse(requestHeader);
         } catch (RuntimeException e) {
             return new ResponseBuilder().build();
         }
     }
 
-    private Response generateResponse(Request request) {
-        if (resourceRepository.canRespond(request)) {
-            return resourceRepository.getResponse(request);
+    private Response generateResponse(RequestHeader requestHeader) {
+        if (resourceRepository.canRespond(requestHeader)) {
+            return resourceRepository.getResponse(requestHeader);
         } else {
-            return request.getResponse(baseFolder, request);
+            return requestHeader.getResponse(baseFolder, requestHeader);
         }
     }
 

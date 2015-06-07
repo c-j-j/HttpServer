@@ -1,6 +1,6 @@
 package http.response;
 
-import builders.RequestBuilder;
+import builders.RequestHeaderBuilder;
 import http.HTTPStatusCode;
 import http.Response;
 import org.apache.commons.io.FileUtils;
@@ -26,7 +26,7 @@ public class PUTResponseResolverTest {
     }
     @Test
     public void yields200Status() {
-        Response response = new PUTResponseResolver().getResponse(baseDir, new RequestBuilder().withPath("/new_file").build());
+        Response response = new PUTResponseResolver().getResponse(baseDir, new RequestHeaderBuilder().withPath("/new_file").build());
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
@@ -35,7 +35,7 @@ public class PUTResponseResolverTest {
         File existentFile = new File(baseDir, "existentFile");
         FileUtils.writeStringToFile(existentFile, "I already exist");
 
-        Response response = new PUTResponseResolver().getResponse(baseDir, new RequestBuilder().withPath("/existentFile").build());
+        Response response = new PUTResponseResolver().getResponse(baseDir, new RequestHeaderBuilder().withPath("/existentFile").build());
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.METHOD_NOT_ALLOWED);
     }
 }

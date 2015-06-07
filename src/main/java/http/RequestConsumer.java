@@ -10,11 +10,11 @@ import java.util.function.Function;
 
 public class RequestConsumer implements Consumer<Socket> {
 
-    private Function<Request, Response> responseGenerator;
+    private Function<RequestHeader, Response> responseGenerator;
     private BiConsumer<Socket, Response> socketWriter;
-    private final Function<Socket, Request> requestParser;
+    private final Function<Socket, RequestHeader> requestParser;
 
-    public RequestConsumer(Function<Request, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter, Function<Socket, Request> requestParser) {
+    public RequestConsumer(Function<RequestHeader, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter, Function<Socket, RequestHeader> requestParser) {
         this.responseGenerator = responseGenerator;
         this.socketWriter = socketWriter;
         this.requestParser = requestParser;
@@ -23,8 +23,8 @@ public class RequestConsumer implements Consumer<Socket> {
     @Override
     public void accept(Socket socket) {
         try {
-            Request request = requestParser.apply(socket);
-            socketWriter.accept(socket, responseGenerator.apply(request));
+            RequestHeader requestHeader = requestParser.apply(socket);
+            socketWriter.accept(socket, responseGenerator.apply(requestHeader));
         } catch (RuntimeException e) {
             socketWriter.accept(socket, new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build());
         } finally {

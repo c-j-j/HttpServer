@@ -2,15 +2,15 @@ package http.response;
 
 import builders.ResponseBuilder;
 import http.HTTPStatusCode;
-import http.Request;
+import http.RequestHeader;
 import http.Response;
 
 import java.io.File;
 
 public class GetDirectoryResponseResolver implements ResponseResolver{
     @Override
-    public Response getResponse(File baseFolder, Request request) {
-        File requestedDirectory = new File(baseFolder, request.getPath());
+    public Response getResponse(File baseFolder, RequestHeader requestHeader) {
+        File requestedDirectory = new File(baseFolder, requestHeader.getPath());
         return new ResponseBuilder()
                 .withStatusCode(HTTPStatusCode.OK)
                 .withContent(getDirectories(requestedDirectory))
