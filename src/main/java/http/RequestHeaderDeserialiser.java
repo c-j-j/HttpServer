@@ -17,8 +17,17 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
                 .withHTTPAction(getAction(requestPayload))
                 .withPath(getPath(requestPayload))
                 .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))
+                .withContentLength(contentLength(requestPayload))
                 .withRequestPayload(requestPayload)
                 .build();
+    }
+
+    private long contentLength(String requestPayload) {
+        String value = findValue(requestPayload, "Content-Length");
+        if(value == null){
+            return 0;
+        }
+        return Long.valueOf(value);
     }
 
     private String findValue(String requestPayload, String headerField) {

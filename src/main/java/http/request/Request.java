@@ -5,9 +5,11 @@ import http.RequestHeader;
 
 public class Request {
     private final RequestHeader header;
+    private final String body;
 
-    public Request(RequestHeader header) {
+    public Request(RequestHeader header, String body) {
         this.header = header;
+        this.body = body;
     }
 
     public RequestHeader getHeader() {
@@ -23,6 +25,10 @@ public class Request {
     }
 
     public String getPayload() {
-        return header.getPayload();
+        return header.getPayload() + body;
+    }
+
+    public String getBody() {
+        return body;
     }
 }

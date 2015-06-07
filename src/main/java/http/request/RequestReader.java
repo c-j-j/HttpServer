@@ -2,11 +2,13 @@ package http.request;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class RequestReader {
 
-    public String readUntilLineBreak(Reader reader) {
+    public String readUntilLineBreak(BufferedReader reader) {
         try {
             StringBuilder stringBuilder = new StringBuilder();
             readInto(stringBuilder, reader);
@@ -16,7 +18,7 @@ public class RequestReader {
         }
     }
 
-    public String readNumberOfBytes(Reader reader, int numberOfBytes) {
+    public String readNumberOfBytes(BufferedReader reader, int numberOfBytes) {
 
         try {
             char[] bytesToRead = new char[numberOfBytes];
@@ -27,10 +29,9 @@ public class RequestReader {
         }
     }
 
-    private void readInto(StringBuilder stringBuilder, Reader reader) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(reader);
+    private void readInto(StringBuilder stringBuilder, BufferedReader reader) throws IOException {
         String nextLine;
-        while (StringUtils.isNotEmpty(nextLine = bufferedReader.readLine())) {
+        while (StringUtils.isNotEmpty(nextLine = reader.readLine())) {
             stringBuilder.append(nextLine).append("\n");
         }
     }

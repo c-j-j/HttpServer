@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
@@ -23,6 +24,13 @@ public class RequestParserTest {
     public void readsHeader() {
         Socket socket = new FakeSocket(inputStream(new HTTPRequestBuilder().withAction(HTTPAction.GET).build()));
         assertThat(requestParser.apply(socket).getHeader().getAction()).isEqualTo(HTTPAction.GET);
+    }
+
+    @Test
+    public void readsBody() throws IOException {
+        String body = "requestBody";
+        Socket socket = new FakeSocket(inputStream(new HTTPRequestBuilder().withBody(body).build()));
+        assertThat(requestParser.apply(socket).getBody()).isEqualTo(body);
     }
 
     private InputStream inputStream(String httpRequest) {

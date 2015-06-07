@@ -1,9 +1,12 @@
 package http.request;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.StringReader;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,20 +21,25 @@ public class RequestReaderTest {
 
     @Test
     public void readsUntilEmptyLine(){
-        String readString = requestReader.readUntilLineBreak(new StringReader("A\nB\n\nC"));
+        String readString = requestReader.readUntilLineBreak(getReaderWithText("A\nB\n\nC"));
         assertThat(readString).isEqualTo("A\nB\n");
+    }
+
+    private BufferedReader getReaderWithText(String s) {
+        InputStream inputStream = IOUtils.toInputStream(s);
+        return new BufferedReader(new InputStreamReader(inputStream));
     }
 
     @Test
     public void readsNumberOfBytes(){
         String dataToBeRead = "DataToBeRead";
-        String readData = requestReader.readNumberOfBytes(new StringReader(dataToBeRead + ":IrrelevantData"), dataToBeRead.getBytes().length);
+        String readData = requestReader.readNumberOfBytes(getReaderWithText(dataToBeRead + ":IrrelevantData"), dataToBeRead.getBytes().length);
         assertThat(readData).isEqualTo(dataToBeRead);
     }
 
     @Test
     public void readsZeroBytes(){
-        String readData = requestReader.readNumberOfBytes(new StringReader("Data"), 0);
+        String readData = requestReader.readNumberOfBytes(getReaderWithText("Data"), 0);
         assertThat(readData).isEqualTo("");
     }
 

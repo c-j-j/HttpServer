@@ -62,6 +62,13 @@ public class RequestHeaderDeserialiserTest {
     }
 
     @Test
+    public void parsesContentLength(){
+        String body = "someBody";
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withBody(body).build());
+        assertThat(requestHeader.getContentLength()).isEqualTo(body.getBytes().length);
+    }
+
+    @Test
     public void parsesPath() {
         RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestBuilder().withPath("/SomePath").build());
         assertThat(requestHeader.getPath()).isEqualTo("/SomePath");

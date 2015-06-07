@@ -11,6 +11,7 @@ public class RequestHeaderBuilder {
     private HTTPAction httpAction = HTTPAction.GET;
     private Optional<AuthenticationHeader> authenticationHeader = Optional.<AuthenticationHeader>empty();
     private String requestPayload;
+    private long contentLength;
 
     public RequestHeaderBuilder withPath(String path) {
         this.path = path;
@@ -36,8 +37,12 @@ public class RequestHeaderBuilder {
         return this;
     }
 
-    public RequestHeader build() {
-        return new RequestHeader(httpAction, path, authenticationHeader, requestPayload);
+    public RequestHeaderBuilder withContentLength(long contentLength) {
+        this.contentLength = contentLength;
+        return this;
     }
 
+    public RequestHeader build() {
+        return new RequestHeader(httpAction, path, authenticationHeader, requestPayload, contentLength);
+    }
 }

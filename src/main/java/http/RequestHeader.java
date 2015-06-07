@@ -11,12 +11,14 @@ public class RequestHeader {
     private final String path;
     private final Optional<AuthenticationHeader> authenticationHeader;
     private final String requestPayload;
+    private final long contentLength;
 
-    public RequestHeader(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader, String requestPayload) {
+    public RequestHeader(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader, String requestPayload, long contentLength) {
         this.httpAction = httpAction;
         this.path = path;
         this.authenticationHeader = authenticationHeader;
         this.requestPayload = requestPayload;
+        this.contentLength = contentLength;
     }
 
     public HTTPAction getAction() {
@@ -37,5 +39,9 @@ public class RequestHeader {
 
     public String getPayload() {
         return requestPayload;
+    }
+
+    public long getContentLength() {
+        return contentLength;
     }
 }
