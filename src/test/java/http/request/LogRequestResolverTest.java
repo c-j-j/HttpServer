@@ -4,6 +4,7 @@ import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.RequestHeader;
 import http.Response;
+import http.request.builder.RequestBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,27 +18,28 @@ public class LogRequestResolverTest {
 
     private LogRequestResolver logRequestResolver;
     private Response response;
-    private RequestHeader requestHeader;
     private SpyConsumer<String> logger;
+    private Request request;
 
     @Before
     public void setUp(){
         response = new ResponseBuilder().build();
-        Function<RequestHeader, Response> wrappedResolver = r -> response;
+        Function<Request, Response> wrappedResolver = r -> response;
         logger = new SpyConsumer<>();
         logRequestResolver = new LogRequestResolver(logger, wrappedResolver);
-        requestHeader = new RequestHeaderBuilder().withRequestPayload("requestPayload").build();
+        RequestHeader requestHeader = new RequestHeaderBuilder().withRequestPayload("requestPayload").build();
+        request = new RequestBuilder().withHeader(requestHeader).build();
     }
 
     @Test
     public void callsWrappedResolver(){
-        assertThat(logRequestResolver.apply(requestHeader)).isEqualTo(response);
+        assertThat(logRequestResolver.apply(request)).isEqualTo(response);
     }
 
     @Test
     public void logsRequest(){
-        logRequestResolver.apply(requestHeader);
-        assertThat(logger.wasCalledWith()).isEqualTo(requestHeader.getPayload());
+        logRequestResolver.apply(request);
+        assertThat(logger.wasCalledWith()).isEqualTo(request.getPayload());
     }
 
     private class SpyConsumer<T> implements Consumer<T> {

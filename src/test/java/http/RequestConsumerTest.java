@@ -3,6 +3,8 @@ package http;
 import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.fakes.SpyFunction;
+import http.request.Request;
+import http.request.builder.RequestBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,13 +19,11 @@ public class RequestConsumerTest {
 
     private FakeSocket fakeSocket;
     private RequestConsumer requestConsumer;
-    private SpyFunction<RequestHeader, Response> responseGenerator;
+    private SpyFunction<Request, Response> responseGenerator;
     private TestBiConsumer<Socket, Response> socketWriter;
     private Response response;
-    private Function<Socket, String> socketReader;
-    private Function<String, RequestHeader> requestDeserializer;
-    private Function<Socket, RequestHeader> requestParser;
-    private RequestHeader requestHeader;
+    private Function<Socket, Request> requestParser;
+    private Request request;
 
     @Before
     public void setUp() throws Exception {
@@ -31,8 +31,8 @@ public class RequestConsumerTest {
         responseGenerator = new SpyFunction<>(response);
         fakeSocket = new FakeSocket();
         socketWriter = new TestBiConsumer<>();
-        requestHeader = new RequestHeaderBuilder().build();
-        requestParser = new SpyFunction<>(requestHeader);
+        request = new RequestBuilder().withHeader(new RequestHeaderBuilder().build()).build();
+        requestParser = new SpyFunction<>(request);
         requestConsumer = new RequestConsumer(responseGenerator, socketWriter, requestParser);
     }
 
@@ -46,7 +46,7 @@ public class RequestConsumerTest {
     @Deprecated//TODO remove
     public void CreatesResponseFromSocket() {
         requestConsumer.accept(fakeSocket);
-        assertThat(responseGenerator.wasCalledWith()).isEqualTo(requestHeader);
+        assertThat(responseGenerator.wasCalledWith()).isEqualTo(request);
     }
 
     @Test

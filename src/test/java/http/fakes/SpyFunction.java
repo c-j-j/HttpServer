@@ -8,7 +8,6 @@ public class SpyFunction<T, R> implements Function<T, R> {
     private R stubResponse;
 
     public SpyFunction(R stubResponse) {
-
         this.stubResponse = stubResponse;
     }
 

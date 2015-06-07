@@ -1,6 +1,7 @@
 package http;
 
 import builders.ResponseBuilder;
+import http.request.Request;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -10,11 +11,11 @@ import java.util.function.Function;
 
 public class RequestConsumer implements Consumer<Socket> {
 
-    private Function<RequestHeader, Response> responseGenerator;
+    private Function<Request, Response> responseGenerator;
     private BiConsumer<Socket, Response> socketWriter;
-    private final Function<Socket, RequestHeader> requestParser;
+    private final Function<Socket, Request> requestParser;
 
-    public RequestConsumer(Function<RequestHeader, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter, Function<Socket, RequestHeader> requestParser) {
+    public RequestConsumer(Function<Request, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter, Function<Socket, Request> requestParser) {
         this.responseGenerator = responseGenerator;
         this.socketWriter = socketWriter;
         this.requestParser = requestParser;
@@ -23,8 +24,8 @@ public class RequestConsumer implements Consumer<Socket> {
     @Override
     public void accept(Socket socket) {
         try {
-            RequestHeader requestHeader = requestParser.apply(socket);
-            socketWriter.accept(socket, responseGenerator.apply(requestHeader));
+            Request request = requestParser.apply(socket);
+            socketWriter.accept(socket, responseGenerator.apply(request));
         } catch (RuntimeException e) {
             socketWriter.accept(socket, new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build());
         } finally {

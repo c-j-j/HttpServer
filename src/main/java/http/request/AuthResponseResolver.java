@@ -2,40 +2,39 @@ package http.request;
 
 import builders.ResponseBuilder;
 import http.HTTPStatusCode;
-import http.RequestHeader;
 import http.Response;
 import http.auth.AuthenticationHeader;
 
 import java.util.function.Function;
 
-public class AuthResponseResolver implements Function<RequestHeader, Response> {
+public class AuthResponseResolver implements Function<Request, Response> {
 
-    private final Function<RequestHeader, Response> responseResolver;
+    private final Function<Request, Response> responseResolver;
 
-    public AuthResponseResolver(Function<RequestHeader, Response> responseResolver) {
+    public AuthResponseResolver(Function<Request, Response> responseResolver) {
         this.responseResolver = responseResolver;
     }
 
     @Override
-    public Response apply(RequestHeader requestHeader) {
-        if (isAuthenticationRequired(requestHeader)) {
-            return authenticateRequest(requestHeader);
+    public Response apply(Request request) {
+        if (isAuthenticationRequired(request)) {
+            return authenticateRequest(request);
         } else {
-            return authenticatedResponse(requestHeader);
+            return authenticatedResponse(request);
         }
     }
 
-    private Response authenticateRequest(RequestHeader requestHeader) {
-        if (isAuthenticationHeaderPresent(requestHeader)) {
-            return checkAuthenticationHeader(requestHeader);
+    private Response authenticateRequest(Request request) {
+        if (isAuthenticationHeaderPresent(request)) {
+            return checkAuthenticationHeader(request);
         } else {
             return unauthorizedResponse();
         }
     }
 
-    private Response checkAuthenticationHeader(RequestHeader requestHeader) {
-        if (checkCredentials(requestHeader.getAuthenticationHeader().get())) {
-            return authenticatedResponse(requestHeader);
+    private Response checkAuthenticationHeader(Request request) {
+        if (checkCredentials(request.getHeader().getAuthenticationHeader().get())) {
+            return authenticatedResponse(request);
         } else {
             return unauthorizedResponse();
         }
@@ -45,8 +44,8 @@ public class AuthResponseResolver implements Function<RequestHeader, Response> {
         return authenticationHeader.getDecodedUsername().equals("admin") && authenticationHeader.getDecodedPassword().equals("hunter2");
     }
 
-    private Response authenticatedResponse(RequestHeader requestHeader) {
-        return responseResolver.apply(requestHeader);
+    private Response authenticatedResponse(Request request) {
+        return responseResolver.apply(request);
     }
 
     private Response unauthorizedResponse() {
@@ -55,11 +54,11 @@ public class AuthResponseResolver implements Function<RequestHeader, Response> {
                 .withStatusCode(HTTPStatusCode.UNAUTHORIZED).build();
     }
 
-    private boolean isAuthenticationHeaderPresent(RequestHeader requestHeader) {
-        return requestHeader.getAuthenticationHeader().isPresent();
+    private boolean isAuthenticationHeaderPresent(Request request) {
+        return request.getHeader().getAuthenticationHeader().isPresent();
     }
 
-    private boolean isAuthenticationRequired(RequestHeader requestHeader) {
-        return requestHeader.getPath().equals("/logs");
+    private boolean isAuthenticationRequired(Request request) {
+        return request.getHeader().getPath().equals("/logs");
     }
 }

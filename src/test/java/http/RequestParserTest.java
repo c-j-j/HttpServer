@@ -22,7 +22,7 @@ public class RequestParserTest {
     @Test
     public void readsHeader() {
         Socket socket = new FakeSocket(inputStream(new HTTPRequestBuilder().withAction(HTTPAction.GET).build()));
-        assertThat(requestParser.apply(socket).getAction()).isEqualTo(HTTPAction.GET);
+        assertThat(requestParser.apply(socket).getHeader().getAction()).isEqualTo(HTTPAction.GET);
     }
 
     private InputStream inputStream(String httpRequest) {

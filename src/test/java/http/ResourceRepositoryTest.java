@@ -2,6 +2,8 @@ package http;
 
 import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
+import http.request.Request;
+import http.request.builder.RequestBuilder;
 import http.resource.Endpoint;
 import http.resource.Resource;
 import org.junit.Before;
@@ -14,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ResourceRepositoryTest {
 
     private ResourceRepository resourceRepository;
-    private RequestHeader validRequestHeader;
+    private Request validRequest;
 
     @Before
     public void setUp() throws Exception {
@@ -23,36 +25,34 @@ public class ResourceRepositoryTest {
                 add(new FakeResourse());
             }
         });
-        validRequestHeader = new RequestHeaderBuilder()
+        validRequest = new RequestBuilder().withHeader(new RequestHeaderBuilder()
                 .withHTTPAction(HTTPAction.GET)
                 .withPath("/path")
-                .build();
+                .build()).build();
     }
 
     @Test
     public void cannotRespondToRequest() {
-        assertThat(resourceRepository.canRespond(new RequestHeaderBuilder()
+        assertThat(resourceRepository.canRespond(new RequestBuilder().withHeader(new RequestHeaderBuilder()
                 .withHTTPAction(HTTPAction.POST)
                 .withPath("/path")
-                .build())).isFalse();
+                .build()).build())).isFalse();
     }
 
     @Test
     public void canResponseToRequest() {
-        assertThat(resourceRepository.canRespond(validRequestHeader)).isTrue();
+        assertThat(resourceRepository.canRespond(validRequest)).isTrue();
     }
 
     @Test
     public void respondsToRequest(){
-        Response response = resourceRepository.getResponse(validRequestHeader);
+        Response response = resourceRepository.getResponse(validRequest);
         assertThat(response.getContentsAsString()).isEqualTo("Some Content");
     }
 
     private class FakeResourse implements Resource {
-
-
         @Endpoint(action = HTTPAction.GET, path = "/path")
-        public Response fakePath(RequestHeader requestHeader) {
+        public Response fakePath(Request request) {
             return new ResponseBuilder().withContent("Some Content").build();
         }
     }

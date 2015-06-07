@@ -1,11 +1,12 @@
 package http;
 
 import builders.ResponseBuilder;
+import http.request.Request;
 
 import java.io.File;
 import java.util.function.Function;
 
-public class ResponseGenerator implements Function<RequestHeader, Response> {
+public class ResponseGenerator implements Function<Request, Response> {
 
     private final ResourceRepository resourceRepository;
     private final File baseFolder;
@@ -16,19 +17,19 @@ public class ResponseGenerator implements Function<RequestHeader, Response> {
     }
 
     @Override
-    public Response apply(RequestHeader requestHeader) {
+    public Response apply(Request request) {
         try {
-            return generateResponse(requestHeader);
+            return generateResponse(request);
         } catch (RuntimeException e) {
             return new ResponseBuilder().build();
         }
     }
 
-    private Response generateResponse(RequestHeader requestHeader) {
-        if (resourceRepository.canRespond(requestHeader)) {
-            return resourceRepository.getResponse(requestHeader);
+    private Response generateResponse(Request request) {
+        if (resourceRepository.canRespond(request)) {
+            return resourceRepository.getResponse(request);
         } else {
-            return requestHeader.getResponse(baseFolder, requestHeader);
+            return request.getHeader().getResponse(baseFolder, request);
         }
     }
 

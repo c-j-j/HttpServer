@@ -2,6 +2,7 @@ package http.response;
 
 import builders.RequestHeaderBuilder;
 import http.Response;
+import http.request.builder.RequestBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class GetDirectoryResponseResolverTest {
     public void directoryContents() throws IOException {
         createFile(folder, "file1");
         createFile(folder, "file2");
-        Response response = getDirectoryResponseResolver.getResponse(folder, new RequestHeaderBuilder().withPath("/").build());
+        Response response = getDirectoryResponseResolver.getResponse(folder, new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath("/").build()).build());
         assertThat(response.getContentsAsString()).contains("file1", "file2");
     }
 
@@ -37,7 +38,7 @@ public class GetDirectoryResponseResolverTest {
     public void directoryLinks() throws IOException {
         String filename = "file1";
         createFile(folder, filename);
-        Response response = getDirectoryResponseResolver.getResponse(folder, new RequestHeaderBuilder().withPath("/").build());
+        Response response = getDirectoryResponseResolver.getResponse(folder, new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath("/").build()).build());
         assertThat(response.getContentsAsString()).contains(String.format("<a href=\"/%s\">%s</a>", filename, filename));
     }
 

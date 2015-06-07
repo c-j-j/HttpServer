@@ -2,7 +2,8 @@ package http.resource;
 
 import builders.RequestHeaderBuilder;
 import http.HTTPStatusCode;
-import http.RequestHeader;
+import http.request.Request;
+import http.request.builder.RequestBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RedirectResourceTest {
 
-    private static final RequestHeader REQUEST_HEADER = new RequestHeaderBuilder().build();
+    private static final Request REQUEST = new RequestBuilder().withHeader(new RequestHeaderBuilder().build()).build();
     private RedirectResource redirectResource;
 
     @Before
@@ -20,13 +21,13 @@ public class RedirectResourceTest {
 
     @Test
     public void yields302StatusCode(){
-        assertThat(redirectResource.redirect(REQUEST_HEADER).getStatusCode())
+        assertThat(redirectResource.redirect(REQUEST).getStatusCode())
                 .isEqualTo(HTTPStatusCode.FOUND);
     }
 
     @Test
     public void hasLocationHeader(){
-        assertThat(redirectResource.redirect(REQUEST_HEADER).getLocation())
+        assertThat(redirectResource.redirect(REQUEST).getLocation())
                 .isEqualTo("http://localhost:5000/");
     }
 }

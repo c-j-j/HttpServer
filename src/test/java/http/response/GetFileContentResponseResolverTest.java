@@ -3,6 +3,8 @@ package http.response;
 import builders.RequestHeaderBuilder;
 import http.ContentType;
 import http.Response;
+import http.request.Request;
+import http.request.builder.RequestBuilder;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,14 +30,18 @@ public class GetFileContentResponseResolverTest {
     @Test
     public void containsPlainContentType() throws IOException {
         FileUtils.writeStringToFile(new File(baseFolder, "plainFile"), "Hello world");
-        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, new RequestHeaderBuilder().withPath("/plainFile").build());
+        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, getBuild("/plainFile"));
         assertThat(response.getContentType()).isEqualTo(ContentType.PLAIN);
+    }
+
+    private Request getBuild(String path) {
+        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath(path).build()).build();
     }
 
     @Test
     public void containsJPEGContentType() throws IOException {
         FileUtils.writeStringToFile(new File(baseFolder, "image.jpeg"), "imageData");
-        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, new RequestHeaderBuilder().withPath("/image.jpeg").build());
+        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, getBuild("/image.jpeg"));
         assertThat(response.getContentType()).isEqualTo(ContentType.JPEG);
     }
 
@@ -43,7 +49,7 @@ public class GetFileContentResponseResolverTest {
     public void containsContentLength() throws IOException {
         File requestedFile = new File(baseFolder, "plainFile");
         FileUtils.writeStringToFile(requestedFile, "Hello world");
-        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, new RequestHeaderBuilder().withPath("/plainFile").build());
+        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, getBuild("/plainFile"));
         assertThat(response.getContentLength()).isEqualTo(requestedFile.length());
     }
 }

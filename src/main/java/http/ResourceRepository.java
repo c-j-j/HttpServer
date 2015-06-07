@@ -1,5 +1,6 @@
 package http;
 
+import http.request.Request;
 import http.resource.Endpoint;
 import http.resource.Resource;
 
@@ -17,49 +18,49 @@ public class ResourceRepository {
         this.resources = Collections.unmodifiableSet(resources);
     }
 
-    public boolean canRespond(RequestHeader requestHeader) {
-        return doesValidResourceExists(requestHeader);
+    public boolean canRespond(Request request) {
+        return doesValidResourceExists(request);
     }
 
-    public Response getResponse(RequestHeader requestHeader) {
-        Resource resourceForRequest = findResourceForRequest(requestHeader);
-        return invokeEndpointMethod(requestHeader, resourceForRequest, findEndpointMethod(requestHeader, resourceForRequest));
+    public Response getResponse(Request request) {
+        Resource resourceForRequest = findResourceForRequest(request);
+        return invokeEndpointMethod(request, resourceForRequest, findEndpointMethod(request, resourceForRequest));
     }
 
-    private Method findEndpointMethod(RequestHeader requestHeader, Resource resourceForRequest) {
+    private Method findEndpointMethod(Request request, Resource resourceForRequest) {
         return getMethods(resourceForRequest)
-                .filter(m -> isMethodAMatchingEndpoint(requestHeader, m))
+                .filter(m -> isMethodAMatchingEndpoint(request, m))
                 .findFirst()
                 .get();
     }
 
-    private Resource findResourceForRequest(RequestHeader requestHeader) {
+    private Resource findResourceForRequest(Request request) {
         return resources.stream()
-                .filter(r -> doesResourceContainMatchingEndpoint(requestHeader, r))
+                .filter(r -> doesResourceContainMatchingEndpoint(request, r))
                 .findFirst()
                 .get();
     }
 
-    private Response invokeEndpointMethod(RequestHeader validRequestHeader, Resource resource, Method method) {
+    private Response invokeEndpointMethod(Request validRequest, Resource resource, Method method) {
         try {
-            return (Response) method.invoke(resource, validRequestHeader);
+            return (Response) method.invoke(resource, validRequest);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private boolean isMethodAMatchingEndpoint(RequestHeader validRequestHeader, Method method) {
-        return isMethodAnEndpoint(method) && doesEndpointMatchRequest(validRequestHeader, method);
+    private boolean isMethodAMatchingEndpoint(Request validRequest, Method method) {
+        return isMethodAnEndpoint(method) && doesEndpointMatchRequest(validRequest, method);
     }
 
-    private boolean doesValidResourceExists(RequestHeader requestHeader) {
+    private boolean doesValidResourceExists(Request request) {
         return resources
                 .stream()
-                .anyMatch(resource -> doesResourceContainMatchingEndpoint(requestHeader, resource));
+                .anyMatch(resource -> doesResourceContainMatchingEndpoint(request, resource));
     }
 
-    private boolean doesResourceContainMatchingEndpoint(RequestHeader requestHeader, Resource resource) {
-        return getMethods(resource).anyMatch(m -> isMethodAMatchingEndpoint(requestHeader, m));
+    private boolean doesResourceContainMatchingEndpoint(Request request, Resource resource) {
+        return getMethods(resource).anyMatch(m -> isMethodAMatchingEndpoint(request, m));
     }
 
     private Stream<Method> getMethods(Resource resource) {
@@ -70,10 +71,10 @@ public class ResourceRepository {
         return declaredMethod.isAnnotationPresent(Endpoint.class);
     }
 
-    private boolean doesEndpointMatchRequest(RequestHeader requestHeader, Method declaredMethod) {
+    private boolean doesEndpointMatchRequest(Request request, Method declaredMethod) {
         Endpoint annotation = declaredMethod.getAnnotation(Endpoint.class);
-        return annotation.path().equals(requestHeader.getPath())
-                && annotation.action() == requestHeader.getAction();
+        return annotation.path().equals(request.getPath())
+                && annotation.action() == request.getAction();
     }
 
 }

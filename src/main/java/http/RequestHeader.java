@@ -1,6 +1,7 @@
 package http;
 
 import http.auth.AuthenticationHeader;
+import http.request.Request;
 
 import java.io.File;
 import java.util.Optional;
@@ -26,8 +27,8 @@ public class RequestHeader {
         return path;
     }
 
-    public Response getResponse(File baseFolder, RequestHeader requestHeader) {
-        return httpAction.getResponseHandler().getResponse(baseFolder, requestHeader);
+    public Response getResponse(File baseFolder, Request request) {
+        return httpAction.getResponseHandler().getResponse(baseFolder, request);
     }
 
     public Optional<AuthenticationHeader> getAuthenticationHeader() {
