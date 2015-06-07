@@ -31,8 +31,8 @@ public class RequestHeader {
         return path;
     }
 
-    public Response getResponse(File baseFolder, Request request) {
-        return httpAction.getResponseHandler().getResponse(baseFolder, request);
+    public Response fileBasedResponse(File baseFolder, Request request) {
+        return httpAction.getFileResponseHandler().getResponse(baseFolder, request);
     }
 
     public Optional<AuthenticationHeader> getAuthenticationHeader() {

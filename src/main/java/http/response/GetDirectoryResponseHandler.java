@@ -7,7 +7,7 @@ import http.request.Request;
 
 import java.io.File;
 
-public class GetDirectoryResponseResolver implements ResponseResolver{
+public class GetDirectoryResponseHandler implements FileResponseHandler {
     @Override
     public Response getResponse(File baseFolder, Request request) {
         File requestedDirectory = new File(baseFolder, request.getPath());

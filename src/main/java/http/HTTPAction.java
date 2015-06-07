@@ -3,21 +3,21 @@ package http;
 import http.response.*;
 
 public enum HTTPAction {
-    POST(new POSTResponseResolver()),
-    PUT(new PUTResponseResolver()),
-    HEAD(new GETResponseResolver()), 
-    PATCH(new GETResponseResolver()),
-    OPTIONS(new OPTIONResponseResolver()),
-    DELETE(new GETResponseResolver()), 
-    GET(new GETResponseResolver());
+    POST(new PostFileResponseHandler()),
+    PUT(new PutFileFileResponseHandler()),
+    HEAD(new GetFileResponseHandler()),
+    PATCH(new GetFileResponseHandler()),
+    OPTIONS(new OptionFileResponseHandler()),
+    DELETE(new GetFileResponseHandler()),
+    GET(new GetFileResponseHandler());
 
-    private ResponseResolver responseHandler;
+    private FileResponseHandler responseHandler;
 
-    HTTPAction(ResponseResolver responseHandler) {
+    HTTPAction(FileResponseHandler responseHandler) {
         this.responseHandler = responseHandler;
     }
 
-    public ResponseResolver getResponseHandler() {
+    public FileResponseHandler getFileResponseHandler() {
         return responseHandler;
     }
 }

@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PUTResponseResolverTest {
+public class PutFileResponseHandlerTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -28,7 +28,7 @@ public class PUTResponseResolverTest {
     }
     @Test
     public void yields200Status() {
-        Response response = new PUTResponseResolver().getResponse(baseDir, buildRequest("/new_file"));
+        Response response = new PutFileFileResponseHandler().getResponse(baseDir, buildRequest("/new_file"));
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
@@ -41,7 +41,7 @@ public class PUTResponseResolverTest {
         File existentFile = new File(baseDir, "existentFile");
         FileUtils.writeStringToFile(existentFile, "I already exist");
 
-        Response response = new PUTResponseResolver().getResponse(baseDir, buildRequest("/existentFile"));
+        Response response = new PutFileFileResponseHandler().getResponse(baseDir, buildRequest("/existentFile"));
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.METHOD_NOT_ALLOWED);
     }
 }

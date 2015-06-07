@@ -8,7 +8,7 @@ import http.request.Request;
 
 import java.io.File;
 
-public class OPTIONResponseResolver implements ResponseResolver{
+public class OptionFileResponseHandler implements FileResponseHandler {
 
     @Override
     public Response getResponse(File baseFolder, Request requestHeader) {

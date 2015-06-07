@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GETResponseResolverTest {
+public class GetFileResponseHandlerTest {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
@@ -33,14 +33,14 @@ public class GETResponseResolverTest {
     public void fileContents() throws IOException {
         String fileContent = "Hello, World";
         writeToFile("filename", fileContent);
-        Response response = new GETResponseResolver().getResponse(baseFolder, request);
+        Response response = new GetFileResponseHandler().getResponse(baseFolder, request);
         assertThat(response.getContentsAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     @Test
     public void fileNotFound() {
-        Response response = new GETResponseResolver().getResponse(baseFolder, request);
+        Response response = new GetFileResponseHandler().getResponse(baseFolder, request);
         assertThat(response.getContentsAsString()).isEmpty();
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);
     }

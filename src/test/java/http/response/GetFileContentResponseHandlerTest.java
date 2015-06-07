@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetFileContentResponseResolverTest {
+public class GetFileContentResponseHandlerTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -30,7 +30,7 @@ public class GetFileContentResponseResolverTest {
     @Test
     public void containsPlainContentType() throws IOException {
         FileUtils.writeStringToFile(new File(baseFolder, "plainFile"), "Hello world");
-        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, getBuild("/plainFile"));
+        Response response = new GetFileContentResponseHandler().getResponse(baseFolder, getBuild("/plainFile"));
         assertThat(response.getContentType()).isEqualTo(ContentType.PLAIN);
     }
 
@@ -41,7 +41,7 @@ public class GetFileContentResponseResolverTest {
     @Test
     public void containsJPEGContentType() throws IOException {
         FileUtils.writeStringToFile(new File(baseFolder, "image.jpeg"), "imageData");
-        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, getBuild("/image.jpeg"));
+        Response response = new GetFileContentResponseHandler().getResponse(baseFolder, getBuild("/image.jpeg"));
         assertThat(response.getContentType()).isEqualTo(ContentType.JPEG);
     }
 
@@ -49,7 +49,7 @@ public class GetFileContentResponseResolverTest {
     public void containsContentLength() throws IOException {
         File requestedFile = new File(baseFolder, "plainFile");
         FileUtils.writeStringToFile(requestedFile, "Hello world");
-        Response response = new GetFileContentResponseResolver().getResponse(baseFolder, getBuild("/plainFile"));
+        Response response = new GetFileContentResponseHandler().getResponse(baseFolder, getBuild("/plainFile"));
         assertThat(response.getContentLength()).isEqualTo(requestedFile.length());
     }
 }

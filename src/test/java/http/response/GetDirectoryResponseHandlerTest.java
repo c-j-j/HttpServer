@@ -13,17 +13,17 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetDirectoryResponseResolverTest {
+public class GetDirectoryResponseHandlerTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
     private File folder;
-    private GetDirectoryResponseResolver getDirectoryResponseResolver;
+    private GetDirectoryResponseHandler getDirectoryResponseResolver;
 
     @Before
     public void setUp() throws IOException {
         folder = temporaryFolder.newFolder();
-        getDirectoryResponseResolver = new GetDirectoryResponseResolver();
+        getDirectoryResponseResolver = new GetDirectoryResponseHandler();
     }
 
     @Test

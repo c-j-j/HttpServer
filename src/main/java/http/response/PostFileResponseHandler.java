@@ -7,7 +7,7 @@ import http.request.Request;
 
 import java.io.File;
 
-public class POSTResponseResolver implements ResponseResolver {
+public class PostFileResponseHandler implements FileResponseHandler {
     @Override
     public Response getResponse(File baseFolder, Request request) {
         if (new File(baseFolder, request.getPath()).exists()){

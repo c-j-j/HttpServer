@@ -5,11 +5,11 @@ import http.request.Request;
 
 import java.io.File;
 
-public class GETResponseResolver implements ResponseResolver {
+public class GetFileResponseHandler implements FileResponseHandler {
 
-    private final NotFoundResponseResolver notFoundResponseResolver = new NotFoundResponseResolver();
-    private final GetDirectoryResponseResolver getDirectoryResponseResolver = new GetDirectoryResponseResolver();
-    private final GetFileContentResponseResolver getFileContentResponseResolver = new GetFileContentResponseResolver();
+    private final NotFoundFileResponseHandler notFoundResponseResolver = new NotFoundFileResponseHandler();
+    private final GetDirectoryResponseHandler getDirectoryResponseResolver = new GetDirectoryResponseHandler();
+    private final GetFileContentResponseHandler getFileContentResponseResolver = new GetFileContentResponseHandler();
 
     @Override
     public Response getResponse(File baseFolder, Request request) {

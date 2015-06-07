@@ -12,9 +12,9 @@ import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OPTIONResponseResolverTest {
+public class OptionFileResponseHandlerTest {
 
-    private OPTIONResponseResolver optionResponseResolver = new OPTIONResponseResolver();
+    private OptionFileResponseHandler optionResponseResolver = new OptionFileResponseHandler();
     private Request request = new RequestBuilder().withHeader(new RequestHeaderBuilder().withHTTPAction(HTTPAction.OPTIONS).build()).build();
 
     @Test

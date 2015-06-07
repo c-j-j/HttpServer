@@ -11,7 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
-public class GetFileContentResponseResolver implements ResponseResolver {
+public class GetFileContentResponseHandler implements FileResponseHandler {
 
     @Override
     public Response getResponse(File baseFolder, Request request) {

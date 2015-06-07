@@ -7,7 +7,7 @@ import http.request.Request;
 
 import java.io.File;
 
-public class NotFoundResponseResolver implements ResponseResolver {
+public class NotFoundFileResponseHandler implements FileResponseHandler {
     @Override
     public Response getResponse(File baseFolder, Request request) {
         return new ResponseBuilder()

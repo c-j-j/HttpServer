@@ -29,7 +29,7 @@ public class ResponseGenerator implements Function<Request, Response> {
         if (resourceRepository.canRespond(request)) {
             return resourceRepository.getResponse(request);
         } else {
-            return request.getHeader().getResponse(baseFolder, request);
+            return request.getHeader().fileBasedResponse(baseFolder, request);
         }
     }
 
