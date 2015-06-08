@@ -8,11 +8,11 @@ import http.request.Request;
 
 import java.util.function.Function;
 
-public class AuthResponseResolver implements Function<Request, Response> {
+public class AuthenticationRequestWrapper implements Function<Request, Response> {
 
     private final Function<Request, Response> responseResolver;
 
-    public AuthResponseResolver(Function<Request, Response> responseResolver) {
+    public AuthenticationRequestWrapper(Function<Request, Response> responseResolver) {
         this.responseResolver = responseResolver;
     }
 

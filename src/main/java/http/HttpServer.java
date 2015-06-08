@@ -2,9 +2,9 @@ package http;
 
 import http.logging.Logger;
 import http.request.RequestProcessor;
-import http.request.handlers.AuthResponseResolver;
-import http.request.handlers.LogRequestResolver;
-import http.request.handlers.PartialContentRequestResolver;
+import http.request.handlers.AuthenticationRequestWrapper;
+import http.request.handlers.LogRequestWrapper;
+import http.request.handlers.PartialContentRequestWrapper;
 import http.request.handlers.RequestRouter;
 import http.request.parsing.RequestParser;
 import http.resource.Resource;
@@ -67,16 +67,16 @@ public class HttpServer {
         return new RequestProcessor(new RequestParser(), buildResponseResolver(logger), new ResponseWriter(new ResponseSerializer()));
     }
 
-    private LogRequestResolver buildResponseResolver(Logger logger) {
-        return new LogRequestResolver(logger, buildAuthRequestWrapper());
+    private LogRequestWrapper buildResponseResolver(Logger logger) {
+        return new LogRequestWrapper(logger, buildAuthRequestWrapper());
     }
 
-    private AuthResponseResolver buildAuthRequestWrapper() {
-        return new AuthResponseResolver(buildPartialContentWrapper());
+    private AuthenticationRequestWrapper buildAuthRequestWrapper() {
+        return new AuthenticationRequestWrapper(buildPartialContentWrapper());
     }
 
-    private PartialContentRequestResolver buildPartialContentWrapper() {
-        return new PartialContentRequestResolver(buildRequestRouter());
+    private PartialContentRequestWrapper buildPartialContentWrapper() {
+        return new PartialContentRequestWrapper(buildRequestRouter());
     }
 
     private RequestRouter buildRequestRouter() {

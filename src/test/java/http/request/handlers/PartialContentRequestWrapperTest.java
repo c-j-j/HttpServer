@@ -15,12 +15,12 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartialContentRequestResolverTest {
+public class PartialContentRequestWrapperTest {
 
     @Test
     public void callsWrappedResolverWhenNoRangeGiven(){
         Response wrappedResponse = new ResponseBuilder().build();
-        Response response = new PartialContentRequestResolver(r -> wrappedResponse).apply(buildStandardRequest());
+        Response response = new PartialContentRequestWrapper(r -> wrappedResponse).apply(buildStandardRequest());
         assertThat(response).isEqualTo(wrappedResponse);
     }
 
@@ -28,7 +28,7 @@ public class PartialContentRequestResolverTest {
     public void returnsPartialContent() throws IOException {
         ByteSource wrappedResponseBody = buildByteSource("HelloWorld");
         ByteRange byteRange = new ByteRange(0, 3);
-        Response response = new PartialContentRequestResolver(r -> buildResponse(wrappedResponseBody)).apply(buildRequest(byteRange));
+        Response response = new PartialContentRequestWrapper(r -> buildResponse(wrappedResponseBody)).apply(buildRequest(byteRange));
         assertThat(response.getBody().read()).isEqualTo(extractPartOfBody(wrappedResponseBody, byteRange, getContentSize(wrappedResponseBody)).read());
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.PARTIAL_CONTENT);
     }

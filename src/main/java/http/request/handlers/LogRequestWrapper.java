@@ -6,12 +6,12 @@ import http.request.Request;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class LogRequestResolver implements Function<Request, Response> {
+public class LogRequestWrapper implements Function<Request, Response> {
 
     private final Consumer<String> logger;
     private final Function<Request, Response> wrappedResolver;
 
-    public LogRequestResolver(Consumer<String> logger, Function<Request, Response> wrappedResolver) {
+    public LogRequestWrapper(Consumer<String> logger, Function<Request, Response> wrappedResolver) {
         this.logger = logger;
         this.wrappedResolver = wrappedResolver;
     }

@@ -16,7 +16,7 @@ import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AuthResponseResolverTest {
+public class AuthenticationRequestWrapperTest {
 
     private SpyFunction<Request, Response> wrappedResponseResolver;
     private Response wrappedResponse;
@@ -30,7 +30,7 @@ public class AuthResponseResolverTest {
     @Test
     public void callsWrappedResponseResolver() {
         Request request = buildRequest("/");
-        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
+        Response response = new AuthenticationRequestWrapper(wrappedResponseResolver).apply(request);
         assertThat(wrappedResponseResolver.wasCalledWith()).isEqualTo(request);
         assertThat(response).isEqualTo(wrappedResponse);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
@@ -39,7 +39,7 @@ public class AuthResponseResolverTest {
     @Test
     public void blocksAccessToProtectedPath(){
         Request request = buildRequest("/logs");
-        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
+        Response response = new AuthenticationRequestWrapper(wrappedResponseResolver).apply(request);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.UNAUTHORIZED);
         assertThat(response.getBodyAsString()).isEqualTo("Authentication required");
     }
@@ -48,7 +48,7 @@ public class AuthResponseResolverTest {
     public void allowsAccessToProtectedPath(){
         RequestHeader requestHeader = new RequestHeaderBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withURI("/logs").build();
         Request request = new RequestBuilder().withHeader(requestHeader).build();
-        Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
+        Response response = new AuthenticationRequestWrapper(wrappedResponseResolver).apply(request);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 

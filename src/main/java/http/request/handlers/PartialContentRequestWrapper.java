@@ -12,11 +12,11 @@ import java.io.UncheckedIOException;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class PartialContentRequestResolver implements Function<Request, Response> {
+public class PartialContentRequestWrapper implements Function<Request, Response> {
 
     private final Function<Request, Response> requestResolver;
 
-    public PartialContentRequestResolver(Function<Request, Response> requestResolver) {
+    public PartialContentRequestWrapper(Function<Request, Response> requestResolver) {
         this.requestResolver = requestResolver;
     }
 

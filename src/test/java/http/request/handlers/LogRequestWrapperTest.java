@@ -14,10 +14,10 @@ import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LogRequestResolverTest {
+public class LogRequestWrapperTest {
 
 
-    private LogRequestResolver logRequestResolver;
+    private LogRequestWrapper logRequestWrapper;
     private Response response;
     private SpyConsumer<String> logger;
     private Request request;
@@ -27,19 +27,19 @@ public class LogRequestResolverTest {
         response = new ResponseBuilder().build();
         Function<Request, Response> wrappedResolver = r -> response;
         logger = new SpyConsumer<>();
-        logRequestResolver = new LogRequestResolver(logger, wrappedResolver);
+        logRequestWrapper = new LogRequestWrapper(logger, wrappedResolver);
         RequestHeader requestHeader = new RequestHeaderBuilder().withRequestPayload("requestPayload").build();
         request = new RequestBuilder().withHeader(requestHeader).build();
     }
 
     @Test
     public void callsWrappedResolver(){
-        assertThat(logRequestResolver.apply(request)).isEqualTo(response);
+        assertThat(logRequestWrapper.apply(request)).isEqualTo(response);
     }
 
     @Test
     public void logsRequest(){
-        logRequestResolver.apply(request);
+        logRequestWrapper.apply(request);
         assertThat(logger.wasCalledWith()).isEqualTo(request.getPayload());
     }
 
