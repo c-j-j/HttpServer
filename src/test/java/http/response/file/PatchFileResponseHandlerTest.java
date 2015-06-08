@@ -69,7 +69,7 @@ public class PatchFileResponseHandlerTest {
         return new RequestBuilder()
                 .withHeader(new RequestHeaderBuilder()
                         .withIfMatchValue(hashForOriginalContent)
-                        .withPath("/" + patchedFilename)
+                        .withURI("/" + patchedFilename)
                         .build())
                 .withBody(patchedContent).build();
     }

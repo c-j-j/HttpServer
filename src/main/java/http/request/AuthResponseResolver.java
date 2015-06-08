@@ -59,6 +59,6 @@ public class AuthResponseResolver implements Function<Request, Response> {
     }
 
     private boolean isAuthenticationRequired(Request request) {
-        return request.getHeader().getPath().equals("/logs");
+        return request.getPath().equals("/logs");
     }
 }

@@ -25,7 +25,7 @@ public class GetFileResponseHandlerTest {
     @Before
     public void setUp() throws Exception {
         baseFolder = temporaryFolder.newFolder();
-        RequestHeader requestHeader = new RequestHeaderBuilder().withPath("/filename").build();
+        RequestHeader requestHeader = new RequestHeaderBuilder().withURI("/filename").build();
         request = new RequestBuilder().withHeader(requestHeader).build();
     }
 

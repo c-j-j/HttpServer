@@ -15,7 +15,7 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
 
         return new RequestHeaderBuilder()
                 .withHTTPAction(getAction(requestPayload))
-                .withPath(getPath(requestPayload))
+                .withURI(getPath(requestPayload))
                 .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))
                 .withIfMatchValue(getIfMatch(requestPayload))
                 .withContentLength(contentLength(requestPayload))

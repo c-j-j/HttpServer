@@ -27,7 +27,7 @@ public class ResourceRepositoryTest {
         });
         validRequest = new RequestBuilder().withHeader(new RequestHeaderBuilder()
                 .withHTTPAction(HTTPAction.GET)
-                .withPath("/path")
+                .withURI("/path")
                 .build()).build();
     }
 
@@ -35,7 +35,7 @@ public class ResourceRepositoryTest {
     public void cannotRespondToRequest() {
         assertThat(resourceRepository.canRespond(new RequestBuilder().withHeader(new RequestHeaderBuilder()
                 .withHTTPAction(HTTPAction.POST)
-                .withPath("/path")
+                .withURI("/path")
                 .build()).build())).isFalse();
     }
 

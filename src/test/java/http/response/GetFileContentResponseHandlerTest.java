@@ -35,7 +35,7 @@ public class GetFileContentResponseHandlerTest {
     }
 
     private Request getBuild(String path) {
-        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath(path).build()).build();
+        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI(path).build()).build();
     }
 
     @Test

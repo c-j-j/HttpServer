@@ -31,7 +31,7 @@ public class ResponseGeneratorTest {
     public void setUp() throws Exception {
         resourceRepository = new StubResourceRepository();
         baseFolder = temporaryFolder.newFolder();
-        request = new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath("/tempFile").build()).build();
+        request = new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI("/tempFile").build()).build();
         responseGenerator = new ResponseGenerator(resourceRepository, baseFolder);
     }
 

@@ -7,15 +7,15 @@ import http.auth.AuthenticationHeader;
 import java.util.Optional;
 
 public class RequestHeaderBuilder {
-    private String path;
+    private String uri;
     private HTTPAction httpAction = HTTPAction.GET;
     private Optional<AuthenticationHeader> authenticationHeader = Optional.<AuthenticationHeader>empty();
     private String requestPayload;
     private long contentLength;
     private Optional<String> ifMatchValue;
 
-    public RequestHeaderBuilder withPath(String path) {
-        this.path = path;
+    public RequestHeaderBuilder withURI(String uri) {
+        this.uri = uri;
         return this;
     }
 
@@ -49,7 +49,7 @@ public class RequestHeaderBuilder {
     }
 
     public RequestHeader build() {
-        return new RequestHeader(httpAction, path, authenticationHeader, requestPayload, contentLength, ifMatchValue);
+        return new RequestHeader(httpAction, uri, authenticationHeader, requestPayload, contentLength, ifMatchValue);
     }
 
 }

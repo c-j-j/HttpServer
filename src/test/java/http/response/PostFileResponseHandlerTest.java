@@ -34,7 +34,7 @@ public class PostFileResponseHandlerTest {
     }
 
     private Request buildRequest(String path) {
-        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath(path).build()).build();
+        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI(path).build()).build();
     }
 
     @Test

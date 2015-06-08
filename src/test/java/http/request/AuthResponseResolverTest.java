@@ -45,14 +45,14 @@ public class AuthResponseResolverTest {
 
     @Test
     public void allowsAccessToProtectedPath(){
-        RequestHeader requestHeader = new RequestHeaderBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withPath("/logs").build();
+        RequestHeader requestHeader = new RequestHeaderBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withURI("/logs").build();
         Request request = new RequestBuilder().withHeader(requestHeader).build();
         Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     private Request buildRequest(String path) {
-        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withPath(path).build()).build();
+        return new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI(path).build()).build();
     }
 
     private String encode(String s) {

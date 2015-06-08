@@ -11,15 +11,15 @@ import java.util.Optional;
 
 public class RequestHeader {
     private final HTTPAction httpAction;
-    private final String path;
+    private final String uri;
     private final Optional<AuthenticationHeader> authenticationHeader;
     private final String requestPayload;
     private final long contentLength;
     private Optional<String> ifMatchValue;
 
-    public RequestHeader(HTTPAction httpAction, String path, Optional<AuthenticationHeader> authenticationHeader, String requestPayload, long contentLength, Optional<String> ifMatchValue) {
+    public RequestHeader(HTTPAction httpAction, String uri, Optional<AuthenticationHeader> authenticationHeader, String requestPayload, long contentLength, Optional<String> ifMatchValue) {
         this.httpAction = httpAction;
-        this.path = path;
+        this.uri = uri;
         this.authenticationHeader = authenticationHeader;
         this.requestPayload = requestPayload;
         this.contentLength = contentLength;
@@ -31,7 +31,7 @@ public class RequestHeader {
     }
 
     public String getPath() {
-        return path;
+        return uri.substring(0, endOfPathIndex());
     }
 
     public Response fileBasedResponse(File baseFolder, Request request) {
@@ -72,6 +72,11 @@ public class RequestHeader {
     }
 
     private String extractQueryParameterSection() {
-        return getPath().substring(getPath().indexOf("?") + 1);
+        return uri.substring(endOfPathIndex() + 1);
+    }
+
+    private int endOfPathIndex() {
+        int endOfPathIndex = uri.indexOf("?");
+        return endOfPathIndex > 0 ? endOfPathIndex : uri.length();
     }
 }

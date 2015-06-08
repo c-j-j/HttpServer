@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class UrlDecode {
 
-    private static final Map<String, String> decodeMap = new HashMap<String, String>() {{
+    public static final Map<String, String> DECODE_MAP = new HashMap<String, String>() {{
         put("%20", " ");
         put("%3C", "<");
         put("%3E", ">");
@@ -23,13 +23,14 @@ public class UrlDecode {
         put("%5D", "]");
         put("%3A", ":");
         put("%22", "\"");
-
+        put("%3F", "?");
+        put("%40", "@");
     }};
 
     public static String decode(String encodedString) {
         String decodedString = encodedString;
-        for (String encodedValue : decodeMap.keySet()) {
-            decodedString = decodedString.replace(encodedValue, decodeMap.get(encodedValue));
+        for (String encodedValue : DECODE_MAP.keySet()) {
+            decodedString = decodedString.replace(encodedValue, DECODE_MAP.get(encodedValue));
         }
         return decodedString;
     }
