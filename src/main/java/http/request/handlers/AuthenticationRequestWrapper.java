@@ -1,19 +1,22 @@
 package http.request.handlers;
 
-import http.response.builders.ResponseBuilder;
+import http.request.Request;
+import http.request.auth.AuthenticationHeader;
+import http.request.auth.Authenticator;
 import http.response.HTTPStatusCode;
 import http.response.Response;
-import http.request.auth.AuthenticationHeader;
-import http.request.Request;
+import http.response.builders.ResponseBuilder;
 
 import java.util.function.Function;
 
 public class AuthenticationRequestWrapper implements Function<Request, Response> {
 
     private final Function<Request, Response> responseResolver;
+    private final Authenticator authenticator;
 
-    public AuthenticationRequestWrapper(Function<Request, Response> responseResolver) {
+    public AuthenticationRequestWrapper(Function<Request, Response> responseResolver, Authenticator authenticator) {
         this.responseResolver = responseResolver;
+        this.authenticator = authenticator;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class AuthenticationRequestWrapper implements Function<Request, Response>
     }
 
     private boolean checkCredentials(AuthenticationHeader authenticationHeader) {
-        return authenticationHeader.getDecodedUsername().equals("admin") && authenticationHeader.getDecodedPassword().equals("hunter2");
+        return authenticator.validateCredentials(authenticationHeader.getDecodedUsername(), authenticationHeader.getDecodedPassword());
     }
 
     private Response authenticatedResponse(Request request) {
@@ -60,6 +63,6 @@ public class AuthenticationRequestWrapper implements Function<Request, Response>
     }
 
     private boolean isAuthenticationRequired(Request request) {
-        return request.getPath().equals("/logs");
+        return authenticator.isPathProtected(request.getPath());
     }
 }

@@ -1,7 +1,9 @@
 package http;
 
+import http.config.Configuration;
 import http.logging.Logger;
 import http.request.RequestProcessor;
+import http.request.auth.Authenticator;
 import http.request.handlers.AuthenticationRequestWrapper;
 import http.request.handlers.LogRequestWrapper;
 import http.request.handlers.PartialContentRequestWrapper;
@@ -9,8 +11,8 @@ import http.request.handlers.RequestRouter;
 import http.request.parsing.RequestParser;
 import http.resource.Resource;
 import http.resource.ResourceRepository;
-import http.response.serializers.ResponseSerializer;
 import http.response.ResponseWriter;
+import http.response.serializers.ResponseSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +29,13 @@ public class HttpServer {
     private final int portNumber;
     private Set<Resource> resources;
     private ExecutorService threadpool;
+    private Configuration configuration;
 
-    public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber) {
+    public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber, Configuration configuration) {
         this.baseDirectory = baseDirectory;
         this.portNumber = portNumber;
         this.resources = resources;
+        this.configuration = configuration;
         threadpool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
@@ -72,7 +76,7 @@ public class HttpServer {
     }
 
     private AuthenticationRequestWrapper buildAuthRequestWrapper() {
-        return new AuthenticationRequestWrapper(buildPartialContentWrapper());
+        return new AuthenticationRequestWrapper(buildPartialContentWrapper(), new Authenticator(configuration));
     }
 
     private PartialContentRequestWrapper buildPartialContentWrapper() {
