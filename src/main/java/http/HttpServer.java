@@ -3,6 +3,7 @@ package http;
 import http.logging.Logger;
 import http.request.AuthResponseResolver;
 import http.request.LogRequestResolver;
+import http.request.PartialContentRequestResolver;
 import http.resource.Resource;
 
 import java.io.File;
@@ -48,7 +49,7 @@ public class HttpServer {
     }
 
     private LogRequestResolver buildResponseResolver(Logger logger) {
-        return new LogRequestResolver(logger, new AuthResponseResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory)));
+        return new LogRequestResolver(logger, new AuthResponseResolver(new PartialContentRequestResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory))));
     }
 
     private void submitRequestToThreadpool(RequestConsumer requestConsumer, Socket socket) {

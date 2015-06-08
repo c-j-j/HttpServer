@@ -28,7 +28,7 @@ public class ByteRangeTest {
         int from = 1;
         int to = 4;
         int contentSize = 10;
-        assertThat(new ByteRange(from, to).length(contentSize)).isEqualTo(to - from);
+        assertThat(new ByteRange(from, to).length(contentSize)).isEqualTo((to - from) + 1);
     }
 
     @Test

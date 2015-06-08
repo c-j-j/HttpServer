@@ -27,9 +27,9 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
 
     private Optional<ByteRange> extractRange(String requestPayload) {
         Optional<String> rangeText = findValue(requestPayload, "Range");
-        if(rangeText.isPresent()){
+        if (rangeText.isPresent()) {
             return Optional.of(new ByteRangeDeserialiser().apply(rangeText.get()));
-        }else{
+        } else {
             return Optional.empty();
         }
     }

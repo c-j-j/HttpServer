@@ -14,7 +14,7 @@ public class RequestHeaderBuilder {
     private String requestPayload;
     private long contentLength;
     private Optional<String> ifMatchValue;
-    private Optional<ByteRange> range;
+    private Optional<ByteRange> range = Optional.empty();
 
     public RequestHeaderBuilder withURI(String uri) {
         this.uri = uri;

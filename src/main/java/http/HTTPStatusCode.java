@@ -6,9 +6,10 @@ public enum HTTPStatusCode {
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
     NOT_FOUND(404, "Not Found"),
-    PRECONDITION_FAILED(412, "Precondition Failed"),
     NO_CONTENT(204, "No Content"),
-    UNAUTHORIZED(401, "Unauthorized"), ;
+    PARTIAL_CONTENT(206, "Partial Content"),
+    PRECONDITION_FAILED(412,"Precondition Failed"),
+    UNAUTHORIZED(401,"Unauthorized");
 
     private int code;
     private String status;
@@ -25,4 +26,4 @@ public enum HTTPStatusCode {
     public String getStatus() {
         return status;
     }
-}
+    }

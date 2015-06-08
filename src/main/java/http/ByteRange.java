@@ -43,7 +43,7 @@ public class ByteRange {
 
     private int calculateLengthWithLowerBound(int contentSize) {
         if (hasUpperBound()) {
-            return upperBound() - lowerBound();
+            return upperBound() - lowerBound() + 1;
         } else {
             return contentSize - lowerBound();
         }
