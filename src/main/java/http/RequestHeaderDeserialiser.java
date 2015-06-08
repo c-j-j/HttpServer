@@ -2,6 +2,7 @@ package http;
 
 import builders.RequestHeaderBuilder;
 import http.auth.AuthenticationHeader;
+import http.request.RangeDeserializer.ByteRangeDeserialiser;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;
@@ -27,19 +28,10 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
     private Optional<ByteRange> extractRange(String requestPayload) {
         Optional<String> rangeText = findValue(requestPayload, "Range");
         if(rangeText.isPresent()){
-            String[] numberRangeTokens = splitRangeNumbers(rangeText.get());
-            return Optional.of(new ByteRange(numberRangeTokens[0], numberRangeTokens[1]));
+            return Optional.of(new ByteRangeDeserialiser().apply(rangeText.get()));
         }else{
             return Optional.empty();
         }
-    }
-
-    private String[] splitRangeNumbers(String range) {
-        return extractNumbersFromRangeText(range).split("-");
-    }
-
-    private String extractNumbersFromRangeText(String range) {
-        return range.substring(range.indexOf("=") + 1);
     }
 
     private Optional<String> getIfMatch(String requestPayload) {
