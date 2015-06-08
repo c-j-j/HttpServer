@@ -17,10 +17,10 @@ import java.util.function.Function;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class RequestConsumerTest {
+public class RequestProcessorTest {
 
     private FakeSocket fakeSocket;
-    private RequestConsumer requestConsumer;
+    private RequestProcessor requestProcessor;
     private SpyFunction<Request, Response> requestHandler;
     private TestBiConsumer<Socket, Response> socketWriter;
     private Response response;
@@ -35,35 +35,35 @@ public class RequestConsumerTest {
         socketWriter = new TestBiConsumer<>();
         request = new RequestBuilder().withHeader(new RequestHeaderBuilder().build()).build();
         requestParser = new SpyFunction<>(request);
-        requestConsumer = new RequestConsumer(requestParser, requestHandler, socketWriter);
+        requestProcessor = new RequestProcessor(requestParser, requestHandler, socketWriter);
     }
 
     @Test
     public void closesSocket() {
-        requestConsumer.accept(fakeSocket);
+        requestProcessor.accept(fakeSocket);
         assertThat(fakeSocket.hasBeenClosed());
     }
 
     @Test
     public void getsResponseFromRequestHandler() {
-        requestConsumer.accept(fakeSocket);
+        requestProcessor.accept(fakeSocket);
         assertThat(requestHandler.wasCalledWith()).isEqualTo(request);
     }
 
     @Test
     public void writesResponseToSocket(){
-        requestConsumer.accept(fakeSocket);
+        requestProcessor.accept(fakeSocket);
         assertThat(socketWriter.calledWithFirstParameter()).isEqualTo(fakeSocket);
         assertThat(socketWriter.calledWithSecondParameter()).isEqualTo(response);
     }
 
     @Test
     public void returnsErrorResponseWhenExceptionOccurs(){
-        RequestConsumer requestConsumer = new RequestConsumer(requestParser, request1 -> {
+        RequestProcessor requestProcessor = new RequestProcessor(requestParser, request1 -> {
             throw new RuntimeException();
         }, socketWriter);
 
-        requestConsumer.accept(fakeSocket);
+        requestProcessor.accept(fakeSocket);
         assertThat(socketWriter.calledWithSecondParameter().getStatusCode()).isEqualTo(HTTPStatusCode.INTERNAL_SERVER_ERROR);
     }
 

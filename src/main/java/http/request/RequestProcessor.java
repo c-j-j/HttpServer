@@ -11,13 +11,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class RequestConsumer implements Consumer<Socket> {
+public class RequestProcessor implements Consumer<Socket> {
 
     private Function<Request, Response> requestHandler;
     private BiConsumer<Socket, Response> socketWriter;
     private final Function<Socket, Request> requestParser;
 
-    public RequestConsumer(Function<Socket, Request> requestParser, Function<Request, Response> requestHandler, BiConsumer<Socket, Response> socketWriter) {
+    public RequestProcessor(Function<Socket, Request> requestParser, Function<Request, Response> requestHandler, BiConsumer<Socket, Response> socketWriter) {
         this.requestHandler = requestHandler;
         this.socketWriter = socketWriter;
         this.requestParser = requestParser;
@@ -29,14 +29,10 @@ public class RequestConsumer implements Consumer<Socket> {
             Request request = requestParser.apply(socket);
             socketWriter.accept(socket, requestHandler.apply(request));
         } catch (RuntimeException e) {
-            socketWriter.accept(socket, internalServerErrorResponse());
+            socketWriter.accept(socket, new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build());
         } finally {
             closeSocket(socket);
         }
-    }
-
-    private Response internalServerErrorResponse() {
-        return new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build();
     }
 
     private void closeSocket(Socket socket) {

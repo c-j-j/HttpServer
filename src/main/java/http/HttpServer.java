@@ -1,7 +1,7 @@
 package http;
 
 import http.logging.Logger;
-import http.request.RequestConsumer;
+import http.request.RequestProcessor;
 import http.request.handlers.AuthResponseResolver;
 import http.request.handlers.LogRequestResolver;
 import http.request.handlers.PartialContentRequestResolver;
@@ -37,19 +37,19 @@ public class HttpServer {
 
     public void start() {
         Logger logger = new Logger(new File(baseDirectory, "logs"));
-        RequestConsumer requestConsumer = buildRequestConsumer(logger);
+        RequestProcessor requestProcessor = buildRequestConsumer(logger);
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
-                waitAndProcessRequests(logger, requestConsumer, serverSocket);
+                waitAndProcessRequests(logger, requestProcessor, serverSocket);
             }
         } catch (IOException e) {
             logger.accept(e.getMessage());
         }
     }
 
-    private void waitAndProcessRequests(Logger logger, RequestConsumer requestConsumer, ServerSocket serverSocket) {
+    private void waitAndProcessRequests(Logger logger, RequestProcessor requestProcessor, ServerSocket serverSocket) {
         try {
-            submitRequestToThreadpool(requestConsumer, waitForConnection(serverSocket));
+            submitRequestToThreadpool(requestProcessor, waitForConnection(serverSocket));
         } catch (RuntimeException e) {
             logger.accept(e.getMessage());
         }
@@ -63,15 +63,15 @@ public class HttpServer {
         }
     }
 
-    private RequestConsumer buildRequestConsumer(Logger logger) {
-        return new RequestConsumer(new RequestParser(), buildResponseResolver(logger), new ResponseWriter(new ResponseSerializer()));
+    private RequestProcessor buildRequestConsumer(Logger logger) {
+        return new RequestProcessor(new RequestParser(), buildResponseResolver(logger), new ResponseWriter(new ResponseSerializer()));
     }
 
     private LogRequestResolver buildResponseResolver(Logger logger) {
         return new LogRequestResolver(logger, new AuthResponseResolver(new PartialContentRequestResolver(new RequestRouter(new ResourceRepository(resources), baseDirectory))));
     }
 
-    private void submitRequestToThreadpool(RequestConsumer requestConsumer, Socket socket) {
-        threadpool.submit(() -> requestConsumer.accept(socket));
+    private void submitRequestToThreadpool(RequestProcessor requestProcessor, Socket socket) {
+        threadpool.submit(() -> requestProcessor.accept(socket));
     }
 }
