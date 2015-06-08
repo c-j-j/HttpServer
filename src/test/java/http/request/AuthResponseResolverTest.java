@@ -3,7 +3,6 @@ package http.request;
 import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.HTTPStatusCode;
-import http.RequestHeader;
 import http.Response;
 import http.auth.AuthenticationHeader;
 import http.fakes.SpyFunction;

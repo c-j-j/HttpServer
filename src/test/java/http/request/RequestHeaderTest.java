@@ -1,6 +1,7 @@
-package http;
+package http.request;
 
 import builders.RequestHeaderBuilder;
+import http.request.RequestHeader;
 import http.url.UrlDecode;
 import org.junit.Test;
 

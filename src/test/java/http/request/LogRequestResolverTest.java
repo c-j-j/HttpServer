@@ -2,7 +2,6 @@ package http.request;
 
 import builders.RequestHeaderBuilder;
 import builders.ResponseBuilder;
-import http.RequestHeader;
 import http.Response;
 import http.request.builder.RequestBuilder;
 import org.junit.Before;

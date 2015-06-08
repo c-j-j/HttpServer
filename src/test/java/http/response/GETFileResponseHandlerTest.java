@@ -3,6 +3,7 @@ package http.response;
 import builders.RequestHeaderBuilder;
 import http.*;
 import http.request.Request;
+import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;

@@ -4,6 +4,7 @@ import http.logging.Logger;
 import http.request.AuthResponseResolver;
 import http.request.LogRequestResolver;
 import http.request.PartialContentRequestResolver;
+import http.request.RequestParser;
 import http.resource.Resource;
 
 import java.io.File;

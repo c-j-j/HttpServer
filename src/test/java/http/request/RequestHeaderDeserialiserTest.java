@@ -1,5 +1,6 @@
-package http;
+package http.request;
 
+import http.HTTPAction;
 import http.auth.AuthenticationHeader;
 import http.builders.HTTPRequestMessageBuilder;
 import org.junit.Before;

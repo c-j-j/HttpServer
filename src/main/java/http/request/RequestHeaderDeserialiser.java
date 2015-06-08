@@ -1,6 +1,8 @@
-package http;
+package http.request;
 
 import builders.RequestHeaderBuilder;
+import http.ByteRange;
+import http.HTTPAction;
 import http.auth.AuthenticationHeader;
 import http.request.RangeDeserializer.ByteRangeDeserialiser;
 import org.apache.commons.lang.StringUtils;

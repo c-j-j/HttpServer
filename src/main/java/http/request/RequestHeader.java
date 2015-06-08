@@ -1,7 +1,9 @@
-package http;
+package http.request;
 
+import http.ByteRange;
+import http.HTTPAction;
+import http.Response;
 import http.auth.AuthenticationHeader;
-import http.request.Request;
 import http.url.UrlDecode;
 
 import java.io.File;

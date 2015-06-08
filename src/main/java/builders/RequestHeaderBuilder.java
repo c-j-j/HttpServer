@@ -2,7 +2,7 @@ package builders;
 
 import http.ByteRange;
 import http.HTTPAction;
-import http.RequestHeader;
+import http.request.RequestHeader;
 import http.auth.AuthenticationHeader;
 
 import java.util.Optional;

@@ -1,7 +1,5 @@
-package http;
+package http.request;
 
-import http.request.Request;
-import http.request.RequestReader;
 import http.request.builder.RequestBuilder;
 
 import java.io.BufferedReader;

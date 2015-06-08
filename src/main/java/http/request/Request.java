@@ -1,7 +1,6 @@
 package http.request;
 
 import http.HTTPAction;
-import http.RequestHeader;
 
 import java.util.Optional;
 
