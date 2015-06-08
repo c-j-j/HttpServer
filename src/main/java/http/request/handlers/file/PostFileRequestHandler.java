@@ -1,13 +1,13 @@
-package http.response;
+package http.request.handlers.file;
 
-import builders.ResponseBuilder;
+import http.response.builders.ResponseBuilder;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 
 import java.io.File;
 
-public class PostFileResponseHandler implements FileResponseHandler {
+public class PostFileRequestHandler implements FileRequestHandler {
     @Override
     public Response getResponse(File baseFolder, Request request) {
         if (new File(baseFolder, request.getPath()).exists()){

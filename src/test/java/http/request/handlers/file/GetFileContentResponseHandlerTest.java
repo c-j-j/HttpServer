@@ -1,8 +1,8 @@
-package http.response;
+package http.request.handlers.file;
 
 import http.request.builder.RequestHeaderBuilder;
-import http.ContentType;
-import http.Response;
+import http.request.ContentType;
+import http.response.Response;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
 import org.apache.commons.io.FileUtils;
@@ -30,7 +30,7 @@ public class GetFileContentResponseHandlerTest {
     @Test
     public void containsPlainContentType() throws IOException {
         FileUtils.writeStringToFile(new File(baseFolder, "plainFile"), "Hello world");
-        Response response = new GetFileContentResponseHandler().getResponse(baseFolder, getBuild("/plainFile"));
+        Response response = new GetFileContentRequestHandler().getResponse(baseFolder, getBuild("/plainFile"));
         assertThat(response.getContentType()).isEqualTo(ContentType.PLAIN);
     }
 
@@ -41,7 +41,7 @@ public class GetFileContentResponseHandlerTest {
     @Test
     public void containsJPEGContentType() throws IOException {
         FileUtils.writeStringToFile(new File(baseFolder, "image.jpeg"), "imageData");
-        Response response = new GetFileContentResponseHandler().getResponse(baseFolder, getBuild("/image.jpeg"));
+        Response response = new GetFileContentRequestHandler().getResponse(baseFolder, getBuild("/image.jpeg"));
         assertThat(response.getContentType()).isEqualTo(ContentType.JPEG);
     }
 
@@ -49,7 +49,7 @@ public class GetFileContentResponseHandlerTest {
     public void containsContentLength() throws IOException {
         File requestedFile = new File(baseFolder, "plainFile");
         FileUtils.writeStringToFile(requestedFile, "Hello world");
-        Response response = new GetFileContentResponseHandler().getResponse(baseFolder, getBuild("/plainFile"));
+        Response response = new GetFileContentRequestHandler().getResponse(baseFolder, getBuild("/plainFile"));
         assertThat(response.getContentLength()).isEqualTo(requestedFile.length());
     }
 }

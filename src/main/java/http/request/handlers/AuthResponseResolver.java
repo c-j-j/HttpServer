@@ -1,8 +1,8 @@
 package http.request.handlers;
 
-import builders.ResponseBuilder;
+import http.response.builders.ResponseBuilder;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.auth.AuthenticationHeader;
 import http.request.Request;
 

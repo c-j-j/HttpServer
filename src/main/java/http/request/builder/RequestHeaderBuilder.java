@@ -1,7 +1,7 @@
 package http.request.builder;
 
 import http.request.ByteRange;
-import http.HTTPAction;
+import http.request.HTTPAction;
 import http.request.RequestHeader;
 import http.auth.AuthenticationHeader;
 

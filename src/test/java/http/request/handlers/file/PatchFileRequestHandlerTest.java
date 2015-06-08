@@ -1,8 +1,8 @@
-package http.response.file;
+package http.request.handlers.file;
 
 import http.request.builder.RequestHeaderBuilder;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
 import org.apache.commons.io.FileUtils;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PatchFileResponseHandlerTest {
+public class PatchFileRequestHandlerTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -33,7 +33,7 @@ public class PatchFileResponseHandlerTest {
     @Test
     public void patchesFileWhenIfMatchValueNotProvided() throws IOException {
         String patchedContent = "patchedContent";
-        Response response = new PatchFileResponseHandler()
+        Response response = new PatchFileRequestHandler()
                 .getResponse(baseDir, buildRequest(fileToPatch.getName(), patchedContent, Optional.empty()));
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NO_CONTENT);
         assertThat(FileUtils.readFileToString(fileToPatch)).isEqualTo(patchedContent);
@@ -43,8 +43,8 @@ public class PatchFileResponseHandlerTest {
     public void patchesFileWhenIfMatchValueMatches() throws IOException {
         FileUtils.writeStringToFile(fileToPatch, "originalContent");
         String patchedContent = "patchedContent";
-        Response response = new PatchFileResponseHandler()
-                .getResponse(baseDir, buildRequest(fileToPatch.getName(), patchedContent, Optional.of(PatchFileResponseHandler.Sha1Hash.generateHash(fileToPatch))));
+        Response response = new PatchFileRequestHandler()
+                .getResponse(baseDir, buildRequest(fileToPatch.getName(), patchedContent, Optional.of(PatchFileRequestHandler.Sha1Hash.generateHash(fileToPatch))));
         assertThat(FileUtils.readFileToString(fileToPatch)).isEqualTo(patchedContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NO_CONTENT);
     }
@@ -53,7 +53,7 @@ public class PatchFileResponseHandlerTest {
     public void returnsPreconditionFailedResponseWhenETagFailsToMatch() throws IOException {
         String originalContent = "originalContent";
         FileUtils.writeStringToFile(fileToPatch, originalContent);
-        Response response = new PatchFileResponseHandler()
+        Response response = new PatchFileRequestHandler()
                 .getResponse(baseDir, buildRequest(fileToPatch.getName(), "patchedContent", Optional.of("InvalidHash")));
         assertThat(FileUtils.readFileToString(fileToPatch)).isEqualTo(originalContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.PRECONDITION_FAILED);

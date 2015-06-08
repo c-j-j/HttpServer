@@ -1,6 +1,9 @@
-package http;
+package http.response;
 
-import builders.ResponseBuilder;
+import http.HTTPStatusCode;
+import http.request.ContentType;
+import http.request.HTTPAction;
+import http.response.builders.ResponseBuilder;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -5,6 +5,7 @@ Lots of null checking in request message builder
 More cohesion with request deser and http message builder
 Dont like these java functions with nondescript names
 Response should have body, not content
+ACtual error handling
 
 If there's time...
 

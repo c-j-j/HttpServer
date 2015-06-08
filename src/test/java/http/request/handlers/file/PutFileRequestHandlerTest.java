@@ -1,8 +1,8 @@
-package http.response;
+package http.request.handlers.file;
 
 import http.request.builder.RequestHeaderBuilder;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
 import org.apache.commons.io.FileUtils;
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PutFileResponseHandlerTest {
+public class PutFileRequestHandlerTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -28,7 +28,7 @@ public class PutFileResponseHandlerTest {
     }
     @Test
     public void yields200Status() {
-        Response response = new PutFileFileResponseHandler().getResponse(baseDir, buildRequest("/new_file"));
+        Response response = new PutFileFileRequestHandler().getResponse(baseDir, buildRequest("/new_file"));
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
@@ -41,7 +41,7 @@ public class PutFileResponseHandlerTest {
         File existentFile = new File(baseDir, "existentFile");
         FileUtils.writeStringToFile(existentFile, "I already exist");
 
-        Response response = new PutFileFileResponseHandler().getResponse(baseDir, buildRequest("/existentFile"));
+        Response response = new PutFileFileRequestHandler().getResponse(baseDir, buildRequest("/existentFile"));
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.METHOD_NOT_ALLOWED);
     }
 }

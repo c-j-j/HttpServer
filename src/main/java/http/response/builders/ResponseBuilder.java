@@ -1,10 +1,10 @@
-package builders;
+package http.response.builders;
 
 import com.google.common.io.ByteSource;
-import http.ContentType;
-import http.HTTPAction;
+import http.request.ContentType;
+import http.request.HTTPAction;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 
 public class ResponseBuilder {
     private HTTPStatusCode statusCode = HTTPStatusCode.OK;

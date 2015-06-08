@@ -1,7 +1,7 @@
 package http.request.parsing;
 
-import http.FakeSocket;
-import http.HTTPAction;
+import http.fakes.FakeSocket;
+import http.request.HTTPAction;
 import http.builders.HTTPRequestMessageBuilder;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;

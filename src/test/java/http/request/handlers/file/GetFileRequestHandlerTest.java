@@ -1,10 +1,11 @@
-package http.response;
+package http.request.handlers.file;
 
 import http.request.builder.RequestHeaderBuilder;
 import http.*;
 import http.request.Request;
 import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;
+import http.response.Response;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetFileResponseHandlerTest {
+public class GetFileRequestHandlerTest {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
@@ -34,14 +35,14 @@ public class GetFileResponseHandlerTest {
     public void fileContents() throws IOException {
         String fileContent = "Hello, World";
         writeToFile("filename", fileContent);
-        Response response = new GetFileResponseHandler().getResponse(baseFolder, request);
+        Response response = new GetFileRequestHandler().getResponse(baseFolder, request);
         assertThat(response.getContentsAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     @Test
     public void fileNotFound() {
-        Response response = new GetFileResponseHandler().getResponse(baseFolder, request);
+        Response response = new GetFileRequestHandler().getResponse(baseFolder, request);
         assertThat(response.getContentsAsString()).isEmpty();
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);
     }

@@ -1,9 +1,9 @@
 package http.resource;
 
-import builders.ResponseBuilder;
-import http.HTTPAction;
+import http.response.builders.ResponseBuilder;
+import http.request.HTTPAction;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 
 public class FormResource implements Resource{

@@ -1,4 +1,4 @@
-package http;
+package http.response;
 
 import com.google.common.io.ByteSource;
 

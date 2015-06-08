@@ -1,8 +1,8 @@
 package http.resource;
 
-import builders.ResponseBuilder;
-import http.HTTPAction;
-import http.Response;
+import http.response.builders.ResponseBuilder;
+import http.request.HTTPAction;
+import http.response.Response;
 import http.request.Request;
 
 import java.util.Map;

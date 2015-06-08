@@ -1,7 +1,9 @@
 package http;
 
+import http.request.HTTPAction;
 import http.request.builder.RequestHeaderBuilder;
-import builders.ResponseBuilder;
+import http.response.Response;
+import http.response.builders.ResponseBuilder;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
 import http.resource.Endpoint;

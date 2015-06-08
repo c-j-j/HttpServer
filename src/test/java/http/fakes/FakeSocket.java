@@ -1,4 +1,4 @@
-package http;
+package http.fakes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

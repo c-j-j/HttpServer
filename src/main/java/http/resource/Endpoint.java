@@ -1,6 +1,6 @@
 package http.resource;
 
-import http.HTTPAction;
+import http.request.HTTPAction;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

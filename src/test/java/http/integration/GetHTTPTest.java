@@ -1,6 +1,6 @@
 package http.integration;
 
-import http.HTTPAction;
+import http.request.HTTPAction;
 import http.builders.HTTPRequestMessageBuilder;
 import org.junit.Test;
 

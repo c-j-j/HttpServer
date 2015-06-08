@@ -1,7 +1,7 @@
 package http.resource;
 
 import http.request.builder.RequestHeaderBuilder;
-import http.Response;
+import http.response.Response;
 import http.request.builder.RequestBuilder;
 import org.junit.Test;
 

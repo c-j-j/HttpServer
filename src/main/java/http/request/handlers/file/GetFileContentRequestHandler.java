@@ -1,17 +1,17 @@
-package http.response;
+package http.request.handlers.file;
 
-import builders.ResponseBuilder;
+import http.response.builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
-import http.ContentType;
+import http.request.ContentType;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
-public class GetFileContentResponseHandler implements FileResponseHandler {
+public class GetFileContentRequestHandler implements FileRequestHandler {
 
     @Override
     public Response getResponse(File baseFolder, Request request) {

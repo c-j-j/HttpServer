@@ -1,20 +1,20 @@
-package http.response;
+package http.request.handlers.file;
 
-import http.request.builder.RequestHeaderBuilder;
-import http.HTTPAction;
+import http.request.HTTPAction;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import org.junit.Test;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OptionFileResponseHandlerTest {
+public class OptionFileRequestHandlerTest {
 
-    private OptionFileResponseHandler optionResponseResolver = new OptionFileResponseHandler();
+    private OptionFileRequestHandler optionResponseResolver = new OptionFileRequestHandler();
     private Request request = new RequestBuilder().withHeader(new RequestHeaderBuilder().withHTTPAction(HTTPAction.OPTIONS).build()).build();
 
     @Test

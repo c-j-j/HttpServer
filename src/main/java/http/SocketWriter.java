@@ -1,5 +1,8 @@
 package http;
 
+import http.response.Response;
+import http.response.Serializer;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.function.BiConsumer;

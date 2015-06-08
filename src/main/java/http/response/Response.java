@@ -1,6 +1,9 @@
-package http;
+package http.response;
 
 import com.google.common.io.ByteSource;
+import http.HTTPStatusCode;
+import http.request.ContentType;
+import http.request.HTTPAction;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

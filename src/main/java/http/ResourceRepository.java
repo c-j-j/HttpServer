@@ -3,6 +3,7 @@ package http;
 import http.request.Request;
 import http.resource.Endpoint;
 import http.resource.Resource;
+import http.response.Response;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

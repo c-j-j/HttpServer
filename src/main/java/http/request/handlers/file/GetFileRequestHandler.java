@@ -1,15 +1,15 @@
-package http.response;
+package http.request.handlers.file;
 
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 
 import java.io.File;
 
-public class GetFileResponseHandler implements FileResponseHandler {
+public class GetFileRequestHandler implements FileRequestHandler {
 
-    private final NotFoundFileResponseHandler notFoundResponseResolver = new NotFoundFileResponseHandler();
-    private final GetDirectoryResponseHandler getDirectoryResponseResolver = new GetDirectoryResponseHandler();
-    private final GetFileContentResponseHandler getFileContentResponseResolver = new GetFileContentResponseHandler();
+    private final NotFoundFileRequestHandler notFoundResponseResolver = new NotFoundFileRequestHandler();
+    private final GetDirectoryRequestHandler getDirectoryResponseResolver = new GetDirectoryRequestHandler();
+    private final GetFileContentRequestHandler getFileContentResponseResolver = new GetFileContentRequestHandler();
 
     @Override
     public Response getResponse(File baseFolder, Request request) {

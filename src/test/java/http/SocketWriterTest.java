@@ -1,6 +1,9 @@
 package http;
 
-import builders.ResponseBuilder;
+import http.fakes.FakeSocket;
+import http.response.Response;
+import http.response.Serializer;
+import http.response.builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
 import org.junit.Before;
 import org.junit.Test;

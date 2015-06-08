@@ -1,6 +1,6 @@
 package http.request.handlers;
 
-import http.Response;
+import http.response.Response;
 import http.request.Request;
 
 import java.util.function.Consumer;

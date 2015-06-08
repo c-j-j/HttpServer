@@ -1,6 +1,7 @@
 package http;
 
-import builders.ResponseBuilder;
+import http.response.Response;
+import http.response.builders.ResponseBuilder;
 import http.request.Request;
 
 import java.io.IOException;

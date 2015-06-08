@@ -1,9 +1,12 @@
-package http;
+package http.request.handlers;
 
-import http.request.builder.RequestHeaderBuilder;
-import builders.ResponseBuilder;
+import http.HTTPStatusCode;
+import http.ResourceRepository;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
+import http.request.builder.RequestHeaderBuilder;
+import http.response.Response;
+import http.response.builders.ResponseBuilder;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,14 +19,14 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ResponseGeneratorTest {
+public class RequestRouterTest {
 
     private static final String FILE_NAME = "tempFile";
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private File baseFolder;
-    private ResponseGenerator responseGenerator;
+    private RequestRouter requestRouter;
     private StubResourceRepository resourceRepository;
     private Request request;
 
@@ -32,14 +35,14 @@ public class ResponseGeneratorTest {
         resourceRepository = new StubResourceRepository();
         baseFolder = temporaryFolder.newFolder();
         request = new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI("/tempFile").build()).build();
-        responseGenerator = new ResponseGenerator(resourceRepository, baseFolder);
+        requestRouter = new RequestRouter(resourceRepository, baseFolder);
     }
 
     @Test
     public void usesFileSystemWhenResourcesNotAvailable() throws IOException {
         String fileContent = "Hello, World";
         writeToFile(FILE_NAME, fileContent);
-        Response response = responseGenerator.apply(request);
+        Response response = requestRouter.apply(request);
         assertThat(response.getContentsAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
@@ -48,7 +51,7 @@ public class ResponseGeneratorTest {
     public void usesResourcesWhenAvailable() {
         Response response = new ResponseBuilder().build();
         resourceRepository.stubResponse(request, response);
-        assertThat(responseGenerator.apply(request)).isEqualTo(response);
+        assertThat(requestRouter.apply(request)).isEqualTo(response);
     }
 
     private void writeToFile(String fileName, String fileContents) throws IOException {

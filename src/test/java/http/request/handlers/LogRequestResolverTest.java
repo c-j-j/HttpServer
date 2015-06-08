@@ -1,8 +1,8 @@
 package http.request.handlers;
 
 import http.request.builder.RequestHeaderBuilder;
-import builders.ResponseBuilder;
-import http.Response;
+import http.response.builders.ResponseBuilder;
+import http.response.Response;
 import http.request.Request;
 import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;

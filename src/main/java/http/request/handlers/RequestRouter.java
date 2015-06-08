@@ -1,17 +1,19 @@
-package http;
+package http.request.handlers;
 
-import builders.ResponseBuilder;
+import http.ResourceRepository;
+import http.response.Response;
+import http.response.builders.ResponseBuilder;
 import http.request.Request;
 
 import java.io.File;
 import java.util.function.Function;
 
-public class ResponseGenerator implements Function<Request, Response> {
+public class RequestRouter implements Function<Request, Response> {
 
     private final ResourceRepository resourceRepository;
     private final File baseFolder;
 
-    public ResponseGenerator(ResourceRepository resourceRepository, File baseFolder) {
+    public RequestRouter(ResourceRepository resourceRepository, File baseFolder) {
         this.resourceRepository = resourceRepository;
         this.baseFolder = baseFolder;
     }

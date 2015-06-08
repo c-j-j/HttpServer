@@ -1,11 +1,10 @@
-package http.response.file;
+package http.request.handlers.file;
 
-import builders.ResponseBuilder;
+import http.response.builders.ResponseBuilder;
 import com.google.common.hash.Hashing;
 import http.HTTPStatusCode;
-import http.Response;
+import http.response.Response;
 import http.request.Request;
-import http.response.FileResponseHandler;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 
-public class PatchFileResponseHandler implements FileResponseHandler {
+public class PatchFileRequestHandler implements FileRequestHandler {
 
     @Override
     public Response getResponse(File baseFolder, Request request) {

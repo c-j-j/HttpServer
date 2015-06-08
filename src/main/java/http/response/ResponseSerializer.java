@@ -1,7 +1,8 @@
-package http;
+package http.response;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.ByteSource;
+import http.HTTPStatusCode;
 import org.apache.commons.lang.StringUtils;
 
 public class ResponseSerializer implements Serializer {

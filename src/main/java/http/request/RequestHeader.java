@@ -1,7 +1,6 @@
 package http.request;
 
-import http.HTTPAction;
-import http.Response;
+import http.response.Response;
 import http.auth.AuthenticationHeader;
 import http.url.UrlDecode;
 

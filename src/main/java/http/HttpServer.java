@@ -4,8 +4,10 @@ import http.logging.Logger;
 import http.request.handlers.AuthResponseResolver;
 import http.request.handlers.LogRequestResolver;
 import http.request.handlers.PartialContentRequestResolver;
+import http.request.handlers.RequestRouter;
 import http.request.parsing.RequestParser;
 import http.resource.Resource;
+import http.response.ResponseSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +52,7 @@ public class HttpServer {
     }
 
     private LogRequestResolver buildResponseResolver(Logger logger) {
-        return new LogRequestResolver(logger, new AuthResponseResolver(new PartialContentRequestResolver(new ResponseGenerator(new ResourceRepository(resources), baseDirectory))));
+        return new LogRequestResolver(logger, new AuthResponseResolver(new PartialContentRequestResolver(new RequestRouter(new ResourceRepository(resources), baseDirectory))));
     }
 
     private void submitRequestToThreadpool(RequestConsumer requestConsumer, Socket socket) {

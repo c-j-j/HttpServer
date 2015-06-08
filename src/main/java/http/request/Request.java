@@ -1,7 +1,5 @@
 package http.request;
 
-import http.HTTPAction;
-
 import java.util.Optional;
 
 public class Request {

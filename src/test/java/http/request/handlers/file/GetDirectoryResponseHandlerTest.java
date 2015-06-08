@@ -1,8 +1,8 @@
-package http.response;
+package http.request.handlers.file;
 
-import http.request.builder.RequestHeaderBuilder;
-import http.Response;
+import http.response.Response;
 import http.request.builder.RequestBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,12 +18,12 @@ public class GetDirectoryResponseHandlerTest {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
     private File folder;
-    private GetDirectoryResponseHandler getDirectoryResponseResolver;
+    private GetDirectoryRequestHandler getDirectoryResponseResolver;
 
     @Before
     public void setUp() throws IOException {
         folder = temporaryFolder.newFolder();
-        getDirectoryResponseResolver = new GetDirectoryResponseHandler();
+        getDirectoryResponseResolver = new GetDirectoryRequestHandler();
     }
 
     @Test
