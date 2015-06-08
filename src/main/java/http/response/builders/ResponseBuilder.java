@@ -3,7 +3,7 @@ package http.response.builders;
 import com.google.common.io.ByteSource;
 import http.request.ContentType;
 import http.request.HTTPAction;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 
 public class ResponseBuilder {

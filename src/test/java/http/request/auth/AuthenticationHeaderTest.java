@@ -1,4 +1,4 @@
-package http.auth;
+package http.request.auth;
 
 import org.junit.Before;
 import org.junit.Test;

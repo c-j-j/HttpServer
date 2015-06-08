@@ -1,8 +1,8 @@
-package http;
+package http.request;
 
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import http.response.builders.ResponseBuilder;
-import http.request.Request;
 
 import java.io.IOException;
 import java.net.Socket;

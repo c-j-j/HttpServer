@@ -1,10 +1,10 @@
 package http.request.handlers.file;
 
 import http.request.builder.RequestHeaderBuilder;
-import http.*;
 import http.request.Request;
 import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;

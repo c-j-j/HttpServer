@@ -1,4 +1,4 @@
-package http.auth;
+package http.request.auth;
 
 import java.util.Base64;
 

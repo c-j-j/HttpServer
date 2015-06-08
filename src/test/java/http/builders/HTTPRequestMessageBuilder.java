@@ -1,7 +1,7 @@
 package http.builders;
 
 import http.request.HTTPAction;
-import http.auth.AuthenticationHeader;
+import http.request.auth.AuthenticationHeader;
 
 public class HTTPRequestMessageBuilder {
 

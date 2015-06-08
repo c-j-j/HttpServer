@@ -1,6 +1,7 @@
-package http.resource;
+package http.resource.resources;
 
 import http.request.builder.RequestHeaderBuilder;
+import http.resource.resources.ParameterResource;
 import http.response.Response;
 import http.request.builder.RequestBuilder;
 import org.junit.Test;

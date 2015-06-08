@@ -1,17 +1,16 @@
-package http;
+package http.response;
 
-import http.response.Response;
-import http.response.Serializer;
+import http.response.serializers.Serializer;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.function.BiConsumer;
 
-public class SocketWriter implements BiConsumer<Socket, Response>{
+public class ResponseWriter implements BiConsumer<Socket, Response>{
 
     private final Serializer serializer;
 
-    public SocketWriter(Serializer serializer) {
+    public ResponseWriter(Serializer serializer) {
         this.serializer = serializer;
     }
 

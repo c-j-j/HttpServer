@@ -1,7 +1,7 @@
 package http.request;
 
 import http.response.Response;
-import http.auth.AuthenticationHeader;
+import http.request.auth.AuthenticationHeader;
 import http.url.UrlDecode;
 
 import java.io.File;

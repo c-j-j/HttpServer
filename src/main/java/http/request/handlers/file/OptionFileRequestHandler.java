@@ -2,7 +2,7 @@ package http.request.handlers.file;
 
 import http.response.builders.ResponseBuilder;
 import http.request.HTTPAction;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import http.request.Request;
 

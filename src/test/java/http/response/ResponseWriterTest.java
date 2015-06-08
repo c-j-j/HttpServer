@@ -1,10 +1,9 @@
-package http;
+package http.response;
 
-import http.fakes.FakeSocket;
-import http.response.Response;
-import http.response.Serializer;
-import http.response.builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
+import http.fakes.FakeSocket;
+import http.response.builders.ResponseBuilder;
+import http.response.serializers.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SocketWriterTest {
+public class ResponseWriterTest {
 
     private ByteArrayOutputStream outputStreamWritten;
     private FakeSocket socket;
@@ -27,7 +26,7 @@ public class SocketWriterTest {
     public void WritesResponseToOutput() {
         Response response = new ResponseBuilder().build();
         Serializer serializer = response1 -> ByteSource.wrap("response text".getBytes());
-        new SocketWriter(serializer).accept(socket, response);
+        new ResponseWriter(serializer).accept(socket, response);
         assertThat(outputStreamWritten.toString()).isEqualTo("response text");
 
     }

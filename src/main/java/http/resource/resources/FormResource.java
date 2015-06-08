@@ -1,12 +1,14 @@
-package http.resource;
+package http.resource.resources;
 
+import http.resource.Endpoint;
+import http.resource.Resource;
 import http.response.builders.ResponseBuilder;
 import http.request.HTTPAction;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import http.request.Request;
 
-public class FormResource implements Resource{
+public class FormResource implements Resource {
 
     private static final String FORM_PATH = "/form";
     private String postedData = "";

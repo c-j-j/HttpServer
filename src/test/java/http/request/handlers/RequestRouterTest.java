@@ -1,7 +1,7 @@
 package http.request.handlers;
 
-import http.HTTPStatusCode;
-import http.ResourceRepository;
+import http.response.HTTPStatusCode;
+import http.resource.ResourceRepository;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
 import http.request.builder.RequestHeaderBuilder;

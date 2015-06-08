@@ -1,6 +1,6 @@
 package http.builders;
 
-import http.auth.AuthenticationHeader;
+import http.request.auth.AuthenticationHeader;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,9 +1,9 @@
-package http.resource;
+package http.resource.resources;
 
-import http.HTTPStatusCode;
-import http.response.Response;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
+import http.response.HTTPStatusCode;
+import http.response.Response;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -2,9 +2,9 @@ package http.request.handlers;
 
 import http.request.builder.RequestHeaderBuilder;
 import http.response.builders.ResponseBuilder;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.response.Response;
-import http.auth.AuthenticationHeader;
+import http.request.auth.AuthenticationHeader;
 import http.fakes.SpyFunction;
 import http.request.Request;
 import http.request.RequestHeader;

@@ -1,13 +1,11 @@
-package http;
+package http.resource;
 
 import http.request.HTTPAction;
+import http.request.Request;
+import http.request.builder.RequestBuilder;
 import http.request.builder.RequestHeaderBuilder;
 import http.response.Response;
 import http.response.builders.ResponseBuilder;
-import http.request.Request;
-import http.request.builder.RequestBuilder;
-import http.resource.Endpoint;
-import http.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +50,7 @@ public class ResourceRepositoryTest {
         assertThat(response.getContentsAsString()).isEqualTo("Some Content");
     }
 
-    private class FakeResourse implements Resource {
+    public class FakeResourse implements Resource {
         @Endpoint(action = HTTPAction.GET, path = "/path")
         public Response fakePath(Request request) {
             return new ResponseBuilder().withContent("Some Content").build();

@@ -1,6 +1,6 @@
 package http.request.handlers;
 
-import http.ResourceRepository;
+import http.resource.ResourceRepository;
 import http.response.Response;
 import http.response.builders.ResponseBuilder;
 import http.request.Request;

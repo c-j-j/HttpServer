@@ -1,7 +1,7 @@
 package http.request.parsing;
 
 import http.request.HTTPAction;
-import http.auth.AuthenticationHeader;
+import http.request.auth.AuthenticationHeader;
 import http.builders.HTTPRequestMessageBuilder;
 import http.request.RequestHeader;
 import http.request.parsing.deserializers.RequestHeaderDeserialiser;

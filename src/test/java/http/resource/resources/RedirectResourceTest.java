@@ -1,9 +1,10 @@
-package http.resource;
+package http.resource.resources;
 
 import http.request.builder.RequestHeaderBuilder;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
+import http.resource.resources.RedirectResource;
 import org.junit.Before;
 import org.junit.Test;
 

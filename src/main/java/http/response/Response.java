@@ -1,7 +1,6 @@
 package http.response;
 
 import com.google.common.io.ByteSource;
-import http.HTTPStatusCode;
 import http.request.ContentType;
 import http.request.HTTPAction;
 

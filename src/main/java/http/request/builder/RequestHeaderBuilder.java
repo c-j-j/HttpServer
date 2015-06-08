@@ -3,7 +3,7 @@ package http.request.builder;
 import http.request.ByteRange;
 import http.request.HTTPAction;
 import http.request.RequestHeader;
-import http.auth.AuthenticationHeader;
+import http.request.auth.AuthenticationHeader;
 
 import java.util.Optional;
 

@@ -3,7 +3,7 @@ package http.request.handlers;
 import http.response.builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
 import http.request.ByteRange;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import http.request.Request;
 

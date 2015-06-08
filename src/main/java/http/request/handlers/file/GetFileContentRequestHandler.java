@@ -4,7 +4,7 @@ import http.response.builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import http.request.ContentType;
-import http.HTTPStatusCode;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import http.request.Request;
 import org.apache.commons.io.FilenameUtils;
