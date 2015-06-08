@@ -26,13 +26,28 @@ public class RequestProcessor implements Consumer<Socket> {
     @Override
     public void accept(Socket socket) {
         try {
-            Request request = requestParser.apply(socket);
-            socketWriter.accept(socket, requestHandler.apply(request));
+            writeToSocket(socket, handleRequest(socket));
         } catch (RuntimeException e) {
-            socketWriter.accept(socket, new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build());
+            writeToSocket(socket, internalServerError());
         } finally {
             closeSocket(socket);
         }
+    }
+
+    private Response internalServerError() {
+        return new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build();
+    }
+
+    private void writeToSocket(Socket socket, Response u) {
+        socketWriter.accept(socket, u);
+    }
+
+    private Response handleRequest(Socket socket) {
+        return requestHandler.apply(parseRequest(socket));
+    }
+
+    private Request parseRequest(Socket socket) {
+        return requestParser.apply(socket);
     }
 
     private void closeSocket(Socket socket) {

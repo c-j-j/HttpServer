@@ -1,9 +1,8 @@
 package http.request.handlers;
 
+import http.request.Request;
 import http.resource.ResourceRepository;
 import http.response.Response;
-import http.response.builders.ResponseBuilder;
-import http.request.Request;
 
 import java.io.File;
 import java.util.function.Function;
@@ -20,19 +19,19 @@ public class RequestRouter implements Function<Request, Response> {
 
     @Override
     public Response apply(Request request) {
-        try {
-            return generateResponse(request);
-        } catch (RuntimeException e) {
-            return new ResponseBuilder().build();
-        }
+        return generateResponse(request);
     }
 
     private Response generateResponse(Request request) {
         if (resourceRepository.canRespond(request)) {
             return resourceRepository.getResponse(request);
         } else {
-            return request.getHeader().fileBasedResponse(baseFolder, request);
+            return delegateToFileBasedHandler(request);
         }
+    }
+
+    private Response delegateToFileBasedHandler(Request request) {
+        return request.getHeader().fileBasedResponse(baseFolder, request);
     }
 
 }

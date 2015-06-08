@@ -68,7 +68,19 @@ public class HttpServer {
     }
 
     private LogRequestResolver buildResponseResolver(Logger logger) {
-        return new LogRequestResolver(logger, new AuthResponseResolver(new PartialContentRequestResolver(new RequestRouter(new ResourceRepository(resources), baseDirectory))));
+        return new LogRequestResolver(logger, buildAuthRequestWrapper());
+    }
+
+    private AuthResponseResolver buildAuthRequestWrapper() {
+        return new AuthResponseResolver(buildPartialContentWrapper());
+    }
+
+    private PartialContentRequestResolver buildPartialContentWrapper() {
+        return new PartialContentRequestResolver(buildRequestRouter());
+    }
+
+    private RequestRouter buildRequestRouter() {
+        return new RequestRouter(new ResourceRepository(resources), baseDirectory);
     }
 
     private void submitRequestToThreadpool(RequestProcessor requestProcessor, Socket socket) {
