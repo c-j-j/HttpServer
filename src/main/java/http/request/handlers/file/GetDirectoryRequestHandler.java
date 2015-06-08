@@ -13,7 +13,7 @@ public class GetDirectoryRequestHandler implements FileRequestHandler {
         File requestedDirectory = new File(baseFolder, request.getPath());
         return new ResponseBuilder()
                 .withStatusCode(HTTPStatusCode.OK)
-                .withContent(getDirectories(requestedDirectory))
+                .withBody(getDirectories(requestedDirectory))
                 .build();
     }
 

@@ -43,7 +43,7 @@ public class RequestRouterTest {
         String fileContent = "Hello, World";
         writeToFile(FILE_NAME, fileContent);
         Response response = requestRouter.apply(request);
-        assertThat(response.getContentsAsString()).isEqualTo(fileContent);
+        assertThat(response.getBodyAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 

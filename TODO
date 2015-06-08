@@ -1,6 +1,4 @@
 RequestConsumer is more a Socket consumer, and is a barrier for input/output streams
-SocketReader to RequestReader
-SocketWriter smells of SRP, it's doing serialization, etc. It should really just be given a string to output, or change its name to responseOutput
 Lots of null checking in request message builder
 More cohesion with request deser and http message builder
 Dont like these java functions with nondescript names
@@ -10,5 +8,4 @@ ACtual error handling
 If there's time...
 
 never return nullable object, only optional
-clean up packaging
 use separate validator for authentication/configurable protected routes/passwords

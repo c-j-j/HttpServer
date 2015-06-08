@@ -36,14 +36,14 @@ public class GetFileRequestHandlerTest {
         String fileContent = "Hello, World";
         writeToFile("filename", fileContent);
         Response response = new GetFileRequestHandler().getResponse(baseFolder, request);
-        assertThat(response.getContentsAsString()).isEqualTo(fileContent);
+        assertThat(response.getBodyAsString()).isEqualTo(fileContent);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
     }
 
     @Test
     public void fileNotFound() {
         Response response = new GetFileRequestHandler().getResponse(baseFolder, request);
-        assertThat(response.getContentsAsString()).isEmpty();
+        assertThat(response.getBodyAsString()).isEmpty();
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.NOT_FOUND);
     }
 

@@ -10,7 +10,7 @@ public class ResponseSerializer implements Serializer {
 
     @Override
     public ByteSource toPayload(Response response) {
-        return ByteSource.concat(toByteSource(header(response)), response.getContents());
+        return ByteSource.concat(toByteSource(header(response)), response.getBody());
     }
 
     private String header(Response response) {

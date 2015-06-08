@@ -31,7 +31,7 @@ public class ResponseSerializerTest {
 
     @Test
     public void containsContent() throws IOException {
-        Response response = new ResponseBuilder().withContent("Hello World").build();
+        Response response = new ResponseBuilder().withBody("Hello World").build();
         assertThat(serializeResponse(response)).contains(String.format("\n\n%s", "Hello World"));
     }
 

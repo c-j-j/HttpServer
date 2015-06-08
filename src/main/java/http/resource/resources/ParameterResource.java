@@ -14,7 +14,7 @@ public class ParameterResource implements Resource {
     @Endpoint(path = "/parameters", action = HTTPAction.GET)
     public Response parameters(Request request) {
         return new ResponseBuilder()
-                .withContent(queryParametersText(request)).build();
+                .withBody(queryParametersText(request)).build();
     }
 
     private String queryParametersText(Request request) {

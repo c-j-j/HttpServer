@@ -29,7 +29,7 @@ public class PartialContentRequestResolverTest {
         ByteSource wrappedResponseBody = buildByteSource("HelloWorld");
         ByteRange byteRange = new ByteRange(0, 3);
         Response response = new PartialContentRequestResolver(r -> buildResponse(wrappedResponseBody)).apply(buildRequest(byteRange));
-        assertThat(response.getContents().read()).isEqualTo(extractPartOfBody(wrappedResponseBody, byteRange, getContentSize(wrappedResponseBody)).read());
+        assertThat(response.getBody().read()).isEqualTo(extractPartOfBody(wrappedResponseBody, byteRange, getContentSize(wrappedResponseBody)).read());
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.PARTIAL_CONTENT);
     }
 
@@ -50,7 +50,7 @@ public class PartialContentRequestResolverTest {
     }
 
     private Response buildResponse(ByteSource byteSource) {
-        return new ResponseBuilder().withContent(byteSource).build();
+        return new ResponseBuilder().withBody(byteSource).build();
     }
 
     private Request buildRequest(ByteRange byteRange) {

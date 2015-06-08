@@ -27,7 +27,7 @@ public class PartialContentRequestResolver implements Function<Request, Response
         if (getRange(request).isPresent()) {
             return new ResponseBuilder()
                     .withStatusCode(HTTPStatusCode.PARTIAL_CONTENT)
-                    .withContent(extractPartOfBody(wrappedResponse, getSizeOfResponseBody(wrappedResponse), getRange(request).get()))
+                    .withBody(extractPartOfBody(wrappedResponse, getSizeOfResponseBody(wrappedResponse), getRange(request).get()))
                     .build();
         } else {
             return wrappedResponse;
@@ -36,14 +36,14 @@ public class PartialContentRequestResolver implements Function<Request, Response
 
     private int getSizeOfResponseBody(Response wrappedResponse) {
         try {
-            return (int) wrappedResponse.getContents().size();
+            return (int) wrappedResponse.getBody().size();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
     private ByteSource extractPartOfBody(Response wrappedResponse, int contentSize, ByteRange byteRange) {
-        return wrappedResponse.getContents().slice(byteRange.offset(contentSize), byteRange.length(contentSize));
+        return wrappedResponse.getBody().slice(byteRange.offset(contentSize), byteRange.length(contentSize));
     }
 
     private Optional<ByteRange> getRange(Request request) {

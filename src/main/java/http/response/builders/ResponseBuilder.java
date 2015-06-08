@@ -8,23 +8,22 @@ import http.response.Response;
 
 public class ResponseBuilder {
     private HTTPStatusCode statusCode = HTTPStatusCode.OK;
-    private ByteSource content;
+    private ByteSource body;
     private String location;
     private ContentType contentType;
     private HTTPAction[] allowedActions;
-    private long contentLength;
 
     public ResponseBuilder withStatusCode(HTTPStatusCode statusCode) {
         this.statusCode = statusCode;
         return this;
     }
 
-    public ResponseBuilder withContent(String content) {
-        return withContent(ByteSource.wrap(content.getBytes()));
+    public ResponseBuilder withBody(String content) {
+        return withBody(ByteSource.wrap(content.getBytes()));
     }
 
-    public ResponseBuilder withContent(ByteSource content) {
-        this.content = content;
+    public ResponseBuilder withBody(ByteSource content) {
+        this.body = content;
         return this;
     }
 
@@ -43,12 +42,7 @@ public class ResponseBuilder {
         return this;
     }
 
-    public ResponseBuilder withContentLength(long contentLength) {
-        this.contentLength = contentLength;
-        return this;
-    }
-
     public Response build() {
-        return new Response(statusCode, location, content, contentType, allowedActions);
+        return new Response(statusCode, location, body, contentType, allowedActions);
     }
 }

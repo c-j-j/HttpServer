@@ -10,29 +10,29 @@ import java.util.Optional;
 
 public class Response {
     private final String location;
-    private final ByteSource contents;
+    private final ByteSource body;
     private final HTTPStatusCode statusCode;
     private final ContentType contentType;
     private final HTTPAction[] allowedActions;
 
-    public Response(HTTPStatusCode statusCode, String location, ByteSource contents, ContentType contentType, HTTPAction[] allowedActions) {
+    public Response(HTTPStatusCode statusCode, String location, ByteSource body, ContentType contentType, HTTPAction[] allowedActions) {
         this.location = location;
-        this.contents = Optional.ofNullable(contents).orElse(ByteSource.empty());
+        this.body = Optional.ofNullable(body).orElse(ByteSource.empty());
         this.statusCode = statusCode;
         this.contentType = contentType;
         this.allowedActions = allowedActions;
     }
 
-    public String getContentsAsString() {
+    public String getBodyAsString() {
         try {
-            return new String(contents.read());
+            return new String(body.read());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    public ByteSource getContents(){
-        return contents;
+    public ByteSource getBody(){
+        return body;
     }
 
     public HTTPStatusCode getStatusCode() {
@@ -53,7 +53,7 @@ public class Response {
 
     public long getContentLength() {
         try {
-            return contents.size();
+            return body.size();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

@@ -41,7 +41,7 @@ public class AuthResponseResolverTest {
         Request request = buildRequest("/logs");
         Response response = new AuthResponseResolver(wrappedResponseResolver).apply(request);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.UNAUTHORIZED);
-        assertThat(response.getContentsAsString()).isEqualTo("Authentication required");
+        assertThat(response.getBodyAsString()).isEqualTo("Authentication required");
     }
 
     @Test

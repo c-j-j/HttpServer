@@ -25,7 +25,7 @@ public class FormResourceTest {
         assertThat(postResponse.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
 
         Response getResponse = formResource.get(request);
-        assertThat(getResponse.getContentsAsString()).isEqualTo("someBody");
+        assertThat(getResponse.getBodyAsString()).isEqualTo("someBody");
     }
 
     @Test
@@ -34,7 +34,7 @@ public class FormResourceTest {
         assertThat(postResponse.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
 
         Response getResponse = formResource.get(request);
-        assertThat(getResponse.getContentsAsString()).isEqualTo("someUpdatedBody");
+        assertThat(getResponse.getBodyAsString()).isEqualTo("someUpdatedBody");
     }
 
     @Test
@@ -43,6 +43,6 @@ public class FormResourceTest {
         assertThat(postResponse.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
 
         Response getResponse = formResource.get(request);
-        assertThat(getResponse.getContentsAsString()).isEmpty();
+        assertThat(getResponse.getBodyAsString()).isEmpty();
     }
 }

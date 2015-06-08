@@ -31,7 +31,7 @@ public class GetDirectoryResponseHandlerTest {
         createFile(folder, "file1");
         createFile(folder, "file2");
         Response response = getDirectoryResponseResolver.getResponse(folder, new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI("/").build()).build());
-        assertThat(response.getContentsAsString()).contains("file1", "file2");
+        assertThat(response.getBodyAsString()).contains("file1", "file2");
     }
 
     @Test
@@ -39,7 +39,7 @@ public class GetDirectoryResponseHandlerTest {
         String filename = "file1";
         createFile(folder, filename);
         Response response = getDirectoryResponseResolver.getResponse(folder, new RequestBuilder().withHeader(new RequestHeaderBuilder().withURI("/").build()).build());
-        assertThat(response.getContentsAsString()).contains(String.format("<a href=\"/%s\">%s</a>", filename, filename));
+        assertThat(response.getBodyAsString()).contains(String.format("<a href=\"/%s\">%s</a>", filename, filename));
     }
 
     private void createFile(File folder, String name) throws IOException {

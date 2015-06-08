@@ -15,7 +15,7 @@ public class FormResource implements Resource {
 
     @Endpoint(path = FORM_PATH, action = HTTPAction.GET)
     public Response get(Request request) {
-        return new ResponseBuilder().withContent(postedData).withStatusCode(HTTPStatusCode.OK).build();
+        return new ResponseBuilder().withBody(postedData).withStatusCode(HTTPStatusCode.OK).build();
     }
 
     @Endpoint(path = FORM_PATH, action = HTTPAction.POST)

@@ -47,13 +47,13 @@ public class ResourceRepositoryTest {
     @Test
     public void respondsToRequest(){
         Response response = resourceRepository.getResponse(validRequest);
-        assertThat(response.getContentsAsString()).isEqualTo("Some Content");
+        assertThat(response.getBodyAsString()).isEqualTo("Some Content");
     }
 
     public class FakeResourse implements Resource {
         @Endpoint(action = HTTPAction.GET, path = "/path")
         public Response fakePath(Request request) {
-            return new ResponseBuilder().withContent("Some Content").build();
+            return new ResponseBuilder().withBody("Some Content").build();
         }
     }
 

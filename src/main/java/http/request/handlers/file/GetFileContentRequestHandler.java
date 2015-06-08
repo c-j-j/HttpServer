@@ -19,8 +19,7 @@ public class GetFileContentRequestHandler implements FileRequestHandler {
         return new ResponseBuilder()
                 .withStatusCode(HTTPStatusCode.OK)
                 .withContentType(determineContentType(requestedFile))
-                .withContentLength(requestedFile.length())
-                .withContent(readFile(requestedFile))
+                .withBody(readFile(requestedFile))
                 .build();
     }
 

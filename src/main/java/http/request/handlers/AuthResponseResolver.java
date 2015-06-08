@@ -51,7 +51,7 @@ public class AuthResponseResolver implements Function<Request, Response> {
 
     private Response unauthorizedResponse() {
         return new ResponseBuilder()
-                .withContent("Authentication required")
+                .withBody("Authentication required")
                 .withStatusCode(HTTPStatusCode.UNAUTHORIZED).build();
     }
 
