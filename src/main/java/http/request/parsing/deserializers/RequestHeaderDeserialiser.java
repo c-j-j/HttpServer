@@ -1,10 +1,10 @@
-package http.request;
+package http.request.parsing.deserializers;
 
-import builders.RequestHeaderBuilder;
-import http.ByteRange;
+import http.request.builder.RequestHeaderBuilder;
 import http.HTTPAction;
 import http.auth.AuthenticationHeader;
-import http.request.RangeDeserializer.ByteRangeDeserialiser;
+import http.request.ByteRange;
+import http.request.RequestHeader;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;

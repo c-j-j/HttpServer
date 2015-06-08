@@ -1,6 +1,6 @@
 package http;
 
-import builders.RequestHeaderBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.fakes.SpyFunction;
 import http.request.Request;

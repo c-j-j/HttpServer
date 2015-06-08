@@ -1,9 +1,10 @@
-package http.request;
+package http.request.handlers;
 
 import builders.ResponseBuilder;
 import http.HTTPStatusCode;
 import http.Response;
 import http.auth.AuthenticationHeader;
+import http.request.Request;
 
 import java.util.function.Function;
 

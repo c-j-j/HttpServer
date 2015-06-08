@@ -1,6 +1,6 @@
 package http.response;
 
-import builders.RequestHeaderBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import http.*;
 import http.request.Request;
 import http.request.RequestHeader;

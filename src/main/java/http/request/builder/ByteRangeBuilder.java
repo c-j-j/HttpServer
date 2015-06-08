@@ -1,6 +1,6 @@
-package http.request;
+package http.request.builder;
 
-import http.ByteRange;
+import http.request.ByteRange;
 
 import java.util.Optional;
 

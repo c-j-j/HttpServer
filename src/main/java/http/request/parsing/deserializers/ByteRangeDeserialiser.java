@@ -1,7 +1,7 @@
-package http.request.RangeDeserializer;
+package http.request.parsing.deserializers;
 
-import http.ByteRange;
-import http.request.ByteRangeBuilder;
+import http.request.ByteRange;
+import http.request.builder.ByteRangeBuilder;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.function.Function;

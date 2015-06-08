@@ -1,10 +1,10 @@
 package http;
 
 import http.logging.Logger;
-import http.request.AuthResponseResolver;
-import http.request.LogRequestResolver;
-import http.request.PartialContentRequestResolver;
-import http.request.RequestParser;
+import http.request.handlers.AuthResponseResolver;
+import http.request.handlers.LogRequestResolver;
+import http.request.handlers.PartialContentRequestResolver;
+import http.request.parsing.RequestParser;
 import http.resource.Resource;
 
 import java.io.File;

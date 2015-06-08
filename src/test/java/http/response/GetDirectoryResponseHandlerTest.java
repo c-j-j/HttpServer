@@ -1,6 +1,6 @@
 package http.response;
 
-import builders.RequestHeaderBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import http.Response;
 import http.request.builder.RequestBuilder;
 import org.junit.Before;

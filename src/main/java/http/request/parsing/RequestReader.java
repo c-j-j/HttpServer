@@ -1,4 +1,4 @@
-package http.request;
+package http.request.parsing;
 
 import org.apache.commons.lang.StringUtils;
 

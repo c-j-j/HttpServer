@@ -1,10 +1,11 @@
-package http.request;
+package http.request.handlers;
 
 import builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
-import http.ByteRange;
+import http.request.ByteRange;
 import http.HTTPStatusCode;
 import http.Response;
+import http.request.Request;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

@@ -1,8 +1,10 @@
-package http.request;
+package http.request.parsing;
 
 import http.HTTPAction;
 import http.auth.AuthenticationHeader;
 import http.builders.HTTPRequestMessageBuilder;
+import http.request.RequestHeader;
+import http.request.parsing.deserializers.RequestHeaderDeserialiser;
 import org.junit.Before;
 import org.junit.Test;
 

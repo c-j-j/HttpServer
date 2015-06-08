@@ -1,6 +1,9 @@
-package http.request;
+package http.request.parsing;
 
+import http.request.Request;
+import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;
+import http.request.parsing.deserializers.RequestHeaderDeserialiser;
 
 import java.io.BufferedReader;
 import java.io.IOException;

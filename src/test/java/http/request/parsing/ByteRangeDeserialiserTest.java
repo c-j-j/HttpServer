@@ -1,6 +1,7 @@
-package http.request.RangeDeserializer;
+package http.request.parsing;
 
-import http.ByteRange;
+import http.request.ByteRange;
+import http.request.parsing.deserializers.ByteRangeDeserialiser;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

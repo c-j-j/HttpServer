@@ -1,11 +1,12 @@
-package http.request;
+package http.request.handlers;
 
-import builders.RequestHeaderBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import com.google.common.io.ByteSource;
-import http.ByteRange;
+import http.request.ByteRange;
 import http.HTTPStatusCode;
 import http.Response;
+import http.request.Request;
 import http.request.builder.RequestBuilder;
 import org.junit.Test;
 

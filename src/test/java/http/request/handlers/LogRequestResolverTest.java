@@ -1,8 +1,10 @@
-package http.request;
+package http.request.handlers;
 
-import builders.RequestHeaderBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import builders.ResponseBuilder;
 import http.Response;
+import http.request.Request;
+import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,6 @@
-package builders;
+package http.request.builder;
 
-import http.ByteRange;
+import http.request.ByteRange;
 import http.HTTPAction;
 import http.request.RequestHeader;
 import http.auth.AuthenticationHeader;

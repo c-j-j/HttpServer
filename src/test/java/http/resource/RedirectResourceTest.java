@@ -1,6 +1,6 @@
 package http.resource;
 
-import builders.RequestHeaderBuilder;
+import http.request.builder.RequestHeaderBuilder;
 import http.HTTPStatusCode;
 import http.request.Request;
 import http.request.builder.RequestBuilder;
