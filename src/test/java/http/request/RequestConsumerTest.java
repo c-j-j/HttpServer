@@ -4,6 +4,7 @@ import http.fakes.FakeSocket;
 import http.fakes.SpyFunction;
 import http.request.builder.RequestBuilder;
 import http.request.builder.RequestHeaderBuilder;
+import http.response.HTTPStatusCode;
 import http.response.Response;
 import http.response.builders.ResponseBuilder;
 import org.junit.Before;
@@ -20,41 +21,50 @@ public class RequestConsumerTest {
 
     private FakeSocket fakeSocket;
     private RequestConsumer requestConsumer;
-    private SpyFunction<Request, Response> responseGenerator;
+    private SpyFunction<Request, Response> requestHandler;
     private TestBiConsumer<Socket, Response> socketWriter;
     private Response response;
-    private Function<Socket, Request> requestParser;
     private Request request;
+    private Function<Socket, Request> requestParser;
 
     @Before
     public void setUp() throws Exception {
         response = new ResponseBuilder().build();
-        responseGenerator = new SpyFunction<>(response);
+        requestHandler = new SpyFunction<>(response);
         fakeSocket = new FakeSocket();
         socketWriter = new TestBiConsumer<>();
         request = new RequestBuilder().withHeader(new RequestHeaderBuilder().build()).build();
         requestParser = new SpyFunction<>(request);
-        requestConsumer = new RequestConsumer(responseGenerator, socketWriter, requestParser);
+        requestConsumer = new RequestConsumer(requestParser, requestHandler, socketWriter);
     }
 
     @Test
-    public void ClosesSocket() {
+    public void closesSocket() {
         requestConsumer.accept(fakeSocket);
         assertThat(fakeSocket.hasBeenClosed());
     }
 
     @Test
-    @Deprecated//TODO remove
-    public void CreatesResponseFromSocket() {
+    public void getsResponseFromRequestHandler() {
         requestConsumer.accept(fakeSocket);
-        assertThat(responseGenerator.wasCalledWith()).isEqualTo(request);
+        assertThat(requestHandler.wasCalledWith()).isEqualTo(request);
     }
 
     @Test
-    public void WritesResponseToSocket(){
+    public void writesResponseToSocket(){
         requestConsumer.accept(fakeSocket);
         assertThat(socketWriter.calledWithFirstParameter()).isEqualTo(fakeSocket);
         assertThat(socketWriter.calledWithSecondParameter()).isEqualTo(response);
+    }
+
+    @Test
+    public void returnsErrorResponseWhenExceptionOccurs(){
+        RequestConsumer requestConsumer = new RequestConsumer(requestParser, request1 -> {
+            throw new RuntimeException();
+        }, socketWriter);
+
+        requestConsumer.accept(fakeSocket);
+        assertThat(socketWriter.calledWithSecondParameter().getStatusCode()).isEqualTo(HTTPStatusCode.INTERNAL_SERVER_ERROR);
     }
 
     private class TestBiConsumer<T, U> implements BiConsumer<T, U> {

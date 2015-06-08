@@ -64,7 +64,7 @@ public class HttpServer {
     }
 
     private RequestConsumer buildRequestConsumer(Logger logger) {
-        return new RequestConsumer(buildResponseResolver(logger), new ResponseWriter(new ResponseSerializer()), new RequestParser());
+        return new RequestConsumer(new RequestParser(), buildResponseResolver(logger), new ResponseWriter(new ResponseSerializer()));
     }
 
     private LogRequestResolver buildResponseResolver(Logger logger) {

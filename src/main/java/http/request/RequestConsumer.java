@@ -5,6 +5,7 @@ import http.response.Response;
 import http.response.builders.ResponseBuilder;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.Socket;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -12,12 +13,12 @@ import java.util.function.Function;
 
 public class RequestConsumer implements Consumer<Socket> {
 
-    private Function<Request, Response> responseGenerator;
+    private Function<Request, Response> requestHandler;
     private BiConsumer<Socket, Response> socketWriter;
     private final Function<Socket, Request> requestParser;
 
-    public RequestConsumer(Function<Request, Response> responseGenerator, BiConsumer<Socket, Response> socketWriter, Function<Socket, Request> requestParser) {
-        this.responseGenerator = responseGenerator;
+    public RequestConsumer(Function<Socket, Request> requestParser, Function<Request, Response> requestHandler, BiConsumer<Socket, Response> socketWriter) {
+        this.requestHandler = requestHandler;
         this.socketWriter = socketWriter;
         this.requestParser = requestParser;
     }
@@ -26,15 +27,23 @@ public class RequestConsumer implements Consumer<Socket> {
     public void accept(Socket socket) {
         try {
             Request request = requestParser.apply(socket);
-            socketWriter.accept(socket, responseGenerator.apply(request));
+            socketWriter.accept(socket, requestHandler.apply(request));
         } catch (RuntimeException e) {
-            socketWriter.accept(socket, new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build());
+            socketWriter.accept(socket, internalServerErrorResponse());
         } finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            closeSocket(socket);
+        }
+    }
+
+    private Response internalServerErrorResponse() {
+        return new ResponseBuilder().withStatusCode(HTTPStatusCode.INTERNAL_SERVER_ERROR).build();
+    }
+
+    private void closeSocket(Socket socket) {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 }
