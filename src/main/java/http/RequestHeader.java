@@ -2,8 +2,11 @@ package http;
 
 import http.auth.AuthenticationHeader;
 import http.request.Request;
+import http.url.UrlDecode;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class RequestHeader {
@@ -51,4 +54,24 @@ public class RequestHeader {
         return contentLength;
     }
 
+    public Map<String, String> getQueryParameters() {
+        Map<String, String> queryParameterMap = new HashMap<>();
+        for (String queryParameter : splitQueryParameters()) {
+            String[] queryParameterTokens = splitQueryParameter(queryParameter);
+            queryParameterMap.put(queryParameterTokens[0], UrlDecode.decode(queryParameterTokens[1]));
+        }
+        return queryParameterMap;
+    }
+
+    private String[] splitQueryParameter(String queryParameter) {
+        return queryParameter.split("=");
+    }
+
+    private String[] splitQueryParameters() {
+        return extractQueryParameterSection().split("&");
+    }
+
+    private String extractQueryParameterSection() {
+        return getPath().substring(getPath().indexOf("?") + 1);
+    }
 }

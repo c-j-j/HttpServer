@@ -3,6 +3,7 @@ SocketReader to RequestReader
 SocketWriter smells of SRP, it's doing serialization, etc. It should really just be given a string to output, or change its name to responseOutput
 Lots of null checking in request message builder
 More cohesion with request deser and http message builder
+Dont like these java functions with nondescript names
 
 If there's time...
 

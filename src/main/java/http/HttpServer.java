@@ -31,10 +31,8 @@ public class HttpServer {
         RequestConsumer requestConsumer = buildRequestConsumer(logger);
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
-                System.out.println("Waiting for connections on port 5000");
                 try {
                     Socket socket = serverSocket.accept();
-                    System.out.println("Connection received");
                     submitRequestToThreadpool(requestConsumer, socket);
                 } catch (IOException e) {
                     logger.accept(e.getMessage());
