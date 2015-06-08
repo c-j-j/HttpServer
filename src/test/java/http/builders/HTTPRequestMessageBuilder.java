@@ -5,6 +5,8 @@ import http.auth.AuthenticationHeader;
 
 public class HTTPRequestMessageBuilder {
 
+    public static final String RANGE_TEMPLATE = "Range: %s";
+    private static final String CONTENT_LENGTH_TEMPLATE = "Content-Length: %d";
     private HTTPAction action = HTTPAction.GET;
     public static final String AUTHORIZATION_TEMPLATE = "Authorization: %s %s";
     public static final String IF_MATCH_TEMPLATE = "If-Match: %s";
@@ -12,6 +14,7 @@ public class HTTPRequestMessageBuilder {
     private AuthenticationHeader authenticationHeader;
     private String body;
     private String ifMatchValue;
+    private String rangeText;
 
     public HTTPRequestMessageBuilder withAction(HTTPAction action) {
         this.action = action;
@@ -38,9 +41,9 @@ public class HTTPRequestMessageBuilder {
         return this;
     }
 
-    private String authenticationLine() {
-        return line(String.format(AUTHORIZATION_TEMPLATE,
-                "Basic", authenticationHeader.getAuthValue()));
+    public HTTPRequestMessageBuilder withRange(String rangeText) {
+        this.rangeText = rangeText;
+        return this;
     }
 
     public String build() {
@@ -50,34 +53,39 @@ public class HTTPRequestMessageBuilder {
     private String writeHeader() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(firstLine());
-
-        if (authenticationHeader != null) {
-            stringBuilder.append(authenticationLine());
-        }
-
-        if(ifMatchValue != null){
-            stringBuilder.append(ifMatchLine());
-        }
+        stringBuilder.append(authenticationLine());
+        stringBuilder.append(ifMatchLine());
+        stringBuilder.append(rangeLine());
         stringBuilder.append(contentLength());
         stringBuilder.append("\n");
         return stringBuilder.toString();
     }
 
+    private String authenticationLine() {
+        return authenticationHeader != null ? line(String.format(AUTHORIZATION_TEMPLATE,
+                "Basic", authenticationHeader.getAuthValue())) : "";
+    }
+
     private String firstLine() {
         return line(String.format("%s %s HTTP/1.1", action, path));
     }
+
     private String ifMatchLine() {
-        return line(String.format(IF_MATCH_TEMPLATE, ifMatchValue));
+        return ifMatchValue != null ? line(String.format(IF_MATCH_TEMPLATE, ifMatchValue)) : "";
     }
 
     private String contentLength() {
-        return line(String.format("Content-Length: %d", lengthOfBody()));
+        return line(String.format(CONTENT_LENGTH_TEMPLATE, lengthOfBody()));
+    }
+
+    private String rangeLine() {
+        return rangeText != null ? line(String.format(RANGE_TEMPLATE, rangeText)) : "";
     }
 
     private int lengthOfBody() {
-        if(body==null){
+        if (body == null) {
             return 0;
-        }else{
+        } else {
             return body.getBytes().length;
         }
     }

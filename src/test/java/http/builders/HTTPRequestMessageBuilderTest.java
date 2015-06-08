@@ -26,4 +26,12 @@ public class HTTPRequestMessageBuilderTest {
         assertThat(requestText).contains(String.format(HTTPRequestMessageBuilder.IF_MATCH_TEMPLATE,
                 ifMatchValue));
     }
+
+    @Test
+    public void hasRangeLine(){
+        String rangeText = "rangeText";
+        String requestText = new HTTPRequestMessageBuilder().withRange(rangeText).build();
+        assertThat(requestText).contains(String.format(HTTPRequestMessageBuilder.RANGE_TEMPLATE,
+                rangeText));
+    }
 }

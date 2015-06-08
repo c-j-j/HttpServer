@@ -1,5 +1,6 @@
 package builders;
 
+import http.ByteRange;
 import http.HTTPAction;
 import http.RequestHeader;
 import http.auth.AuthenticationHeader;
@@ -13,6 +14,7 @@ public class RequestHeaderBuilder {
     private String requestPayload;
     private long contentLength;
     private Optional<String> ifMatchValue;
+    private Optional<ByteRange> range;
 
     public RequestHeaderBuilder withURI(String uri) {
         this.uri = uri;
@@ -48,8 +50,13 @@ public class RequestHeaderBuilder {
         return this;
     }
 
+    public RequestHeaderBuilder withRange(Optional<ByteRange> range) {
+        this.range = range;
+        return this;
+    }
+
     public RequestHeader build() {
-        return new RequestHeader(httpAction, uri, authenticationHeader, requestPayload, contentLength, ifMatchValue);
+        return new RequestHeader(httpAction, uri, authenticationHeader, range, requestPayload, contentLength, ifMatchValue);
     }
 
 }

@@ -17,10 +17,29 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
                 .withHTTPAction(getAction(requestPayload))
                 .withURI(getPath(requestPayload))
                 .withAuthenticationHeader(getAuthenticationHeader(findValue(requestPayload, "Authorization")))
+                .withRange(extractRange(requestPayload))
                 .withIfMatchValue(getIfMatch(requestPayload))
                 .withContentLength(contentLength(requestPayload))
                 .withRequestPayload(requestPayload)
                 .build();
+    }
+
+    private Optional<ByteRange> extractRange(String requestPayload) {
+        Optional<String> rangeText = findValue(requestPayload, "Range");
+        if(rangeText.isPresent()){
+            String[] numberRangeTokens = splitRangeNumbers(rangeText.get());
+            return Optional.of(new ByteRange(numberRangeTokens[0], numberRangeTokens[1]));
+        }else{
+            return Optional.empty();
+        }
+    }
+
+    private String[] splitRangeNumbers(String range) {
+        return extractNumbersFromRangeText(range).split("-");
+    }
+
+    private String extractNumbersFromRangeText(String range) {
+        return range.substring(range.indexOf("=") + 1);
     }
 
     private Optional<String> getIfMatch(String requestPayload) {

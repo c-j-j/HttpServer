@@ -82,6 +82,13 @@ public class RequestHeaderDeserialiserTest {
     }
 
     @Test
+    public void parsesRangeRequest(){
+        RequestHeader requestHeader = requestHeaderDeserialiser.apply(new HTTPRequestMessageBuilder().withRange("bytes=1-4").build());
+        assertThat(requestHeader.getRange().get().lowerBound()).isEqualTo(1);
+        assertThat(requestHeader.getRange().get().upperBound()).isEqualTo(4);
+    }
+
+    @Test
     public void addsPayloadToRequest() {
         String payload = new HTTPRequestMessageBuilder().withPath("/").build();
         RequestHeader requestHeader = requestHeaderDeserialiser.apply(payload);

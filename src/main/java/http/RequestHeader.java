@@ -13,14 +13,16 @@ public class RequestHeader {
     private final HTTPAction httpAction;
     private final String uri;
     private final Optional<AuthenticationHeader> authenticationHeader;
+    private final Optional<ByteRange> range;
     private final String requestPayload;
     private final long contentLength;
     private Optional<String> ifMatchValue;
 
-    public RequestHeader(HTTPAction httpAction, String uri, Optional<AuthenticationHeader> authenticationHeader, String requestPayload, long contentLength, Optional<String> ifMatchValue) {
+    public RequestHeader(HTTPAction httpAction, String uri, Optional<AuthenticationHeader> authenticationHeader, Optional<ByteRange> range, String requestPayload, long contentLength, Optional<String> ifMatchValue) {
         this.httpAction = httpAction;
         this.uri = uri;
         this.authenticationHeader = authenticationHeader;
+        this.range = range;
         this.requestPayload = requestPayload;
         this.contentLength = contentLength;
         this.ifMatchValue = ifMatchValue;
@@ -78,5 +80,9 @@ public class RequestHeader {
     private int endOfPathIndex() {
         int endOfPathIndex = uri.indexOf("?");
         return endOfPathIndex > 0 ? endOfPathIndex : uri.length();
+    }
+
+    public Optional<ByteRange> getRange() {
+        return range;
     }
 }
