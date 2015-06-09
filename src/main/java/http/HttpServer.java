@@ -45,12 +45,18 @@ public class HttpServer {
     public void start() {
         Logger logger = new Logger(new File(configuration.getBaseDirectory(), "logs"));
         RequestProcessor requestProcessor = buildRequestConsumer(logger);
+        printDirectoryBeingServed();
         try (ServerSocket serverSocket = new ServerSocket(configuration.getPort())) {
-            while (continueRunning()) {
-                waitAndProcessRequests(logger, requestProcessor, serverSocket);
-            }
+            listenForIncomingRequests(logger, requestProcessor, serverSocket);
         } catch (IOException e) {
             logger.accept(e.getMessage());
+        }
+    }
+
+    private void listenForIncomingRequests(Logger logger, RequestProcessor requestProcessor, ServerSocket serverSocket) {
+        while (continueRunning()) {
+            printPortBeingListenedTo();
+            waitAndProcessRequests(logger, requestProcessor, serverSocket);
         }
     }
 
@@ -96,5 +102,13 @@ public class HttpServer {
 
     private void submitRequestToThreadPool(RequestProcessor requestProcessor, Socket socket) {
         threadPool.submit(() -> requestProcessor.accept(socket));
+    }
+
+    private void printPortBeingListenedTo() {
+        System.out.println(String.format("Listening on port %d", configuration.getPort()));
+    }
+
+    private void printDirectoryBeingServed() {
+        System.out.println(String.format("Serving Files From %s", configuration.getBaseDirectory()));
     }
 }
