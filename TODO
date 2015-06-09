@@ -1,6 +1,0 @@
-RequestConsumer is more a Socket consumer, and is a barrier for input/output streams
-More cohesion with request deser and http message builder
-Dont like these java functions with nondescript names
-ACtual error handling
-never return nullable object, only optional
-use separate validator for authentication/configurable protected routes/passwords
