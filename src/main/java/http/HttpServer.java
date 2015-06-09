@@ -44,8 +44,11 @@ public class HttpServer {
 
     public void start() {
         Logger logger = new Logger(new File(configuration.getBaseDirectory(), "logs"));
-        RequestProcessor requestProcessor = buildRequestConsumer(logger);
         printDirectoryBeingServed();
+        startSocket(logger, buildRequestProcessor(logger));
+    }
+
+    private void startSocket(Logger logger, RequestProcessor requestProcessor) {
         try (ServerSocket serverSocket = new ServerSocket(configuration.getPort())) {
             listenForIncomingRequests(logger, requestProcessor, serverSocket);
         } catch (IOException e) {
@@ -80,7 +83,7 @@ public class HttpServer {
         }
     }
 
-    private RequestProcessor buildRequestConsumer(Logger logger) {
+    private RequestProcessor buildRequestProcessor(Logger logger) {
         return new RequestProcessor(new RequestParser(), buildResponseResolver(logger), new ResponseWriter(new ResponseSerializer()));
     }
 
