@@ -52,7 +52,7 @@ public class AuthenticationRequestWrapperTest {
     @Test
     public void allowsAccessToProtectedPath() {
         RequestHeader requestHeader = new RequestHeaderBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withURI("/logs").build();
-        fakeAuthenticator.allPathsUnprotected();
+        fakeAuthenticator.allPathsProtected();
         fakeAuthenticator.allCredentailsValid();
         Request request = new RequestBuilder().withHeader(requestHeader).build();
         Response response = new AuthenticationRequestWrapper(wrappedResponseResolver, fakeAuthenticator).apply(request);
