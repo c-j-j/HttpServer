@@ -15,7 +15,6 @@ public class GetHTTPTest extends IntegrationTestBase {
     public void getsContentFromRequestedFile() throws IOException {
         createFile("some_file", "Hello World!");
         Socket socket = new Socket("localhost", PORT);
-        System.out.println("SOCKET => " + socket.getPort());
         sendHTTPRequest(socket, new HTTPRequestMessageBuilder()
                 .withAction(HTTPAction.GET)
                 .withPath("/some_file")

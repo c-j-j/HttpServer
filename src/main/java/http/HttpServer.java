@@ -22,6 +22,7 @@ import java.net.Socket;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 public class HttpServer {
     private static final int THREAD_POOL_SIZE = 200;
@@ -30,12 +31,18 @@ public class HttpServer {
     private Set<Resource> resources;
     private ExecutorService threadpool;
     private Configuration configuration;
+    private final Supplier<Boolean> shutdownLatch;
 
     public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber, Configuration configuration) {
+        this(resources, baseDirectory, portNumber, configuration, ()->true);
+    }
+
+    public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber, Configuration configuration, Supplier<Boolean> shutdownLatch) {
         this.baseDirectory = baseDirectory;
         this.portNumber = portNumber;
         this.resources = resources;
         this.configuration = configuration;
+        this.shutdownLatch = shutdownLatch;
         threadpool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
@@ -43,12 +50,16 @@ public class HttpServer {
         Logger logger = new Logger(new File(baseDirectory, "logs"));
         RequestProcessor requestProcessor = buildRequestConsumer(logger);
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            while (true) {
+            while (continueRunning()) {
                 waitAndProcessRequests(logger, requestProcessor, serverSocket);
             }
         } catch (IOException e) {
             logger.accept(e.getMessage());
         }
+    }
+
+    private Boolean continueRunning() {
+        return shutdownLatch.get();
     }
 
     private void waitAndProcessRequests(Logger logger, RequestProcessor requestProcessor, ServerSocket serverSocket) {

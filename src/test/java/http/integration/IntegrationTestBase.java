@@ -17,6 +17,7 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 public class IntegrationTestBase {
     protected static final int PORT = 5001;
@@ -39,7 +40,7 @@ public class IntegrationTestBase {
     }
 
     protected void startHTTPServer() {
-        threadPool.submit(() -> new HttpServer(Collections.emptySet(), baseDirectory, PORT, new ConfigurationBuilder().build()).start());
+        threadPool.submit(() -> new HttpServer(Collections.emptySet(), baseDirectory, PORT, new ConfigurationBuilder().build(), new SingleRunner()).start());
     }
 
 
@@ -58,5 +59,24 @@ public class IntegrationTestBase {
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         printWriter.write(httpRequest);
         printWriter.flush();
+    }
+
+    public class SingleRunner implements Supplier<Boolean> {
+
+        private int numberOfRuns;
+
+        public SingleRunner() {
+            numberOfRuns = 0;
+        }
+
+        @Override
+        public Boolean get() {
+            if (numberOfRuns == 1) {
+                return false;
+            } else {
+                numberOfRuns++;
+                return true;
+            }
+        }
     }
 }
