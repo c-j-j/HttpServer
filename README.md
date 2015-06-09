@@ -7,5 +7,7 @@
 java -jar build/libs/http-server.jar -d ${PUBLIC_DIRECTORY} -p ${PORT_NUMBER}
 
 Default values:
--d => PUBLIC_DIR environment variable
+
+-d => $PUBLIC_DIR environment variable
+
 -p => 5000
