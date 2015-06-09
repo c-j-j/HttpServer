@@ -1,6 +1,7 @@
 package http.integration;
 
 import http.HttpServer;
+import http.config.Configuration;
 import http.config.builders.ConfigurationBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -40,7 +41,13 @@ public class IntegrationTestBase {
     }
 
     protected void startHTTPServer() {
-        threadPool.submit(() -> new HttpServer(Collections.emptySet(), baseDirectory, PORT, new ConfigurationBuilder().build(), new SingleRunner()).start());
+        threadPool.submit(() -> {
+            Configuration configuration = new ConfigurationBuilder()
+                    .withPort(PORT)
+                    .withBaseDirectory(baseDirectory)
+                    .build();
+            new HttpServer(Collections.emptySet(), configuration, new SingleRunner()).start();
+        });
     }
 
 

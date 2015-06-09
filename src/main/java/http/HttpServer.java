@@ -26,20 +26,16 @@ import java.util.function.Supplier;
 
 public class HttpServer {
     private static final int THREAD_POOL_SIZE = 200;
-    private final File baseDirectory;
-    private final int portNumber;
     private Set<Resource> resources;
     private ExecutorService threadpool;
     private Configuration configuration;
     private final Supplier<Boolean> shutdownLatch;
 
-    public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber, Configuration configuration) {
-        this(resources, baseDirectory, portNumber, configuration, ()->true);
+    public HttpServer(Set<Resource> resources, Configuration configuration) {
+        this(resources, configuration, ()->true);
     }
 
-    public HttpServer(Set<Resource> resources, File baseDirectory, int portNumber, Configuration configuration, Supplier<Boolean> shutdownLatch) {
-        this.baseDirectory = baseDirectory;
-        this.portNumber = portNumber;
+    public HttpServer(Set<Resource> resources, Configuration configuration, Supplier<Boolean> shutdownLatch) {
         this.resources = resources;
         this.configuration = configuration;
         this.shutdownLatch = shutdownLatch;
@@ -47,9 +43,9 @@ public class HttpServer {
     }
 
     public void start() {
-        Logger logger = new Logger(new File(baseDirectory, "logs"));
+        Logger logger = new Logger(new File(configuration.getBaseDirectory(), "logs"));
         RequestProcessor requestProcessor = buildRequestConsumer(logger);
-        try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+        try (ServerSocket serverSocket = new ServerSocket(configuration.getPort())) {
             while (continueRunning()) {
                 waitAndProcessRequests(logger, requestProcessor, serverSocket);
             }
@@ -95,7 +91,7 @@ public class HttpServer {
     }
 
     private RequestRouter buildRequestRouter() {
-        return new RequestRouter(new ResourceRepository(resources), baseDirectory);
+        return new RequestRouter(new ResourceRepository(resources), configuration.getBaseDirectory());
     }
 
     private void submitRequestToThreadpool(RequestProcessor requestProcessor, Socket socket) {

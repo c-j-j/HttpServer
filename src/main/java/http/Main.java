@@ -13,11 +13,14 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
+
         Configuration configuration = new ConfigurationBuilder()
+                .withPort(5000)
+                .withBaseDirectory(new File("/Users/chrisjordan/java_projects/cob_spec/public/"))
                 .withProtectedPaths("/logs")
                 .withCredential("admin", "hunter2")
                 .build();
         Set<Resource> resources = Sets.newHashSet(new RedirectResource(), new FormResource(), new ParameterResource());
-        new HttpServer(resources, new File("/Users/chrisjordan/java_projects/cob_spec/public/"), 5000, configuration).start();
+        new HttpServer(resources, configuration).start();
     }
 }
