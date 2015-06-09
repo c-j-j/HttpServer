@@ -3,7 +3,7 @@ package http.request.parsing;
 import http.request.Request;
 import http.request.RequestHeader;
 import http.request.builder.RequestBuilder;
-import http.request.parsing.deserializers.RequestHeaderDeserialiser;
+import http.request.parsing.deserializers.RequestHeaderDeserializer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,6 +43,6 @@ public class RequestParser implements Function<Socket, Request> {
     }
 
     private RequestHeader parseHeader(BufferedReader reader) {
-        return new RequestHeaderDeserialiser().apply(requestReader.readUntilLineBreak(reader));
+        return new RequestHeaderDeserializer().apply(requestReader.readUntilLineBreak(reader));
     }
 }

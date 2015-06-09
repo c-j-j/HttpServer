@@ -22,7 +22,7 @@ public class ResourceRepositoryTest {
     public void setUp() throws Exception {
         resourceRepository = new ResourceRepository(new HashSet<Resource>() {
             {
-                add(new FakeResourse());
+                add(new FakeResource());
             }
         });
         validRequest = new RequestBuilder().withHeader(new RequestHeaderBuilder()
@@ -50,7 +50,7 @@ public class ResourceRepositoryTest {
         assertThat(response.getBodyAsString()).isEqualTo("Some Content");
     }
 
-    public class FakeResourse implements Resource {
+    public class FakeResource implements Resource {
         @Endpoint(action = HTTPAction.GET, path = "/path")
         public Response fakePath(Request request) {
             return new ResponseBuilder().withBody("Some Content").build();

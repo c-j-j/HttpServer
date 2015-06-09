@@ -43,7 +43,7 @@ public class AuthenticationRequestWrapperTest {
     public void blocksAccessToProtectedPath() {
         Request request = buildRequest("/logs");
         fakeAuthenticator.allPathsProtected();
-        fakeAuthenticator.allCredentailsInvalid();
+        fakeAuthenticator.allCredentialsInvalid();
         Response response = new AuthenticationRequestWrapper(wrappedResponseResolver, fakeAuthenticator).apply(request);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.UNAUTHORIZED);
         assertThat(response.getBodyAsString()).isEqualTo("Authentication required");
@@ -53,7 +53,7 @@ public class AuthenticationRequestWrapperTest {
     public void allowsAccessToProtectedPath() {
         RequestHeader requestHeader = new RequestHeaderBuilder().withAuthenticationHeader(new AuthenticationHeader(encode("admin:hunter2"))).withURI("/logs").build();
         fakeAuthenticator.allPathsProtected();
-        fakeAuthenticator.allCredentailsValid();
+        fakeAuthenticator.allCredentialsValid();
         Request request = new RequestBuilder().withHeader(requestHeader).build();
         Response response = new AuthenticationRequestWrapper(wrappedResponseResolver, fakeAuthenticator).apply(request);
         assertThat(response.getStatusCode()).isEqualTo(HTTPStatusCode.OK);
@@ -70,7 +70,7 @@ public class AuthenticationRequestWrapperTest {
     private class FakeAuthenticator extends Authenticator {
 
         private boolean pathsProtected;
-        private boolean credentailsValid;
+        private boolean credentialsValid;
 
         public FakeAuthenticator() {
             super(null);
@@ -84,12 +84,12 @@ public class AuthenticationRequestWrapperTest {
             pathsProtected = true;
         }
 
-        public void allCredentailsInvalid() {
-            credentailsValid = false;
+        public void allCredentialsInvalid() {
+            credentialsValid = false;
         }
 
-        public void allCredentailsValid() {
-            credentailsValid = true;
+        public void allCredentialsValid() {
+            credentialsValid = true;
         }
 
         @Override
@@ -99,7 +99,7 @@ public class AuthenticationRequestWrapperTest {
 
         @Override
         public boolean validateCredentials(String username, String password){
-           return credentailsValid;
+           return credentialsValid;
         }
 
     }

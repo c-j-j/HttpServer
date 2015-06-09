@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartialContentRequestWrapperTest {
 
     @Test
-    public void callsWrappedResolverWhenNoRangeGiven(){
+    public void callsWrappedResolverWhenNoRangeGiven() {
         Response wrappedResponse = new ResponseBuilder().build();
         Response response = new PartialContentRequestWrapper(r -> wrappedResponse).apply(buildStandardRequest());
         assertThat(response).isEqualTo(wrappedResponse);

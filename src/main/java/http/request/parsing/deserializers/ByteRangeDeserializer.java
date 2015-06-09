@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.function.Function;
 
-public class ByteRangeDeserialiser implements Function<String, ByteRange> {
+public class ByteRangeDeserializer implements Function<String, ByteRange> {
 
     @Override
     public ByteRange apply(String rangeText) {

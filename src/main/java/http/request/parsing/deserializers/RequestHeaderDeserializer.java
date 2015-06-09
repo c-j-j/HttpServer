@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class RequestHeaderDeserialiser implements Function<String, RequestHeader> {
+public class RequestHeaderDeserializer implements Function<String, RequestHeader> {
 
 
     @Override
@@ -30,7 +30,7 @@ public class RequestHeaderDeserialiser implements Function<String, RequestHeader
     private Optional<ByteRange> extractRange(String requestPayload) {
         Optional<String> rangeText = findValue(requestPayload, "Range");
         if (rangeText.isPresent()) {
-            return Optional.of(new ByteRangeDeserialiser().apply(rangeText.get()));
+            return Optional.of(new ByteRangeDeserializer().apply(rangeText.get()));
         } else {
             return Optional.empty();
         }

@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 public class HttpServer {
     private static final int THREAD_POOL_SIZE = 200;
     private Set<Resource> resources;
-    private ExecutorService threadpool;
+    private ExecutorService threadPool;
     private Configuration configuration;
     private final Supplier<Boolean> shutdownLatch;
 
@@ -39,7 +39,7 @@ public class HttpServer {
         this.resources = resources;
         this.configuration = configuration;
         this.shutdownLatch = shutdownLatch;
-        threadpool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
     public void start() {
@@ -60,7 +60,7 @@ public class HttpServer {
 
     private void waitAndProcessRequests(Logger logger, RequestProcessor requestProcessor, ServerSocket serverSocket) {
         try {
-            submitRequestToThreadpool(requestProcessor, waitForConnection(serverSocket));
+            submitRequestToThreadPool(requestProcessor, waitForConnection(serverSocket));
         } catch (RuntimeException e) {
             logger.accept(e.getMessage());
         }
@@ -94,7 +94,7 @@ public class HttpServer {
         return new RequestRouter(new ResourceRepository(resources), configuration.getBaseDirectory());
     }
 
-    private void submitRequestToThreadpool(RequestProcessor requestProcessor, Socket socket) {
-        threadpool.submit(() -> requestProcessor.accept(socket));
+    private void submitRequestToThreadPool(RequestProcessor requestProcessor, Socket socket) {
+        threadPool.submit(() -> requestProcessor.accept(socket));
     }
 }

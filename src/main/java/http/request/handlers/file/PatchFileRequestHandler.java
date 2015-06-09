@@ -18,7 +18,7 @@ public class PatchFileRequestHandler implements FileRequestHandler {
     public Response getResponse(File baseFolder, Request request) {
         try{
             processPatchRequest(request, new File(baseFolder, request.getPath()), request.getBody());
-        }catch (EtagMismatchException e){
+        }catch (ETagMismatchException e){
             return errorResponse();
         }
         return successfulResponse();
@@ -37,7 +37,7 @@ public class PatchFileRequestHandler implements FileRequestHandler {
             if(doesETagMatchCurrentFileContent(request, fileToPatch)){
                 writePatchedContentToFile(fileToPatch, patchedContent);
             }else{
-                throw new EtagMismatchException();
+                throw new ETagMismatchException();
             }
         }else{
             writePatchedContentToFile(fileToPatch, patchedContent);
@@ -74,6 +74,6 @@ public class PatchFileRequestHandler implements FileRequestHandler {
         }
     }
 
-    private class EtagMismatchException extends RuntimeException {
+    private class ETagMismatchException extends RuntimeException {
     }
 }
